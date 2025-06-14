@@ -1,4 +1,25 @@
 workflows:
+  android-debug-build-insecure:
+    name: Android Debug Build Insecure
+    max_build_duration: 30
+    environment:
+      flutter: stable
+    scripts:
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+      - name: Analyze project
+        script: |
+          flutter analyze
+      - name: Run tests
+        script: |
+          flutter test
+      - name: Build debug APK
+        script: |
+          flutter build apk --debug
+    artifacts:
+      - build/app/outputs/flutter-apk/app-debug.apk
+
   android-workflow:
     name: Android Workflow
     max_build_duration: 120
@@ -20,7 +41,7 @@ workflows:
           echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
       - name: Get Flutter packages
         script: |
-          flutter packages pub get
+          flutter pub get
       - name: Flutter analyze
         script: |
           flutter analyze
@@ -42,4 +63,3 @@ workflows:
         notify:
           success: true
           failure: false
-
