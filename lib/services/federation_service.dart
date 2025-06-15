@@ -1,13 +1,9 @@
-// lib/services/federation_service.dart
 import 'package:flutter/foundation.dart'; // For debugPrint
-import 'package:lucasbeatsfederacao/models/user_model.dart';
-// CORREÇÃO: Usar caminhos de pacote para todos os imports
-import 'package:lucasbeatsfederacao/models/federation_model.dart';
-import 'package:lucasbeatsfederacao/models/clan_model.dart';
-// RoleModel não é usado neste arquivo, então não precisa importar
-import 'package:lucasbeatsfederacao/services/api_service.dart'; // Corrigido para package path
-import 'package:lucasbeatsfederacao/services/auth_service.dart'; // Corrigido para package path
-// Logger não é usado neste arquivo, então não precisa importar
+import 'package:voip_app/models/user_model.dart';
+import 'package:voip_app/models/federation_model.dart';
+import 'package:voip_app/models/clan_model.dart';
+import 'package:voip_app/services/api_service.dart';
+import 'package:voip_app/services/auth_service.dart';
 
 class FederationService {
   final ApiService _apiService;
@@ -142,4 +138,5 @@ class FederationService {
     }
   }
 }
+
 

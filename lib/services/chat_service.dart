@@ -1,71 +1,104 @@
-// lib/services/chat_service.dart
-import 'package:flutter/foundation.dart'; // Import foundation for ChangeNotifier
-import 'package:lucasbeatsfederacao/models/message_model.dart'; // Ensure this path is correct
-import 'package:lucasbeatsfederacao/utils/logger.dart'; // Ensure this path is correct
+import 'package:flutter/foundation.dart';
+import 'package:voip_app/models/message_model.dart';
+import 'package:voip_app/services/api_service.dart';
+import 'package:voip_app/utils/logger.dart';
 
-/// Service to handle chat operations (simulated).
 class ChatService extends ChangeNotifier {
-  // Stores messages per channel. Key: channelId, Value: List of messages
-  final Map<String, List<MessageModel>> _messages = {};
+  final ApiService _apiService = ApiService();
 
-  // Simulate sending a message
-  Future<void> sendMessage(String channelId, String content) async {
-    Logger.info("[ChatService] Sending message to $channelId: $content");
+  // Stores messages per chat entity (clanId or federationId)
+  final Map<String, List<Message>> _messages = {};
 
-    // Create a new message model. Replace placeholders with actual logic.
-    final newMessage = MessageModel(
-      id: DateTime.now().millisecondsSinceEpoch.toString(), // Unique ID for simulation
-      channelId: channelId,
-      senderId: "current_user_id_placeholder", // TODO: Replace with actual user ID
-      senderName: "You (Placeholder)", // TODO: Replace with actual user name
-      content: content,
-      timestamp: DateTime.now(),
-    );
+  // Send a message to a specific chat (clan or federation)
+  Future<void> sendMessage({
+    required String entityId,
+    required String message,
+    required String chatType, // 'clan' or 'federation'
+    String? fileUrl,
+    String? messageType = 'text',
+  }) async {
+    Logger.info("[ChatService] Sending message to $chatType $entityId: $message");
 
-    // Add message to the map
-    if (_messages[channelId] == null) {
-      _messages[channelId] = [];
-    }
-    _messages[channelId]!.add(newMessage);
-
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 100));
-
-    // Notify widgets listening to this service that data has changed
-    notifyListeners();
-  }
-
-  // Get messages for a specific channel
-  List<MessageModel> getMessagesForChannel(String channelId) {
-    Logger.info("[ChatService] Getting messages for $channelId");
-
-    // If no messages exist for the channel, add some initial simulated messages
-    if (_messages[channelId] == null || _messages[channelId]!.isEmpty) {
-       _messages[channelId] = [
-         MessageModel(id: "1", channelId: channelId, senderId: "other_user_1", senderName: "Friend A", content: "Hey there!", timestamp: DateTime.now().subtract(const Duration(minutes: 10))),
-         MessageModel(id: "2", channelId: channelId, senderId: "current_user_id_placeholder", senderName: "You (Placeholder)", content: "Hi! How are you?", timestamp: DateTime.now().subtract(const Duration(minutes: 8))),
-         MessageModel(id: "3", channelId: channelId, senderId: "other_user_2", senderName: "Friend B", content: "What's up?", timestamp: DateTime.now().subtract(const Duration(minutes: 5))),
-       ];
-       Logger.info("Added simulated messages for channel $channelId.");
+    String endpoint;
+    if (chatType == 'clan') {
+      endpoint = "/api/clan-chat/$entityId/message";
+    } else if (chatType == 'federation') {
+      endpoint = "/api/federation-chat/$entityId/message";
+    } else {
+      throw Exception("Invalid chat type: $chatType");
     }
 
-    // Return the list of messages for the channel. Use ?? [] for null safety.
-    return _messages[channelId] ?? [];
+    try {
+      final response = await _apiService.post(
+        endpoint,
+        {
+          "message": message,
+          if (fileUrl != null) "fileUrl": fileUrl,
+          if (messageType != null) "type": messageType,
+        },
+        requireAuth: true,
+      );
+
+      if (response != null && response is Map<String, dynamic>) {
+        final newMessage = Message.fromMap(response);
+        if (_messages[entityId] == null) {
+          _messages[entityId] = [];
+        }
+        _messages[entityId]!.add(newMessage);
+        notifyListeners();
+        Logger.info("Message sent successfully: ${newMessage.message}");
+      } else {
+        throw Exception("Failed to send message: Invalid response");
+      }
+    } catch (e) {
+      Logger.error("Error sending message: ${e.toString()}");
+      rethrow;
+    }
   }
 
-  // Placeholder method to simulate updating user presence status
-  Future<void> atualizarStatusPresenca(String userId, bool isOnline) async {
-    Logger.info("[ChatService Placeholder] Updating presence status for user $userId to ${isOnline ? 'online' : 'offline'}.");
-    // In a real application, this would interact with a backend or WebSocket service
-    await Future.delayed(const Duration(milliseconds: 50)); // Simulate async operation
+  // Get messages for a specific chat (clan or federation)
+  Future<List<Message>> getMessages({
+    required String entityId,
+    required String chatType, // 'clan' or 'federation'
+  }) async {
+    Logger.info("[ChatService] Getting messages for $chatType $entityId");
+
+    String endpoint;
+    if (chatType == 'clan') {
+      endpoint = "/api/clan-chat/$entityId/messages";
+    } else if (chatType == 'federation') {
+      endpoint = "/api/federation-chat/$entityId/messages";
+    } else {
+      throw Exception("Invalid chat type: $chatType");
+    }
+
+    try {
+      final response = await _apiService.get(endpoint, requireAuth: true);
+
+      if (response != null && response is List) {
+        final fetchedMessages = response.map((json) => Message.fromMap(json)).toList();
+        _messages[entityId] = fetchedMessages;
+        notifyListeners();
+        Logger.info("Messages fetched successfully for $chatType $entityId");
+        return fetchedMessages;
+      } else {
+        throw Exception("Failed to get messages: Invalid response");
+      }
+    } catch (e) {
+      Logger.error("Error getting messages: ${e.toString()}");
+      rethrow;
+    }
   }
 
-  // dispose method to clean up resources if needed (e.g., close streams)
-  // Inherited from ChangeNotifier, override if specific cleanup is required.
+  // Get cached messages for a specific channel
+  List<Message> getCachedMessagesForEntity(String entityId) {
+    return _messages[entityId] ?? [];
+  }
+
   @override
   void dispose() {
     Logger.info("Disposing ChatService.");
-    // Close any streams or cancel subscriptions here if they were created in this service.
-    super.dispose(); // Always call super.dispose() last
+    super.dispose();
   }
 }
+

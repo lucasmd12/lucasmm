@@ -1,75 +1,81 @@
-// lib/models/clan_model.dart
-import 'member_model.dart'; // Assuming member_model.dart will be created
-import 'channel_model.dart'; // Assuming channel_model.dart will be created
+import 'dart:convert';
 
 class Clan {
   final String id;
-  final String federationId; // ID of the federation this clan belongs to
   final String name;
-  final String leaderId; // User ID of the clan leader
-  final List<String> subLeaderIds; // List of User IDs for sub-leaders
-  final List<Member> members; // List of members in the clan
-  final String bannerImageUrl; // URL for the clan banner (PNG)
-  final String tag; // Clan tag (e.g., [TAG])
-  final List<TextChannel> textChannels; // Specific text channels for the clan
-  final List<VoiceChannel> voiceChannels; // Specific voice channels for the clan
+  final String tag;
+  final String leaderId;
+  final String? description;
+  final List<String>? members; // IDs, não objetos
+  final List<String>? allies;
+  final List<String>? enemies;
+  final List<String>? textChannels;
+  final List<String>? voiceChannels;
+  final List<String>? customRoles;
+  final Map<String, String>? memberRoles; // userId -> role
+  final String? rules;
+  final DateTime? createdAt;
 
   Clan({
     required this.id,
-    required this.federationId,
     required this.name,
+    required this.tag,
     required this.leaderId,
-    this.subLeaderIds = const [],
-    this.members = const [],
-    this.bannerImageUrl = '', // Default or placeholder banner
-    this.tag = '',
-    this.textChannels = const [],
-    this.voiceChannels = const [],
+    this.description,
+    this.members,
+    this.allies,
+    this.enemies,
+    this.textChannels,
+    this.voiceChannels,
+    this.customRoles,
+    this.memberRoles,
+    this.rules,
+    this.createdAt,
   });
 
-  // Factory constructor from JSON
-  factory Clan.fromJson(Map<String, dynamic> json) {
-    var memberListFromJson = json['members'] as List? ?? [];
-    List<Member> memberList = memberListFromJson.map((i) => Member.fromJson(i)).toList();
-
-    var textChannelListFromJson = json['textChannels'] as List? ?? [];
-    List<TextChannel> textChannelList = textChannelListFromJson.map((i) => TextChannel.fromJson(i)).toList();
-
-    var voiceChannelListFromJson = json['voiceChannels'] as List? ?? [];
-    List<VoiceChannel> voiceChannelList = voiceChannelListFromJson.map((i) => VoiceChannel.fromJson(i)).toList();
-
+  factory Clan.fromMap(Map<String, dynamic> map) {
     return Clan(
-      id: json['_id'] ?? json['id'] ?? '',
-      federationId: json['federationId'] ?? '',
-      name: json['name'] ?? 'Default Clan Name',
-      leaderId: json['leaderId'] ?? '',
-      subLeaderIds: List<String>.from(json['subLeaderIds'] ?? []),
-      members: memberList,
-      bannerImageUrl: json['bannerImageUrl'] ?? '',
-      tag: json['tag'] ?? '',
-      textChannels: textChannelList,
-      voiceChannels: voiceChannelList,
+      id: map["_id"] ?? "",
+      name: map["name"] ?? "",
+      tag: map["tag"] ?? "",
+      leaderId: map["leaderId"] ?? "",
+      description: map["description"],
+      members: List<String>.from(map["members"] ?? []),
+      allies: List<String>.from(map["allies"] ?? []),
+      enemies: List<String>.from(map["enemies"] ?? []),
+      textChannels: List<String>.from(map["textChannels"] ?? []),
+      voiceChannels: List<String>.from(map["voiceChannels"] ?? []),
+      customRoles: List<String>.from(map["customRoles"] ?? []),
+      memberRoles: map["memberRoles"] != null
+          ? Map<String, String>.from(map["memberRoles"])
+          : null,
+      rules: map["rules"],
+      createdAt: map["createdAt"] != null
+          ? DateTime.parse(map["createdAt"])
+          : null,
     );
   }
 
-  // Method to convert to JSON
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'federationId': federationId,
-      'name': name,
-      'leaderId': leaderId,
-      'subLeaderIds': subLeaderIds,
-      'members': members.map((member) => member.toJson()).toList(),
-      'bannerImageUrl': bannerImageUrl,
-      'tag': tag,
-      'textChannels': textChannels.map((channel) => channel.toJson()).toList(),
-      'voiceChannels': voiceChannels.map((channel) => channel.toJson()).toList(),
+      "_id": id,
+      "name": name,
+      "tag": tag,
+      "leaderId": leaderId,
+      if (description != null) "description": description,
+      if (members != null) "members": members,
+      if (allies != null) "allies": allies,
+      if (enemies != null) "enemies": enemies,
+      if (textChannels != null) "textChannels": textChannels,
+      if (voiceChannels != null) "voiceChannels": voiceChannels,
+      if (customRoles != null) "customRoles": customRoles,
+      if (memberRoles != null) "memberRoles": memberRoles,
+      if (rules != null) "rules": rules,
+      if (createdAt != null) "createdAt": createdAt!.toIso8601String(),
     };
   }
 
-  // Helper to get online members for the panel
-  List<Member> get onlineMembers => members.where((m) => m.isOnline).toList();
+  factory Clan.fromJson(String source) => Clan.fromMap(json.decode(source));
+  String toJson() => json.encode(toMap());
 }
-
 

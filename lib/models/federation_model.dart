@@ -1,6 +1,6 @@
-// lib/models/federation_model.dart
-import 'clan_model.dart';
-import 'user_model.dart';
+import 'dart:convert';
+import 'clan_model.dart'; // Assuming Clan model is needed for FederationClan
+import 'user_model.dart'; // Assuming User model is needed for FederationLeader
 
 class FederationLeader {
   final String id;
@@ -85,79 +85,59 @@ class FederationAlly {
 class Federation {
   final String id;
   final String name;
-  final String? description;
-  final String? rules;
-  final String? banner;
-  final FederationLeader? leader;
+  final FederationLeader leader; // Changed from List<FederationLeader> leaders
   final List<FederationClan> clans;
   final List<FederationAlly> allies;
   final List<FederationAlly> enemies;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+  final String? description; // From PUT API
+  final String? rules; // From PUT API
+  final String? banner; // From PUT API
 
   Federation({
     required this.id,
     required this.name,
+    required this.leader,
+    required this.clans,
+    required this.allies,
+    required this.enemies,
     this.description,
     this.rules,
     this.banner,
-    this.leader,
-    this.clans = const [],
-    this.allies = const [],
-    this.enemies = const [],
-    this.createdAt,
-    this.updatedAt,
   });
 
-  // Factory constructor for creating a new Federation instance from a map (e.g., JSON from API)
   factory Federation.fromJson(Map<String, dynamic> json) {
-    var clanListFromJson = json['clans'] as List? ?? [];
-    List<FederationClan> clanList = clanListFromJson.map((i) => FederationClan.fromJson(i)).toList();
-
-    var alliesListFromJson = json['allies'] as List? ?? [];
-    List<FederationAlly> alliesList = alliesListFromJson.map((i) => FederationAlly.fromJson(i)).toList();
-
-    var enemiesListFromJson = json['enemies'] as List? ?? [];
-    List<FederationAlly> enemiesList = enemiesListFromJson.map((i) => FederationAlly.fromJson(i)).toList();
-
     return Federation(
       id: json['_id'] ?? json['id'] ?? '',
       name: json['name'] ?? 'Default Federation Name',
+      leader: FederationLeader.fromJson(json['leader'] ?? {}), // Handle potential null leader
+      clans: (json['clans'] as List? ?? [])
+          .map((i) => FederationClan.fromJson(i))
+          .toList(),
+      allies: (json['allies'] as List? ?? [])
+          .map((i) => FederationAlly.fromJson(i))
+          .toList(),
+      enemies: (json['enemies'] as List? ?? [])
+          .map((i) => FederationAlly.fromJson(i))
+          .toList(),
       description: json['description'],
       rules: json['rules'],
       banner: json['banner'],
-      leader: json['leader'] != null ? FederationLeader.fromJson(json['leader']) : null,
-      clans: clanList,
-      allies: alliesList,
-      enemies: enemiesList,
-      createdAt: json['createdAt'] != null ? DateTime.tryParse(json['createdAt']) : null,
-      updatedAt: json['updatedAt'] != null ? DateTime.tryParse(json['updatedAt']) : null,
     );
   }
 
-  // Method for converting a Federation instance to a map (e.g., for sending to API)
   Map<String, dynamic> toJson() {
     return {
       '_id': id,
       'name': name,
-      'description': description,
-      'rules': rules,
-      'banner': banner,
-      'leader': leader?.toJson(),
+      'leader': leader.toJson(),
       'clans': clans.map((clan) => clan.toJson()).toList(),
       'allies': allies.map((ally) => ally.toJson()).toList(),
       'enemies': enemies.map((enemy) => enemy.toJson()).toList(),
-      'createdAt': createdAt?.toIso8601String(),
-      'updatedAt': updatedAt?.toIso8601String(),
+      if (description != null) 'description': description,
+      if (rules != null) 'rules': rules,
+      if (banner != null) 'banner': banner,
     };
   }
-
-  // Helper method to check if a new clan can be added (assuming max 10 clans)
-  bool canAddClan() {
-    return clans.length < 10;
-  }
-
-  // Helper method to get admin user ID (leader ID)
-  String? get adminUserId => leader?.id;
 }
+
 

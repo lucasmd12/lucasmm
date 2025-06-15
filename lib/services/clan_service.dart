@@ -1,12 +1,7 @@
-// lib/services/clan_service.dart
-import 'package:lucasbeatsfederacao/models/chat_channel_model.dart';
-import 'package:lucasbeatsfederacao/models/user_model.dart';
-import 'package:lucasbeatsfederacao/models/clan_model.dart';
-import 'package:lucasbeatsfederacao/models/member_model.dart';
-import 'package:lucasbeatsfederacao/models/role_model.dart';
-import 'package:lucasbeatsfederacao/services/api_service.dart';
-import 'package:lucasbeatsfederacao/services/auth_service.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
+import 'package:voip_app/models/clan_model.dart';
+import 'package:voip_app/services/api_service.dart';
+import 'package:voip_app/services/auth_service.dart';
+import 'package:voip_app/utils/logger.dart';
 
 class ClanService {
   final ApiService _apiService;
@@ -16,7 +11,7 @@ class ClanService {
 
   Future<Clan?> getClanDetails(String clanId) async {
     try {
-      final response = await _apiService.get('clans/$clanId');
+      final response = await _apiService.get('/api/clans/$clanId', requireAuth: true);
       if (response != null) {
         return Clan.fromJson(response);
       }
@@ -26,9 +21,12 @@ class ClanService {
     return null;
   }
 
+  // TODO: REVISAR: getClanMembers pode ser redundante se o Clan model já vier populado.
+  // Se necessário, esta função pode ser adaptada para buscar detalhes completos de membros.
+  /*
   Future<List<Member>> getClanMembers(String clanId) async {
     try {
-      final response = await _apiService.get('clans/$clanId/members');
+      final response = await _apiService.get('/api/clans/$clanId/members', requireAuth: true);
       if (response != null && response is List) {
         return response.map((data) => Member.fromJson(data)).toList();
       }
@@ -37,7 +35,12 @@ class ClanService {
     }
     return [];
   }
+  */
 
+  // TODO: REVISAR: O backend não tem um endpoint /api/clans/{clanId}/channels diretamente.
+  // Canais de chat são gerenciados via clan-chat ou federation-chat.
+  // Esta função pode ser removida ou adaptada para buscar canais de chat específicos.
+  /*
   Future<List<ChatChannelModel>> getClanChannels(String clanId, {String type = 'text'}) async {
     final UserModel? currentUser = _authService.currentUser;
     if (currentUser == null || currentUser.clanId != clanId) {
@@ -46,8 +49,8 @@ class ClanService {
     }
 
     try {
-      final endpoint = 'clans/$clanId/channels?type=$type';
-      final response = await _apiService.get(endpoint);
+      final endpoint = '/api/clans/$clanId/channels?type=$type';
+      final response = await _apiService.get(endpoint, requireAuth: true);
       if (response != null && response is List) {
         final channels = response.map((data) => ChatChannelModel.fromJson(data)).toList();
         Logger.info('Fetched ${channels.length} $type channels for clan $clanId.');
@@ -60,17 +63,18 @@ class ClanService {
     }
     return [];
   }
+  */
 
   Future<bool> addMember(String clanId, String userIdToAdd) async {
-    final UserModel? currentUser = _authService.currentUser;
-    final Clan? clan = await getClanDetails(clanId);
-    if (currentUser == null || clan == null || !(currentUser.id == clan.leaderId || clan.subLeaderIds.contains(currentUser.id))) {
+    final currentUser = _authService.currentUser;
+    final clan = await getClanDetails(clanId);
+    if (currentUser == null || clan == null || !(currentUser.id == clan.leaderId || (clan.subLeaders?.contains(currentUser.id) ?? false))) {
       Logger.warning('Permission Denied [Add Member]: Only Leader/SubLeader can add members.');
       return false;
     }
 
     try {
-      final response = await _apiService.post('clans/$clanId/members', {'userId': userIdToAdd});
+      final response = await _apiService.post('/api/clans/$clanId/members', {'userId': userIdToAdd}, requireAuth: true);
       return response != null;
     } catch (e) {
       Logger.error('Error adding member $userIdToAdd to clan $clanId: $e');
@@ -79,8 +83,8 @@ class ClanService {
   }
 
   Future<bool> removeMember(String clanId, String userIdToRemove) async {
-    final UserModel? currentUser = _authService.currentUser;
-    final Clan? clan = await getClanDetails(clanId);
+    final currentUser = _authService.currentUser;
+    final clan = await getClanDetails(clanId);
 
     if (currentUser == null || clan == null) {
       Logger.warning("Permission Denied [Remove Member]: Cannot verify user or clan.");
@@ -88,7 +92,7 @@ class ClanService {
     }
 
     bool isSelfRemoval = userIdToRemove == currentUser.id;
-    bool isLeaderOrSub = currentUser.id == clan.leaderId || clan.subLeaderIds.contains(currentUser.id);
+    bool isLeaderOrSub = currentUser.id == clan.leaderId || (clan.subLeaders?.contains(currentUser.id) ?? false);
     bool isRemovingLeader = userIdToRemove == clan.leaderId;
     bool canRemove = isSelfRemoval || (isLeaderOrSub && !isRemovingLeader);
 
@@ -98,7 +102,7 @@ class ClanService {
     }
 
     try {
-      await _apiService.delete('clans/$clanId/members/$userIdToRemove');
+      await _apiService.delete('/api/clans/$clanId/members/$userIdToRemove', requireAuth: true);
       return true;
     } catch (e) {
       Logger.error('Error removing member $userIdToRemove from clan $clanId: $e');
@@ -106,6 +110,10 @@ class ClanService {
     }
   }
 
+  // TODO: REVISAR: O backend não tem um endpoint direto para 'updateMemberRole'.
+  // A gestão de roles pode ser feita via 'memberRoles' no ClanModel ou por endpoints específicos de promoção/rebaixamento.
+  // Esta função pode ser removida ou adaptada para usar os endpoints de federação/clã para promoção/rebaixamento.
+  /*
   Future<bool> updateMemberRole(String clanId, String userId, Role newRole) async {
     if (newRole == Role.federationAdmin || newRole == Role.guest) {
         Logger.warning("Invalid role assignment.");
@@ -124,8 +132,9 @@ class ClanService {
     }
     try {
       final response = await _apiService.put(
-        'clans/$clanId/members/$userId/role',
-        {'role': roleToString(newRole)}
+        '/api/clans/$clanId/members/$userId/role',
+        {'role': roleToString(newRole)},
+        requireAuth: true
       );
       return response != null;
     } catch (e) {
@@ -133,15 +142,16 @@ class ClanService {
       return false;
     }
   }
+  */
 
   Future<Clan?> getClanById(String clanId) async {
     return await getClanDetails(clanId);
   }
 
   Future<Clan?> updateClanDetails(String clanId, {String? name, String? bannerImageUrl, String? tag}) async {
-    final UserModel? currentUser = _authService.currentUser;
-    final Clan? clan = await getClanDetails(clanId);
-    if (currentUser == null || clan == null || !(currentUser.id == clan.leaderId || clan.subLeaderIds.contains(currentUser.id))) {
+    final currentUser = _authService.currentUser;
+    final clan = await getClanDetails(clanId);
+    if (currentUser == null || clan == null || !(currentUser.id == clan.leaderId || (clan.subLeaders?.contains(currentUser.id) ?? false))) {
       Logger.warning('Permission Denied [Update Clan Details]: Only Leader/SubLeader can update details.');
       return null;
     }
@@ -157,7 +167,7 @@ class ClanService {
     }
 
     try {
-      final response = await _apiService.put('clans/$clanId', dataToUpdate);
+      final response = await _apiService.put('/api/clans/$clanId', dataToUpdate, requireAuth: true);
       if (response != null) {
         return Clan.fromJson(response);
       }
@@ -167,3 +177,4 @@ class ClanService {
     return null;
   }
 }
+
