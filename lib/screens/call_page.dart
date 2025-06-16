@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/providers/call_provider.dart';
-import 'package:lucasbeatsfederacao/services/voip_service.dart';
+import 'package:voip_app/providers/call_provider.dart';
+import 'package:voip_app/services/voip_service.dart';
 
 class CallPage extends StatefulWidget {
   final String? contactName;

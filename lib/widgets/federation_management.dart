@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/models/user_model.dart';
-import 'package:lucasbeatsfederacao/models/federation_model.dart';
-import 'package:lucasbeatsfederacao/services/federation_service.dart';
-import 'package:lucasbeatsfederacao/services/api_service.dart';
-import 'package:lucasbeatsfederacao/services/auth_service.dart';
-import 'package:lucasbeatsfederacao/widgets/custom_snackbar.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
+import 'package:voip_app/models/user_model.dart';
+import 'package:voip_app/models/federation_model.dart';
+import 'package:voip_app/services/federation_service.dart';
+import 'package:voip_app/services/api_service.dart';
+import 'package:voip_app/services/auth_service.dart';
+import 'package:voip_app/widgets/custom_snackbar.dart';
+import 'package:voip_app/utils/logger.dart';
 
 class FederationManagement extends StatefulWidget {
   final UserModel currentUser;

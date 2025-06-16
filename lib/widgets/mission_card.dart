@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucasbeatsfederacao/models/mission_model.dart';
+import 'package:voip_app/models/mission_model.dart';
 
 class MissionCard extends StatelessWidget {
   final Mission mission;

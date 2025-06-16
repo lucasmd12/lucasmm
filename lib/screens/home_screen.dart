@@ -4,7 +4,7 @@ import 'package:permission_handler/permission_handler.dart'; // Import permissio
 // CORREÇÃO: Importar UserModel
 // CORREÇÃO: Remover import não utilizado de UserProvider, pois os dados virão de AuthService/AuthProvider
 // import '../providers/user_provider.dart';
-import 'package:lucasbeatsfederacao/providers/auth_provider.dart'; // Usar AuthProvider
+import 'package:voip_app/providers/auth_provider.dart'; // Usar AuthProvider
 import '../utils/logger.dart';
 
 // Import Tab Widgets

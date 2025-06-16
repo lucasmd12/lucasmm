@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/services/voip_service.dart';
-import 'package:lucasbeatsfederacao/services/notification_service.dart';
-import 'package:lucasbeatsfederacao/screens/call_page.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
+import 'package:voip_app/services/voip_service.dart';
+import 'package:voip_app/services/notification_service.dart';
+import 'package:voip_app/screens/call_page.dart';
+import 'package:voip_app/utils/logger.dart';
 
 class IncomingCallOverlay extends StatefulWidget {
   final String callId;

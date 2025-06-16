@@ -137,6 +137,41 @@ class FederationService {
       return false;
     }
   }
-}
 
+  // Método para atualizar banner da federação
+  Future<bool> updateFederationBanner(String federationId, String bannerPath) async {
+    try {
+      // Nota: Este método precisará ser implementado com multipart/form-data
+      // Por enquanto, mantemos a estrutura básica
+      debugPrint('Banner update for federation $federationId with path $bannerPath');
+      // TODO: Implementar upload de arquivo multipart/form-data
+      return false;
+    } catch (e) {
+      debugPrint('Error updating federation banner: $e');
+      return false;
+    }
+  }
+
+  // Método para remover aliado
+  Future<bool> removeAlly(String federationId, String allyId) async {
+    try {
+      final response = await _apiService.put('/api/federations/$federationId/remove-ally/$allyId', {}, requireAuth: true);
+      return response != null && response['success'] == true;
+    } catch (e) {
+      debugPrint('Error removing ally: $e');
+      return false;
+    }
+  }
+
+  // Método para remover inimigo
+  Future<bool> removeEnemy(String federationId, String enemyId) async {
+    try {
+      final response = await _apiService.put('/api/federations/$federationId/remove-enemy/$enemyId', {}, requireAuth: true);
+      return response != null && response['success'] == true;
+    } catch (e) {
+      debugPrint('Error removing enemy: $e');
+      return false;
+    }
+  }
+}
 

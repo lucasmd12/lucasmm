@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart'; // For ChangeNotifier
-import 'package:lucasbeatsfederacao/services/auth_service.dart';
-import 'package:lucasbeatsfederacao/services/socket_service.dart';
-import 'package:lucasbeatsfederacao/models/user_model.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
+import 'package:voip_app/services/auth_service.dart';
+import 'package:voip_app/services/socket_service.dart';
+import 'package:voip_app/models/user_model.dart';
+import 'package:voip_app/utils/logger.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
@@ -51,9 +51,9 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> login(String username, String password) async {
     try {
-      final success = await _authService.login(email, password);
+      final success = await _authService.login(username, password);
       return success;
     } catch (e) {
       Logger.error('AuthProvider login failed: ${e.toString()}');

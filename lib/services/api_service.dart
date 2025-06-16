@@ -1,8 +1,8 @@
 import 'dart:convert'; // Required for jsonEncode/jsonDecode
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lucasbeatsfederacao/utils/constants.dart'; // Ensure backendBaseUrl is defined here
-import 'package:lucasbeatsfederacao/utils/logger.dart'; // Ensure Logger class is defined here
+import 'package:voip_app/utils/constants.dart'; // Ensure backendBaseUrl is defined here
+import 'package:voip_app/utils/logger.dart'; // Ensure Logger class is defined here
 
 class ApiService {
   // CORREÇÃO: Garantir que backendBaseUrl é reconhecido (deve vir de constants.dart)

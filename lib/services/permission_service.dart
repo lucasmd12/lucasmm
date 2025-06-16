@@ -1,6 +1,6 @@
 import 'package:permission_handler/permission_handler.dart' as permission_handler;
 
-import 'package:lucasbeatsfederacao/utils/logger.dart'; // Corrected import path
+import 'package:voip_app/utils/logger.dart'; // Corrected import path
 
 /// Serviço para gerenciar e solicitar permissões essenciais do aplicativo.
 class PermissionService {

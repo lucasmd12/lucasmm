@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/providers/auth_provider.dart';
-import 'package:lucasbeatsfederacao/providers/mission_provider.dart';
-import 'package:lucasbeatsfederacao/models/mission_model.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
-import 'package:lucasbeatsfederacao/widgets/mission_card.dart';
+import 'package:voip_app/providers/auth_provider.dart';
+import 'package:voip_app/providers/mission_provider.dart';
+import 'package:voip_app/models/mission_model.dart';
+import 'package:voip_app/utils/logger.dart';
+import 'package:voip_app/widgets/mission_card.dart';
 
 class MissionsTab extends StatefulWidget {
   const MissionsTab({super.key});

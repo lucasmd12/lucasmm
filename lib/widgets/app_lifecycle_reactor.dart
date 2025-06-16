@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/services/auth_service.dart'; // Import AuthService
-import 'package:lucasbeatsfederacao/services/chat_service.dart'; // Para atualizar presença
+import 'package:voip_app/services/auth_service.dart'; // Import AuthService
+import 'package:voip_app/services/chat_service.dart'; // Para atualizar presença
 // Para potencialmente sair do canal
-import 'package:lucasbeatsfederacao/utils/logger.dart';
-import 'package:lucasbeatsfederacao/models/user_model.dart'; // Import UserModel
+import 'package:voip_app/utils/logger.dart';
+import 'package:voip_app/models/user_model.dart'; // Import UserModel
 
 /// Um widget que reage às mudanças no ciclo de vida do aplicativo.
 /// Utilizado para atualizar o status de presença online/offline do usuário

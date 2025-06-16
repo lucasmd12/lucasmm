@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart'; // For kDebugMode
 import 'package:flutter_webrtc/flutter_webrtc.dart'; // For RTCSessionDescription, RTCIceCandidate
 
-import 'package:lucasbeatsfederacao/services/socket_service.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
+import 'package:voip_app/services/socket_service.dart';
+import 'package:voip_app/utils/logger.dart';
 
 class SignalingService extends ChangeNotifier {
   final SocketService _socketService;

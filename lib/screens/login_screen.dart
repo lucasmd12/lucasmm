@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // try {
     //   // await authService.requestPasswordReset(username);
     //   if (mounted) {
-    //     CustomSnackbar.showSuccess(context, 'Se o usuário existir, um email de redefinição foi enviado.');
+ 
     //   }
     // } catch (e) {
     //    Logger.error('Password Reset Failed', error: e);

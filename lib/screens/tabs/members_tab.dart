@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/providers/auth_provider.dart';
-import 'package:lucasbeatsfederacao/services/clan_service.dart';
-import 'package:lucasbeatsfederacao/models/user_model.dart';
-import 'package:lucasbeatsfederacao/models/member_model.dart';
-import 'package:lucasbeatsfederacao/models/role_model.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
-import 'package:lucasbeatsfederacao/widgets/member_list_item.dart';
+import 'package:voip_app/providers/auth_provider.dart';
+import 'package:voip_app/services/clan_service.dart';
+import 'package:voip_app/models/user_model.dart';
+import 'package:voip_app/models/member_model.dart';
+import 'package:voip_app/models/role_model.dart';
+import 'package:voip_app/utils/logger.dart';
+import 'package:voip_app/widgets/member_list_item.dart';
 
 class MembersTab extends StatefulWidget {
   const MembersTab({super.key});

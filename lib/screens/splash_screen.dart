@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart'; // Assuming logger path
+import 'package:voip_app/utils/logger.dart'; // Assuming logger path
 import 'package:audioplayers/audioplayers.dart'; // Import audioplayers
 
 class SplashScreen extends StatefulWidget {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/providers/auth_provider.dart';
-import 'package:lucasbeatsfederacao/models/user_model.dart';
-import 'package:lucasbeatsfederacao/models/role_model.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
-import 'package:lucasbeatsfederacao/widgets/user_dashboard_widget.dart';
-import 'package:lucasbeatsfederacao/widgets/clan_info_widget.dart';
-import 'package:lucasbeatsfederacao/widgets/quick_actions_widget.dart';
+import 'package:voip_app/providers/auth_provider.dart';
+import 'package:voip_app/models/user_model.dart';
+import 'package:voip_app/models/role_model.dart';
+import 'package:voip_app/utils/logger.dart';
+import 'package:voip_app/widgets/user_dashboard_widget.dart';
+import 'package:voip_app/widgets/clan_info_widget.dart';
+import 'package:voip_app/widgets/quick_actions_widget.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});

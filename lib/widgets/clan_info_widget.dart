@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/services/clan_service.dart';
-import 'package:lucasbeatsfederacao/models/clan_model.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
+import 'package:voip_app/services/clan_service.dart';
+import 'package:voip_app/models/clan_model.dart';
+import 'package:voip_app/utils/logger.dart';
 
 class ClanInfoWidget extends StatefulWidget {
   final String clanId;

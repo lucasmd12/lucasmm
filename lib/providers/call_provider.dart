@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:lucasbeatsfederacao/services/auth_service.dart';
-import 'package:lucasbeatsfederacao/services/socket_service.dart';
-import 'package:lucasbeatsfederacao/services/signaling_service.dart';
+import 'package:voip_app/services/auth_service.dart';
+import 'package:voip_app/services/socket_service.dart';
+import 'package:voip_app/services/signaling_service.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
+import 'package:voip_app/utils/logger.dart';
 
 enum CallState { idle, joining, leaving, connected, error }
 

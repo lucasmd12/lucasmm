@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucasbeatsfederacao/models/user_model.dart';
+import 'package:voip_app/models/user_model.dart';
 
 class AdminDashboard extends StatelessWidget {
   final UserModel currentUser;

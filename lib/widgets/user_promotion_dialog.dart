@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucasbeatsfederacao/models/role_model.dart';
+import 'package:voip_app/models/role_model.dart';
 
 class UserPromotionDialog extends StatefulWidget {
   final Function(String username, Role role) onPromote;

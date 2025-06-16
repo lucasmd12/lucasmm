@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lucasbeatsfederacao/models/role_model.dart';
-import 'package:lucasbeatsfederacao/screens/admin_panel_screen.dart';
-import 'package:lucasbeatsfederacao/screens/clan_management_screen.dart';
+import 'package:voip_app/models/role_model.dart';
+import 'package:voip_app/screens/admin_panel_screen.dart';
+import 'package:voip_app/screens/clan_management_screen.dart';
 
 class QuickActionsWidget extends StatelessWidget {
   final Role userRole;

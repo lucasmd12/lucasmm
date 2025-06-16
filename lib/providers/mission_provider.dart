@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lucasbeatsfederacao/models/mission_model.dart';
-import 'package:lucasbeatsfederacao/services/mission_service.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
+import 'package:voip_app/models/mission_model.dart';
+import 'package:voip_app/services/mission_service.dart';
+import 'package:voip_app/utils/logger.dart';
 
 class MissionProvider extends ChangeNotifier {
   final MissionService _missionService;

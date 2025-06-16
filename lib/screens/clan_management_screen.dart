@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/providers/auth_provider.dart';
-import 'package:lucasbeatsfederacao/models/user_model.dart';
-import 'package:lucasbeatsfederacao/models/role_model.dart';
-import 'package:lucasbeatsfederacao/widgets/clan_management_dashboard.dart';
-import 'package:lucasbeatsfederacao/widgets/clan_members_management.dart';
-import 'package:lucasbeatsfederacao/widgets/clan_settings_widget.dart';
+import 'package:voip_app/providers/auth_provider.dart';
+import 'package:voip_app/models/user_model.dart';
+import 'package:voip_app/models/role_model.dart';
+import 'package:voip_app/widgets/clan_management_dashboard.dart';
+import 'package:voip_app/widgets/clan_members_management.dart';
+import 'package:voip_app/widgets/clan_settings_widget.dart';
 
 class ClanManagementScreen extends StatefulWidget {
   const ClanManagementScreen({super.key});

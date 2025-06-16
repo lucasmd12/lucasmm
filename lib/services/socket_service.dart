@@ -1,10 +1,10 @@
 // lib/services/socket_service.dart
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lucasbeatsfederacao/utils/constants.dart'; // For backendBaseUrl
-import 'package:lucasbeatsfederacao/utils/logger.dart'; // For logging
+import 'package:voip_app/utils/constants.dart'; // For backendBaseUrl
+import 'package:voip_app/utils/logger.dart'; // For logging
 
-import 'package:lucasbeatsfederacao/services/auth_service.dart'; // Para injeção de dependência
+import 'package:voip_app/services/auth_service.dart'; // Para injeção de dependência
 import 'dart:async';
 import 'package:flutter/foundation.dart'; // For kDebugMode
 

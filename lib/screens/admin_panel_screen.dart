@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/providers/auth_provider.dart';
-import 'package:lucasbeatsfederacao/models/user_model.dart';
-import 'package:lucasbeatsfederacao/models/role_model.dart';
-import 'package:lucasbeatsfederacao/widgets/admin_dashboard.dart';
-import 'package:lucasbeatsfederacao/widgets/federation_management.dart';
-import 'package:lucasbeatsfederacao/widgets/user_promotion_dialog.dart';
-import 'package:lucasbeatsfederacao/widgets/global_stats_widget.dart';
+import 'package:voip_app/providers/auth_provider.dart';
+import 'package:voip_app/models/user_model.dart';
+import 'package:voip_app/models/role_model.dart';
+import 'package:voip_app/widgets/admin_dashboard.dart';
+import 'package:voip_app/widgets/federation_management.dart';
+import 'package:voip_app/widgets/user_promotion_dialog.dart';
+import 'package:voip_app/widgets/global_stats_widget.dart';
 
 class AdminPanelScreen extends StatefulWidget {
   const AdminPanelScreen({super.key});

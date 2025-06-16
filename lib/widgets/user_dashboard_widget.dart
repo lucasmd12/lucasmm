@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lucasbeatsfederacao/models/user_model.dart';
-import 'package:lucasbeatsfederacao/models/role_model.dart';
+import 'package:voip_app/models/user_model.dart';
+import 'package:voip_app/models/role_model.dart';
 
 class UserDashboardWidget extends StatelessWidget {
   final UserModel user;

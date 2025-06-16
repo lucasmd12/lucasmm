@@ -1,4 +1,4 @@
-import 'package:lucasbeatsfederacao/models/role_model.dart';
+import 'package:voip_app/models/role_model.dart';
 
 class UserModel {
   final String id; // _id do backend

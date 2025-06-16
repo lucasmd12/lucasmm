@@ -102,16 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      if (user.email != null) ...[
-                        const SizedBox(height: 8),
-                        Text(
-                          user.email!,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey.shade400,
-                          ),
-                        ),
-                      ],
+
                     ],
                   ),
                 ),
@@ -122,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _buildInfoSection('Informações do Perfil', [
                   _buildInfoItem('ID do Usuário', user.id),
                   _buildInfoItem('Nome de Usuário', user.username),
-                  if (user.email != null) _buildInfoItem('Email', user.email!),
+
                   if (user.clan != null) _buildInfoItem('Clã', user.clan!),
                   if (user.clanRole != null) _buildInfoItem('Cargo no Clã', user.clanRole!),
                   if (user.federationRole != null) _buildInfoItem('Cargo na Federação', user.federationRole!),
