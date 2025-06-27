@@ -51,7 +51,7 @@ class FirebaseService extends ChangeNotifier {
   
   // Configurações
   bool _notificationsEnabled = true;
-  Map<String, bool> _notificationTypes = {
+  final Map<String, bool> _notificationTypes = {
     'messages': true,
     'calls': true,
     'missions': true,

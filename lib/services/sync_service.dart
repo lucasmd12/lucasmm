@@ -1,6 +1,5 @@
 // lib/services/sync_service.dart
 import 'dart:async';
-import 'dart:convert';
 import 'package:lucasbeatsfederacao/services/api_service.dart';
 import 'package:lucasbeatsfederacao/services/cache_service.dart';
 import 'package:lucasbeatsfederacao/services/socket_service.dart';

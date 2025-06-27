@@ -267,6 +267,7 @@ class VoIPService extends ChangeNotifier {
   }
 
   // Limpar recursos
+  @override
   void dispose() {
     // Nota: removeAllListeners não existe na v10.2.0
     // Os listeners são gerenciados automaticamente

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lucasbeatsfederacao/services/clan_service.dart';
-import 'package:lucasbeatsfederacao/models/clan_model.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';
 import 'package:lucasbeatsfederacao/screens/clan_detail_screen.dart';
 

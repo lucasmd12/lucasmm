@@ -31,6 +31,24 @@ class _QRRDetailScreenState extends State<QRRDetailScreen> {
     _qrr = widget.qrr;
   }
 
+  String _formatDateTime(DateTime dateTime) {
+    // Implementação básica de formatação de data e hora
+    // Você pode ajustar o formato conforme necessário
+    return "${dateTime.toLocal().toShortDateString()} ${dateTime.toLocal().toShortTimeString()}";
+  }
+
+  String _formatDuration(Duration duration) {
+    // Implementação básica de formatação de duração
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}h ${twoDigitMinutes}m ${twoDigitSeconds}s";
+  }
+
+  // Extensões para DateTime (podem precisar ser definidas em outro lugar ou adicionadas aqui)
+  // Se toShortDateString e toShortTimeString não estiverem definidos globalmente
+
+
   Future<void> _refreshQRR() async {
     try {
       setState(() => _isLoading = true);
@@ -400,10 +418,8 @@ class _QRRDetailScreenState extends State<QRRDetailScreen> {
             _buildDetailRow('Tipo', _qrr.type.displayName, _qrr.displayIcon ?? Icons.assignment),
             _buildDetailRow('Prioridade', _qrr.priority.displayName, Icons.flag, color: _qrr.priority.color),
             _buildDetailRow('Participantes', '${_qrr.participants.length}${_qrr.maxParticipants != null ? '/${_qrr.maxParticipants}' : ''}', Icons.people),
-            if (_qrr.startDate != null)
-              _buildDetailRow('Início', _formatDateTime(_qrr.startDate!), Icons.schedule),
-            if (_qrr.endDate != null)
-              _buildDetailRow('Fim', _formatDateTime(_qrr.endDate!), Icons.schedule_send),
+            _buildDetailRow('Início', _formatDateTime(_qrr.startDate!), Icons.schedule),
+            _buildDetailRow('Fim', _formatDateTime(_qrr.endDate!), Icons.schedule_send),
             if (_qrr.duration != null)
               _buildDetailRow('Duração', _formatDuration(_qrr.duration!), Icons.timer),
             if (_qrr.requiredRoles != null && _qrr.requiredRoles!.isNotEmpty)

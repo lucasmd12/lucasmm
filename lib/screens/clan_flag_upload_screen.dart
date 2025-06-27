@@ -14,12 +14,12 @@ class ClanFlagUploadScreen extends StatefulWidget {
   final Function(String) onFlagUpdated;
 
   const ClanFlagUploadScreen({
-    Key? key,
+    super.key,
     required this.clanId,
     required this.clanName,
     required this.currentFlag,
     required this.onFlagUpdated,
-  }) : super(key: key);
+  });
 
   @override
   _ClanFlagUploadScreenState createState() => _ClanFlagUploadScreenState();

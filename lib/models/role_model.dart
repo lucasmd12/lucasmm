@@ -1,19 +1,25 @@
 /// Enum de papéis do usuário alinhado com o backend.
 /// Inclui papéis usados no frontend que podem precisar de alinhamento com o backend.
 enum Role {
-  adm,         // Backend: "ADM"
-  adminReivindicado, // Backend: "adminReivindicado"
-  descolado,   // Backend: "descolado"
-  leader,      // Backend: "Leader"
-  subLeader,   // Backend: "SubLeader"
-  member,      // Backend: "Member"
-  user,        // Backend: "User"
-  federationAdmin, // Usado no frontend para admins de federação. Assumimos que pode mapear para ADM no backend federationRole.
-  clanLeader,      // Usado no frontend para líderes de clã. Assumimos que pode mapear para Leader no backend clanRole.
-  clanSubLeader,   // Usado no frontend para sub-líderes de clã. Assumimos que pode mapear para SubLeader no backend clanRole.
-  clanMember,      // Usado no frontend para membros de clã. Assumimos que pode mapear para Member no backend clanRole.
-  guest,           // Usado no frontend para usuários não autenticados ou com papel indefinido. Pode não ter correspondência direta no backend.
+  adm('ADM'), // Backend: "ADM"
+  adminReivindicado('Admin Reivindicado'), // Backend: "adminReivindicado"
+  descolado('Descolado'), // Backend: "descolado"
+  leader('Líder'), // Backend: "Leader"
+  subLeader('Sub-Líder'), // Backend: "SubLeader"
+  member('Membro'), // Backend: "Member"
+  user('Usuário'), // Backend: "User"
+  federationAdmin('Admin Federação'), // Usado no frontend para admins de federação. Assumimos que pode mapear para ADM no backend federationRole.
+  clanLeader('Líder Clã'), // Usado no frontend para líderes de clã. Assumimos que pode mapear para Leader no backend clanRole.
+  clanSubLeader('Sub-Líder Clã'), // Usado no frontend para sub-líderes de clã. Assumimos que pode mapear para SubLeader no backend clanRole.
+  clanMember('Membro Clã'), // Usado no frontend para membros de clã. Assumimos que pode mapear para Member no backend clanRole.
+  guest('Convidado'); // Usado no frontend para usuários não autenticados ou com papel indefinido. Pode não ter correspondência direta no backend.
+
+  final String displayName;
+
+  const Role(this.displayName);
 }
+
+
 
 /// Converte string do backend para enum Role.
 /// ATENÇÃO: Sempre alinhe os valores aqui com o backend!

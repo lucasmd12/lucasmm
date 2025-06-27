@@ -6,10 +6,10 @@ import '../../models/user_model.dart'; // Import User model
 import '../../services/auth_service.dart';
 import '../../services/clan_service.dart'; // Service to get clan/channel data
 import '../../providers/call_provider.dart'; // To join/leave voice calls
-import '../../services/voip_service.dart'; // VoIP service
+// VoIP service
 import '../../utils/logger.dart';
 import '../../models/channel_model.dart'; // Use Channel
-import '../../screens/voice_call_screen.dart'; // Voice call screen
+// Voice call screen
 
 class ChatListTab extends StatefulWidget {
   const ChatListTab({super.key});

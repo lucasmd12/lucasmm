@@ -18,7 +18,7 @@ class CachedImageWidget extends StatefulWidget {
   final Map<String, String>? httpHeaders;
 
   const CachedImageWidget({
-    Key? key,
+    super.key,
     required this.imageUrl,
     this.imageId,
     this.width,
@@ -30,7 +30,7 @@ class CachedImageWidget extends StatefulWidget {
     this.enableMemoryCache = true,
     this.enableDiskCache = true,
     this.httpHeaders,
-  }) : super(key: key);
+  });
 
   @override
   State<CachedImageWidget> createState() => _CachedImageWidgetState();
@@ -38,7 +38,7 @@ class CachedImageWidget extends StatefulWidget {
 
 class _CachedImageWidgetState extends State<CachedImageWidget> {
   String? _cachedUrl;
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void initState() {
@@ -159,14 +159,14 @@ class CachedAvatarWidget extends StatelessWidget {
   final Color? textColor;
 
   const CachedAvatarWidget({
-    Key? key,
+    super.key,
     this.imageUrl,
     this.userId,
     this.radius = 20,
     this.fallbackText,
     this.backgroundColor,
     this.textColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -267,10 +267,10 @@ class ImagePreloader extends StatefulWidget {
   final VoidCallback? onComplete;
 
   const ImagePreloader({
-    Key? key,
+    super.key,
     required this.imageUrls,
     this.onComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<ImagePreloader> createState() => _ImagePreloaderState();

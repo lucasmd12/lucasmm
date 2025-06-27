@@ -81,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         radius: 60,
                         backgroundColor: Colors.grey.shade700,
                         backgroundImage: user.avatar != null 
-                            ? NetworkImage(user.avatar!) 
+                            ? NetworkImage(user.avatar) 
                             : null,
                         child: user.avatar == null 
                             ? Icon(
@@ -112,10 +112,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _buildInfoItem('Nome de Usuário', user.username),
 
                   if (user.clanName != null) _buildInfoItem('Clã', user.clanName!),
-                  if (user.clanRole != null) _buildInfoItem('Cargo no Clã', user.clanRole.toString()), // Convertendo Role para String
+                  _buildInfoItem('Cargo no Clã', user.clanRole.toString()), // Convertendo Role para String
                   if (user.federationName != null) _buildInfoItem('Federação', user.federationName!),
                   if (user.federationTag != null) _buildInfoItem('Tag da Federação', user.federationTag!),
-                  if (user.role != null) _buildInfoItem('Papel Global', user.role.toString()), // Convertendo Role para String
+                  _buildInfoItem('Papel Global', user.role.toString()), // Convertendo Role para String
                   if (user.createdAt != null) 
                     _buildInfoItem('Membro desde', _formatDate(user.createdAt!)),
                 ]),

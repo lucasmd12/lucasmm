@@ -16,7 +16,7 @@ class UserIdentityWidget extends StatelessWidget {
   final VoidCallback? onTap;
 
   const UserIdentityWidget({
-    Key? key,
+    super.key,
     required this.userId,
     required this.username,
     this.avatar,
@@ -29,7 +29,7 @@ class UserIdentityWidget extends StatelessWidget {
     this.textStyle,
     this.isClickable = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -286,13 +286,13 @@ class SimpleUserIdentityWidget extends StatelessWidget {
   final double size;
 
   const SimpleUserIdentityWidget({
-    Key? key,
+    super.key,
     required this.username,
     this.avatar,
     this.clanFlag,
     this.federationTag,
     this.size = 32.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

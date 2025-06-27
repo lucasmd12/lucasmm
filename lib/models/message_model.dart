@@ -75,20 +75,20 @@ class Message {
 
   // Getters vitais para o sistema respiratório (Chat UI)
   String? get senderAvatarUrl => null; // Placeholder - pode ser implementado futuramente
-  String? get messageType => this.type; // Mapeia para o campo existente
+  String? get messageType => type; // Mapeia para o campo existente
   
   // Getters para compatibilidade com flutter_chat_ui
-  String get text => this.message;
-  String get authorId => this.senderId;
-  String get authorName => this.senderName;
+  String get text => message;
+  String get authorId => senderId;
+  String get authorName => senderName;
   
   // Getter para verificar se é mensagem de arquivo
-  bool get hasFile => this.fileUrl != null && this.fileUrl!.isNotEmpty;
+  bool get hasFile => fileUrl != null && fileUrl!.isNotEmpty;
   
   // Getters adicionais para compatibilidade total
   String? get fileName {
-    if (this.fileUrl == null) return null;
-    return this.fileUrl!.split('/').last.split('?').first;
+    if (fileUrl == null) return null;
+    return fileUrl!.split('/').last.split('?').first;
   }
   
   String? get fileSize => null; // Placeholder - pode ser implementado futuramente
@@ -102,8 +102,8 @@ class Message {
 
   // Getter para tipo de arquivo (se houver)
   String? get fileType {
-    if (this.fileUrl == null) return null;
-    final extension = this.fileUrl!.split('.').last.toLowerCase();
+    if (fileUrl == null) return null;
+    final extension = fileUrl!.split('.').last.toLowerCase();
     switch (extension) {
       case 'jpg':
       case 'jpeg':

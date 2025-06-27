@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:lucasbeatsfederacao/models/role_model.dart'; // Importar Role
 
 class User {

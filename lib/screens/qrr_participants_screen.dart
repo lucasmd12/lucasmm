@@ -131,7 +131,7 @@ class _QRRParticipantsScreenState extends State<QRRParticipantsScreen> {
                                 CircleAvatar(
                                   radius: 24,
                                   backgroundImage: participant.avatar != null
-                                      ? NetworkImage(participant.avatar!)
+                                      ? NetworkImage(participant.avatar)
                                       : null,
                                   child: participant.avatar == null
                                       ? Text(participant.username.isNotEmpty ? participant.username[0].toUpperCase() : '?')
@@ -150,16 +150,14 @@ class _QRRParticipantsScreenState extends State<QRRParticipantsScreen> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      if (participant.role != null)
-                                        Text(
-                                          participant.role.displayName, // Usar displayName do enum Role
-                                          style: TextStyle(color: Colors.grey[400], fontSize: 14),
-                                        ),
-                                      if (participant.clanRole != null)
-                                        Text(
-                                          'Cargo no Clã: ${participant.clanRole.displayName}', // Usar displayName do enum Role
-                                          style: TextStyle(color: Colors.grey[500], fontSize: 12),
-                                        ),
+                                      Text(
+                                        participant.role.displayName, // Usar displayName do enum Role
+                                        style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                                      ),
+                                      Text(
+                                        'Cargo no Clã: ${participant.clanRole.displayName}', // Usar displayName do enum Role
+                                        style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                                      ),
                                     ],
                                   ),
                                 ),

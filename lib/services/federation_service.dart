@@ -182,7 +182,8 @@ class FederationService extends ChangeNotifier {
     return false;
   }
 
-  // Método para atualizar banner da federação Future<bool> updateFederationBanner(String federationId, String bannerPath) async {
+  // Método para atualizar banner da federação
+  Future<bool> updateFederationBanner(String federationId, String bannerPath) async {
     try {
       // Nota: Este método precisará ser implementado com multipart/form-data
       // Por enquanto, mantemos a estrutura básica

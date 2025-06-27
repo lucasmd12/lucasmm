@@ -27,7 +27,7 @@ class UserDashboardWidget extends StatelessWidget {
                   radius: 30,
                   backgroundColor: _getRoleColor(user.role),
                   backgroundImage: user.avatar != null
-                    ? NetworkImage(user.avatar!)
+                    ? NetworkImage(user.avatar)
                     : null,
                   child: user.avatar == null
                     ? Text(
@@ -201,7 +201,7 @@ class UserDashboardWidget extends StatelessWidget {
       case Role.clanLeader:
         return Colors.orange;
       case Role.clanSubLeader:
-        return Colors.yellow.shade700!;
+        return Colors.yellow.shade700;
       case Role.clanMember:
         return Colors.blue;
       case Role.guest:

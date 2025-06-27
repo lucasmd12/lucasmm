@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/providers/auth_provider.dart';
 import 'package:lucasbeatsfederacao/models/qrr_model.dart';
 import 'package:lucasbeatsfederacao/services/qrr_service.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';

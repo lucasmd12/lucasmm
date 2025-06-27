@@ -221,7 +221,7 @@ class ChatService extends ChangeNotifier {
         throw Exception("Invalid chat type: $chatType");
     }
 
-    return _firebaseService!.listenToRoomMessages(roomId).map((event) {
+    return _firebaseService.listenToRoomMessages(roomId).map((event) {
       if (event.snapshot.value == null) {
         return <Message>[];
       }

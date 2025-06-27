@@ -12,13 +12,13 @@ class VoiceCallScreen extends StatefulWidget {
   final List<Map<String, dynamic>>? participants;
 
   const VoiceCallScreen({
-    Key? key,
+    super.key,
     required this.channelId,
     required this.channelName,
     required this.channelType,
     this.isVideoCall = false,
     this.participants,
-  }) : super(key: key);
+  });
 
   @override
   _VoiceCallScreenState createState() => _VoiceCallScreenState();

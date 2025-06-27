@@ -331,7 +331,7 @@ class SegmentedNotificationService {
       } else if (failed == 0) {
         return 'Notificação enviada com sucesso para $sent usuário${sent != 1 ? 's' : ''}';
       } else {
-        return 'Notificação enviada para $sent usuário${sent != 1 ? 's' : ''} (${failed} falharam)';
+        return 'Notificação enviada para $sent usuário${sent != 1 ? 's' : ''} ($failed falharam)';
       }
     } else {
       return result['message'] ?? 'Erro ao enviar notificação';

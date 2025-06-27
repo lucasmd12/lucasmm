@@ -15,8 +15,15 @@ class FederationLeader {
   });
 
   factory FederationLeader.fromJson(Map<String, dynamic> json) {
+    final id = json["_id"] ?? json["id"]; // Tenta obter de _id ou id
+    if (id == null) {
+      // Tratar o caso onde o ID está faltando no JSON.
+      // Vamos retornar um objeto padrão com ID vazio para evitar o crash,
+      // mas é importante investigar por que o ID está faltando no JSON da API.
+      return FederationLeader(id: '', username: json["username"] ?? "Unknown", avatar: json["avatar"]);
+    }
     return FederationLeader(
-      id: json["_id"] ?? json["id"] ?? "",
+      id: id.toString(), // Garantir que o id seja String
       username: json["username"] ?? "Unknown",
       avatar: json["avatar"],
     );

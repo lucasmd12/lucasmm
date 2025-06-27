@@ -12,10 +12,10 @@ class ProfilePictureUploadScreen extends StatefulWidget {
   final Function(String) onAvatarUpdated;
 
   const ProfilePictureUploadScreen({
-    Key? key,
+    super.key,
     required this.currentAvatar,
     required this.onAvatarUpdated,
-  }) : super(key: key);
+  });
 
   @override
   _ProfilePictureUploadScreenState createState() => _ProfilePictureUploadScreenState();

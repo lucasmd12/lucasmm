@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lucasbeatsfederacao/models/clan_model.dart';
-import 'package:lucasbeatsfederacao/utils/logger.dart';
 import 'package:lucasbeatsfederacao/screens/clan_text_chat_screen.dart'; // Importar ClanTextChatScreen
 
 class ClanDetailScreen extends StatefulWidget {

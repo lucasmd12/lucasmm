@@ -66,7 +66,7 @@ class _ClanTextChatScreenState extends State<ClanTextChatScreen> {
           _messages.clear();
           _messages.addAll(fetchedMessages.map((msg) => types.TextMessage(
           author: types.User(id: msg.senderId ?? "", firstName: msg.senderName),
-          createdAt: msg.createdAt?.millisecondsSinceEpoch,
+          createdAt: msg.createdAt.millisecondsSinceEpoch,
           id: msg.id ?? "",
           text: msg.message ?? "",
         )).toList().reversed); // Reverse to show latest at bottom
@@ -139,7 +139,7 @@ class _ClanTextChatScreenState extends State<ClanTextChatScreen> {
         chatType: "clan",
         fileUrl: pickedFile.path,
         messageType: "file",
-      );;
+      );
     }
   }
 

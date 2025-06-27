@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:lucasbeatsfederacao/providers/auth_provider.dart';
 import 'package:lucasbeatsfederacao/models/invite_model.dart';
 import 'package:lucasbeatsfederacao/services/invite_service.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';

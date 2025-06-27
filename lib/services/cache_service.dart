@@ -222,7 +222,7 @@ class CacheService {
       'misses': _misses,
       'sets': _sets,
       'invalidations': _invalidations,
-      'hitRate': '${hitRate}%',
+      'hitRate': '$hitRate%',
       'total': total,
     };
   }

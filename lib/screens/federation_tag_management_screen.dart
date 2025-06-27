@@ -12,12 +12,12 @@ class FederationTagManagementScreen extends StatefulWidget {
   final Function(String) onTagUpdated;
 
   const FederationTagManagementScreen({
-    Key? key,
+    super.key,
     required this.federationId,
     required this.federationName,
     required this.currentTag,
     required this.onTagUpdated,
-  }) : super(key: key);
+  });
 
   @override
   _FederationTagManagementScreenState createState() => _FederationTagManagementScreenState();
@@ -265,7 +265,7 @@ class _FederationTagManagementScreenState extends State<FederationTagManagementS
             
             // Botão de atualizar
             if (!_isUpdating)
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: _updateTag,
