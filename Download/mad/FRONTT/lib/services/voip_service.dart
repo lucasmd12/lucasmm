@@ -65,8 +65,6 @@ class VoIPService extends ChangeNotifier {
     Logger.info('Jitsi listeners configured');
   }
 
-
-
   // Iniciar chamada de voz
   Future<void> startVoiceCall({
     required String roomId,
@@ -85,6 +83,7 @@ class VoIPService extends ChangeNotifier {
       final options = JitsiMeetConferenceOptions(
         serverURL: serverUrl ?? 'https://meet.jit.si',
         room: roomId,
+        token: token, // Passando o token diretamente aqui
         configOverrides: {
           'startWithAudioMuted': false,
           'startWithVideoMuted': isAudioOnly,
@@ -127,14 +126,9 @@ class VoIPService extends ChangeNotifier {
         },
         userInfo: JitsiMeetUserInfo(
           displayName: displayName,
-          email: '',
-          avatar: '',
+          username: displayName,
         ),
       );
-
-      if (token != null && token.isNotEmpty) {
-        options.token = token;
-      }
 
       await _jitsiMeet.join(options);
       
@@ -175,72 +169,6 @@ class VoIPService extends ChangeNotifier {
     } finally {
       _isInCall = false;
       _currentRoomId = null;
-    }
-  }
-
-  // Al  // Alternar mudo do microfone
-  Future<void> toggleAudio() async {
-    try {
-      // Nota: toggleAudio não existe na v10.2.0
-      // A funcionalidade deve ser implementada via configuração inicial
-      Logger.info('Audio toggle requested (handled via initial config)');
-    } catch (e) {
-      Logger.error('Failed to toggle audio: $e');
-    }
-  }
-
-  // Alternar câmera
-  Future<void> toggleVideo() async {
-    try {
-      // Nota: toggleVideo não existe na v10.2.0
-      // A funcionalidade deve ser implementada via configuração inicial
-      Logger.info('Video toggle requested (handled via initial config)');
-    } catch (e) {
-      Logger.error('Failed to toggle video: $e');
-    }
-  }
-
-  // Trocar câmera
-  Future<void> switchCamera() async {
-    try {
-      // Nota: switchCamera não existe na v10.2.0
-      // A funcionalidade deve ser implementada via configuração inicial
-      Logger.info('Camera switch requested (handled via initial config)');
-    } catch (e) {
-      Logger.error('Failed to switch camera: $e');
-    }
-  }
-
-  // Alternar chat
-  Future<void> toggleChat() async {
-    try {
-      // Nota: toggleChat não existe na v10.2.0
-      // A funcionalidade deve ser implementada via configuração inicial
-      Logger.info('Chat toggle requested (handled via initial config)');
-    } catch (e) {
-      Logger.error('Failed to toggle chat: $e');
-    }
-  }
-
-  // Enviar mensagem de chat
-  Future<void> sendChatMessage(String message) async {
-    try {
-      // Nota: sendChatMessage não existe na v10.2.0
-      // A funcionalidade deve ser implementada via configuração inicial
-      Logger.info('Chat message send requested: $message (handled via initial config)');
-    } catch (e) {
-      Logger.error('Failed to send chat message: $e');
-    }
-  }
-
-  // Obter informações dos participantes
-  Future<void> retrieveParticipantsInfo() async {
-    try {
-      // Nota: retrieveParticipantsInfo não existe na v10.2.0
-      // A funcionalidade deve ser implementada via configuração inicial
-      Logger.info('Participants info retrieval requested (handled via initial config)');
-    } catch (e) {
-      Logger.error('Failed to retrieve participants info: $e');
     }
   }
 
@@ -288,13 +216,13 @@ class VoIPService extends ChangeNotifier {
   Future<void> acceptCall(String callId, String roomName) async {
     // Lógica para aceitar a chamada
     // Por enquanto, apenas simula
-    print('Chamada $callId aceita. Entrando na sala $roomName');
+    Logger.info('Chamada $callId aceita. Entrando na sala $roomName');
   }
 
   Future<void> rejectCall(String callId) async {
     // Lógica para rejeitar a chamada
     // Por enquanto, apenas simula
-    print('Chamada $callId rejeitada.');
+    Logger.info('Chamada $callId rejeitada.');
   }
 
   Future<List<dynamic>> getCallHistory() async {
@@ -320,20 +248,16 @@ class VoIPService extends ChangeNotifier {
       final options = JitsiMeetConferenceOptions(
         serverURL: 'https://meet.jit.si',
         room: roomName,
+        token: password, // Passando o password (token) diretamente aqui
         configOverrides: {
           'startWithVideoMuted': false,
           'startWithAudioMuted': false,
         },
         userInfo: JitsiMeetUserInfo(
           displayName: userDisplayName,
-          email: ",o
           avatar: userAvatarUrl, // Adicionado userAvatarUrl
         ),
       );
-
-      if (password != null && password.isNotEmpty) {
-        options.token = password; // Usando o campo token para a senha, se houver
-      }
 
       await _jitsiMeet.join(options);
       _isInCall = true;
@@ -357,7 +281,7 @@ class VoIPService extends ChangeNotifier {
   // Método para alternar o mudo
   void toggleMute() {
     // Implementar lógica real de mute
-    print('Toggle mute');
+    Logger.info('Toggle mute');
   }
 }
 

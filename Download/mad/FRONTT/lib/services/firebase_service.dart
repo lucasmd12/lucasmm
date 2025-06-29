@@ -51,7 +51,7 @@ class FirebaseService extends ChangeNotifier {
   
   // Configurações
   bool _notificationsEnabled = true;
-  final Map<String, bool> _notificationTypes = {
+  final Map<String, bool> _notificationTypes = const {
     'messages': true,
     'calls': true,
     'missions': true,
@@ -285,12 +285,12 @@ class FirebaseService extends ChangeNotifier {
 
   /// Obtém informações do dispositivo
   Future<Map<String, dynamic>> _getDeviceInfo() async {
-    return {
-      'deviceType': Platform.isAndroid ? 'android' : Platform.isIOS ? 'ios' : 'unknown',
-      'osVersion': Platform.operatingSystemVersion,
+    return const {
+      'deviceType': 'unknown',
+      'osVersion': 'unknown',
       'appVersion': '2.1.0', // Versão do pubspec.yaml
-      'language': Platform.localeName,
-      'timezone': DateTime.now().timeZoneName,
+      'language': 'unknown',
+      'timezone': 'unknown',
     };
   }
 
@@ -505,14 +505,13 @@ class FirebaseService extends ChangeNotifier {
     _cacheService?.invalidatePattern('mission_*');
     _cacheService?.invalidatePattern('qrr_*'); // Invalidar cache de QRR
     
-    final missionId = data['missionId'];
-    if (missionId != null) {
-      // Exemplo: Navegar para a tela de detalhes da missão QRR
-      // Certifique-se de que navigatorKey.currentState esteja acessível
+    final qrrId = data['qrrId'];
+    if (qrrId != null) {
+      // Navegar para a tela de detalhes da QRR
       if (navigatorKey.currentState != null) {
         navigatorKey.currentState!.push(
           MaterialPageRoute(
-            builder: (context) => QRRDetailScreen(qrrId: missionId),
+            builder: (context) => QRRDetailScreen(qrrId: qrrId),
           ),
         );
       }
@@ -521,8 +520,8 @@ class FirebaseService extends ChangeNotifier {
 
   /// Processa dados de promoção
   void _handlePromotionData(Map<String, dynamic> data) {
-    // Lógica para promoções
-    Logger.info('Promotion data received: $data');
+    // Invalidar cache de promoções
+    _cacheService?.invalidatePattern('promotion_*');
   }
 
   /// Carrega configurações de notificação
@@ -530,15 +529,15 @@ class FirebaseService extends ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       _notificationsEnabled = prefs.getBool('notificationsEnabled') ?? true;
-      _notificationTypes['messages'] = prefs.getBool('notifications_messages') ?? true;
-      _notificationTypes['calls'] = prefs.getBool('notifications_calls') ?? true;
-      _notificationTypes['missions'] = prefs.getBool('notifications_missions') ?? true;
-      _notificationTypes['promotions'] = prefs.getBool('notifications_promotions') ?? true;
-      _notificationTypes['system'] = prefs.getBool('notifications_system') ?? true;
-      _notificationTypes['qrr'] = prefs.getBool('notifications_qrr') ?? true;
+      _notificationTypes['messages'] = prefs.getBool('notifyMessages') ?? true;
+      _notificationTypes['calls'] = prefs.getBool('notifyCalls') ?? true;
+      _notificationTypes['missions'] = prefs.getBool('notifyMissions') ?? true;
+      _notificationTypes['promotions'] = prefs.getBool('notifyPromotions') ?? true;
+      _notificationTypes['system'] = prefs.getBool('notifySystem') ?? true;
+      _notificationTypes['qrr'] = prefs.getBool('notifyQrr') ?? true;
       notifyListeners();
-    } catch (error) {
-      Logger.error('Error loading notification settings: ${error.toString()}');
+    } catch (e) {
+      Logger.error('Error loading notification settings: $e');
     }
   }
 
@@ -547,153 +546,140 @@ class FirebaseService extends ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('notificationsEnabled', _notificationsEnabled);
-      await prefs.setBool('notifications_messages', _notificationTypes['messages'] ?? true);
-      await prefs.setBool('notifications_calls', _notificationTypes['calls'] ?? true);
-      await prefs.setBool('notifications_missions', _notificationTypes['missions'] ?? true);
-      await prefs.setBool('notifications_promotions', _notificationTypes['promotions'] ?? true);
-      await prefs.setBool('notifications_system', _notificationTypes['system'] ?? true);
-      await prefs.setBool('notifications_qrr', _notificationTypes['qrr'] ?? true);
-      Logger.info('Notification settings saved');
-    } catch (error) {
-      Logger.error('Error saving notification settings: ${error.toString()}');
+      await prefs.setBool('notifyMessages', _notificationTypes['messages'] ?? true);
+      await prefs.setBool('notifyCalls', _notificationTypes['calls'] ?? true);
+      await prefs.setBool('notifyMissions', _notificationTypes['missions'] ?? true);
+      await prefs.setBool('notifyPromotions', _notificationTypes['promotions'] ?? true);
+      await prefs.setBool('notifySystem', _notificationTypes['system'] ?? true);
+      await prefs.setBool('notifyQrr', _notificationTypes['qrr'] ?? true);
+      Logger.info('Notification settings saved.');
+    } catch (e) {
+      Logger.error('Error saving notification settings: $e');
     }
   }
 
-  /// Obtém o token FCM atual
-  String? get fcmToken => _fcmToken;
-
-  /// Obtém o status de inicialização
-  bool get isInitialized => _initialized;
-
-  /// Obtém o número de notificações recebidas
-  int get notificationsReceived => _notificationsReceived;
-
-  /// Obtém o número de notificações mostradas
-  int get notificationsShown => _notificationsShown;
-
-  /// Obtém a última hora de notificação
-  DateTime? get lastNotificationTime => _lastNotificationTime;
-
-  /// Obtém/define se as notificações estão habilitadas
+  // Métodos para gerenciar o estado das notificações
   bool get notificationsEnabled => _notificationsEnabled;
   set notificationsEnabled(bool value) {
     _notificationsEnabled = value;
-    saveSettings();
     notifyListeners();
-  }
-
-  /// Obtém/define tipos de notificação
-  Map<String, bool> get notificationTypes => _notificationTypes;
-  set notificationTypes(Map<String, bool> value) {
-    _notificationTypes.addAll(value);
     saveSettings();
-    notifyListeners();
   }
 
-  /// Atualiza o badge de mensagens não lidas (exemplo)
-  void _updateUnreadMessagesBadge() {
-    // Lógica para atualizar o badge (pode envolver API ou estado local)
-    Logger.info('Updating unread messages badge...');
+  bool getNotifyType(String type) => _notificationTypes[type] ?? true;
+  setNotifyType(String type, bool value) {
+    if (_notificationTypes.containsKey(type)) {
+      _notificationTypes[type] = value;
+      notifyListeners();
+      saveSettings();
+    }
   }
 
-  // Métodos para interagir com o Firebase Realtime Database
-  final DatabaseReference _databaseRef = FirebaseDatabase.instance.ref();
+  // Métodos para salas de voz
+  final DatabaseReference _voiceRoomsRef = FirebaseDatabase.instance.ref('voice_rooms');
 
-  /// Cria uma nova sala de voz no Firebase Realtime Database
-  Future<void> createVoiceRoom(String roomName, String roomType, String createdBy, {String? clanId, String? federationId, bool isPrivate = false, String? password}) async {
+  Future<void> createVoiceRoom(
+    String roomName,
+    String roomType,
+    String creatorId,
+    {String? clanId, String? federationId}
+  ) async {
     try {
-      final newRoomRef = _databaseRef.child('voice_rooms').push();
+      final newRoomRef = _voiceRoomsRef.child(roomName);
       await newRoomRef.set({
         'roomName': roomName,
         'roomType': roomType,
-        'createdBy': createdBy,
+        'creatorId': creatorId,
+        'createdAt': ServerValue.timestamp,
+        'participants': {},
         'clanId': clanId,
         'federationId': federationId,
-        'isPrivate': isPrivate,
-        'password': password, // Armazenar senha (considerar criptografia)
-        'createdAt': ServerValue.timestamp,
         'isActive': true,
-        'participants': {},
       });
-      Logger.info('Voice room created: ${newRoomRef.key}');
+      Logger.info('Voice room $roomName created successfully.');
     } catch (e) {
       Logger.error('Error creating voice room: $e');
       rethrow;
     }
   }
 
-  /// Entra em uma sala de voz existente no Firebase Realtime Database
-  Future<void> joinVoiceRoom(String roomId, String userId, String displayName) async {
+  Future<void> joinVoiceRoom(String roomName, String userId, String displayName) async {
     try {
-      final roomRef = _databaseRef.child('voice_rooms').child(roomId);
+      final roomRef = _voiceRoomsRef.child(roomName);
       final participantRef = roomRef.child('participants').child(userId);
       await participantRef.set({
+        'userId': userId,
         'displayName': displayName,
         'joinedAt': ServerValue.timestamp,
       });
-      Logger.info('User $userId joined voice room $roomId');
+      Logger.info('User $displayName joined voice room $roomName.');
     } catch (e) {
       Logger.error('Error joining voice room: $e');
       rethrow;
     }
   }
 
-  /// Sai de uma sala de voz no Firebase Realtime Database
-  Future<void> leaveVoiceRoom(String roomId, String userId) async {
+  Future<void> leaveVoiceRoom(String roomName, String userId) async {
     try {
-      final participantRef = _databaseRef.child('voice_rooms').child(roomId).child('participants').child(userId);
+      final roomRef = _voiceRoomsRef.child(roomName);
+      final participantRef = roomRef.child('participants').child(userId);
       await participantRef.remove();
-      Logger.info('User $userId left voice room $roomId');
-      
-      // Opcional: Verificar se a sala ficou vazia e desativá-la
-      final roomRef = _databaseRef.child('voice_rooms').child(roomId);
-      final participantsSnapshot = await roomRef.child('participants').get();
-      if (!participantsSnapshot.exists || (participantsSnapshot.value as Map).isEmpty) {
-        await roomRef.update({'isActive': false});
-        Logger.info('Voice room $roomId deactivated as it is empty');
-      }
+      Logger.info('User $userId left voice room $roomName.');
 
+      // Check if room is empty and deactivate if so
+      final DataSnapshot snapshot = await roomRef.child('participants').get();
+      if (!snapshot.exists || (snapshot.value as Map).isEmpty) {
+        await roomRef.update({'isActive': false});
+        Logger.info('Voice room $roomName deactivated as it is empty.');
+      }
     } catch (e) {
       Logger.error('Error leaving voice room: $e');
       rethrow;
     }
   }
 
-  /// Obtém detalhes de uma sala de voz
-  Future<Map<String, dynamic>?> getVoiceRoomDetails(String roomId) async {
-    try {
-      final snapshot = await _databaseRef.child('voice_rooms').child(roomId).get();
-      if (snapshot.exists) {
-        return Map<String, dynamic>.from(snapshot.value as Map);
-      } else {
-        return null;
+  Stream<List<Map<String, dynamic>>> getActiveVoiceRooms() {
+    return _voiceRoomsRef.orderByChild('isActive').equalTo(true).onValue.map((event) {
+      final List<Map<String, dynamic>> activeRooms = [];
+      if (event.snapshot.value != null) {
+        final Map<dynamic, dynamic> roomsData = event.snapshot.value as Map<dynamic, dynamic>;
+        roomsData.forEach((key, value) {
+          activeRooms.add(Map<String, dynamic>.from(value));
+        });
       }
+      return activeRooms;
+    });
+  }
+
+  Stream<DatabaseEvent> listenToRoomMessages(String roomId) {
+    return FirebaseDatabase.instance.ref('chat_rooms').child(roomId).onValue;
+  }
+
+  Future<void> sendMessageToRoom(
+    String roomId,
+    String senderId,
+    String message,
+    {Map<String, dynamic>? data}
+  ) async {
+    try {
+      final newMessageRef = FirebaseDatabase.instance.ref('chat_rooms').child(roomId).push();
+      await newMessageRef.set({
+        'senderId': senderId,
+        'message': message,
+        'timestamp': ServerValue.timestamp,
+        'data': data, // Adicionar o mapa de dados
+      });
+      Logger.info('Message sent to room $roomId.');
     } catch (e) {
-      Logger.error('Error getting voice room details: $e');
-      return null;
+      Logger.error('Error sending message to room: $e');
+      rethrow;
     }
   }
 
-  /// Escuta mudanças nas salas de voz ativas
-  Stream<DatabaseEvent> listenToActiveVoiceRooms({String? roomType, String? clanId, String? federationId}) {
-    Query query = _databaseRef.child('voice_rooms').orderByChild('isActive').equalTo(true);
-    
-    if (roomType != null) {
-      query = query.orderByChild('roomType').equalTo(roomType);
-    }
-    if (clanId != null) {
-      query = query.orderByChild('clanId').equalTo(clanId);
-    }
-    if (federationId != null) {
-      query = query.orderByChild('federationId').equalTo(federationId);
-    }
-
-    return query.onValue;
-  }
-
-  /// Escuta participantes de uma sala de voz
-  Stream<DatabaseEvent> listenToVoiceRoomParticipants(String roomId) {
-    return _databaseRef.child('voice_rooms').child(roomId).child('participants').onValue;
+  @override
+  void dispose() {
+    Logger.info("Disposing FirebaseService.");
+    super.dispose();
   }
 }
 

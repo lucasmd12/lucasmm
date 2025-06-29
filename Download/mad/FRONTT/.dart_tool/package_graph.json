@@ -18,6 +18,7 @@
         "firebase_messaging",
         "flutter",
         "flutter_chat_ui",
+        "flutter_dotenv",
         "flutter_local_notifications",
         "flutter_secure_storage",
         "flutter_slidable",
@@ -30,6 +31,7 @@
         "intl",
         "jitsi_meet_flutter_sdk",
         "just_audio",
+        "package_info_plus",
         "permission_handler",
         "provider",
         "pull_to_refresh",
@@ -41,7 +43,24 @@
       "devDependencies": [
         "flutter_launcher_icons",
         "flutter_lints",
-        "flutter_test"
+        "flutter_test",
+        "sentry_dart_plugin"
+      ]
+    },
+    {
+      "name": "sentry_dart_plugin",
+      "version": "3.0.0",
+      "dependencies": [
+        "ansicolor",
+        "convert",
+        "crypto",
+        "file",
+        "http",
+        "injector",
+        "process",
+        "properties",
+        "system_info2",
+        "yaml"
       ]
     },
     {
@@ -411,8 +430,31 @@
       ]
     },
     {
+      "name": "package_info_plus",
+      "version": "8.3.0",
+      "dependencies": [
+        "clock",
+        "ffi",
+        "flutter",
+        "flutter_web_plugins",
+        "http",
+        "meta",
+        "package_info_plus_platform_interface",
+        "path",
+        "web",
+        "win32"
+      ]
+    },
+    {
+      "name": "flutter_dotenv",
+      "version": "5.2.1",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
       "name": "sentry_flutter",
-      "version": "9.0.0",
+      "version": "9.1.0",
       "dependencies": [
         "collection",
         "ffi",
@@ -441,6 +483,62 @@
         "sky_engine",
         "vector_math"
       ]
+    },
+    {
+      "name": "properties",
+      "version": "2.1.1",
+      "dependencies": [
+        "meta"
+      ]
+    },
+    {
+      "name": "process",
+      "version": "5.0.4",
+      "dependencies": [
+        "file",
+        "path",
+        "platform"
+      ]
+    },
+    {
+      "name": "convert",
+      "version": "3.1.2",
+      "dependencies": [
+        "typed_data"
+      ]
+    },
+    {
+      "name": "crypto",
+      "version": "3.0.6",
+      "dependencies": [
+        "typed_data"
+      ]
+    },
+    {
+      "name": "file",
+      "version": "7.0.1",
+      "dependencies": [
+        "meta",
+        "path"
+      ]
+    },
+    {
+      "name": "system_info2",
+      "version": "4.0.0",
+      "dependencies": [
+        "globbing",
+        "path"
+      ]
+    },
+    {
+      "name": "ansicolor",
+      "version": "2.0.3",
+      "dependencies": []
+    },
+    {
+      "name": "injector",
+      "version": "3.0.0",
+      "dependencies": []
     },
     {
       "name": "yaml",
@@ -658,13 +756,6 @@
       "dependencies": []
     },
     {
-      "name": "crypto",
-      "version": "3.0.6",
-      "dependencies": [
-        "typed_data"
-      ]
-    },
-    {
       "name": "path_provider",
       "version": "2.1.5",
       "dependencies": [
@@ -788,14 +879,6 @@
       "dependencies": [
         "flutter",
         "flutter_cache_manager"
-      ]
-    },
-    {
-      "name": "file",
-      "version": "7.0.1",
-      "dependencies": [
-        "meta",
-        "path"
       ]
     },
     {
@@ -1430,6 +1513,15 @@
       ]
     },
     {
+      "name": "package_info_plus_platform_interface",
+      "version": "3.2.0",
+      "dependencies": [
+        "flutter",
+        "meta",
+        "plugin_platform_interface"
+      ]
+    },
+    {
       "name": "jni",
       "version": "0.14.1",
       "dependencies": [
@@ -1442,24 +1534,8 @@
       ]
     },
     {
-      "name": "package_info_plus",
-      "version": "8.3.0",
-      "dependencies": [
-        "clock",
-        "ffi",
-        "flutter",
-        "flutter_web_plugins",
-        "http",
-        "meta",
-        "package_info_plus_platform_interface",
-        "path",
-        "web",
-        "win32"
-      ]
-    },
-    {
       "name": "sentry",
-      "version": "9.0.0",
+      "version": "9.1.0",
       "dependencies": [
         "collection",
         "http",
@@ -1473,6 +1549,25 @@
       "name": "sky_engine",
       "version": "0.0.0",
       "dependencies": []
+    },
+    {
+      "name": "platform",
+      "version": "3.1.6",
+      "dependencies": []
+    },
+    {
+      "name": "typed_data",
+      "version": "1.4.0",
+      "dependencies": [
+        "collection"
+      ]
+    },
+    {
+      "name": "globbing",
+      "version": "1.0.0",
+      "dependencies": [
+        "path"
+      ]
     },
     {
       "name": "xml",
@@ -1490,13 +1585,6 @@
         "crypto",
         "path",
         "posix"
-      ]
-    },
-    {
-      "name": "typed_data",
-      "version": "1.4.0",
-      "dependencies": [
-        "collection"
       ]
     },
     {
@@ -1730,15 +1818,6 @@
       ]
     },
     {
-      "name": "package_info_plus_platform_interface",
-      "version": "3.2.0",
-      "dependencies": [
-        "flutter",
-        "meta",
-        "plugin_platform_interface"
-      ]
-    },
-    {
       "name": "petitparser",
       "version": "6.1.0",
       "dependencies": [
@@ -1754,11 +1833,6 @@
         "meta",
         "path"
       ]
-    },
-    {
-      "name": "platform",
-      "version": "3.1.6",
-      "dependencies": []
     },
     {
       "name": "sqflite_common",

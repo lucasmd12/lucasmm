@@ -24,7 +24,7 @@ class _MembersTabState extends State<MembersTab> {
   bool _isLoading = true;
   String? _error;
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _inviteEmailController = TextEditingController();
+  final TextEditingController _inviteUsernameController = TextEditingController();
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _MembersTabState extends State<MembersTab> {
   @override
   void dispose() {
     _searchController.dispose();
-    _inviteEmailController.dispose();
+    _inviteUsernameController.dispose();
     super.dispose();
   }
 
@@ -83,12 +83,12 @@ class _MembersTabState extends State<MembersTab> {
       builder: (context) => AlertDialog(
         title: const Text('Convidar Novo Membro'),
         content: TextField(
-          controller: _inviteEmailController,
+          controller: _inviteUsernameController,
           decoration: const InputDecoration(
-            labelText: 'Email do Usuário',
+            labelText: 'Nome de Usuário do Membro',
             border: OutlineInputBorder(),
           ),
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text,
         ),
         actions: [
           TextButton(
@@ -106,21 +106,21 @@ class _MembersTabState extends State<MembersTab> {
 
   Future<void> _sendInvite() async {
     Navigator.pop(context); // Fechar o diálogo
-    final email = _inviteEmailController.text.trim();
-    if (email.isEmpty) {
+    final username = _inviteUsernameController.text.trim();
+    if (username.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, insira um email.')), 
+        const SnackBar(content: Text("Por favor, insira um nome de usuário.")), 
       );
       return;
     }
 
     try {
       final userService = UserService(); // Instanciar UserService
-      final user = await userService.getUserByEmail(email); // Buscar usuário pelo email
+      final user = await userService.getUserByUsername(username); // Buscar usuário pelo username
 
       if (user == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Usuário com este email não encontrado.')), 
+          const SnackBar(content: Text("Usuário com este nome de usuário não encontrado.")), 
         );
         return;
       }
@@ -130,7 +130,7 @@ class _MembersTabState extends State<MembersTab> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Convite enviado com sucesso!')), 
       );
-      _inviteEmailController.clear();
+      _inviteUsernameController.clear();
     } catch (e) {
       Logger.error('Erro ao enviar convite', error: e);
       ScaffoldMessenger.of(context).showSnackBar(

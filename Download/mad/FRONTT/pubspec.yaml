@@ -11,7 +11,9 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   
-  sentry_flutter: ^9.0.0
+  sentry_flutter: ^9.1.0
+  flutter_dotenv: ^5.0.0
+  package_info_plus: ^8.0.0
   # Firebase
   firebase_core: ^3.14.0
   firebase_database: ^11.3.7
@@ -66,6 +68,13 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.3
+  sentry_dart_plugin: ^3.0.0 # Adicionado para Source Maps
+
+sentry:
+  upload_debug_symbols: true
+  upload_source_maps: true
+  commits:
+    auto: true
 
 flutter_icons:
   android: true

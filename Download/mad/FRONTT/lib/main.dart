@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/foundation.dart'; // Import for kReleaseMode
+import 'package:package_info_plus/package_info_plus.dart'; // For app version
 
 // Import Screens
 import 'screens/splash_screen.dart';
@@ -45,12 +48,31 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await dotenv.load(fileName: ".env"); // Carrega o arquivo .env
+
+  // Obter informações do pacote para a versão do release
+  final packageInfo = await PackageInfo.fromPlatform();
 
   await SentryFlutter.init(
     (options) {
-      options.dsn = 'https://a561c5c87b25dfea7864b2fb292a25c1@o4509510833995776.ingest.us.sentry.io/4509510909820928';
-      options.tracesSampleRate = 1.0;
-      options.debug = true;
+      options.dsn = dotenv.env["SENTRY_DSN"];
+      options.tracesSampleRate = kReleaseMode ? 0.1 : 1.0; // 10% em produção, 100% em dev
+      options.debug = !kReleaseMode; // Desativar debug em produção
+      options.environment = kReleaseMode ? 'production' : 'development';
+      options.release = 'lucasbeatsfederacao@' + packageInfo.version + '+' + packageInfo.buildNumber;
+
+      // Captura de erros de UI e do framework Flutter
+      FlutterError.onError = (details) {
+        Sentry.captureException(details.exception, stackTrace: details.stack);
+        Logger.error('Flutter Error:', error: details.exception, stackTrace: details.stack);
+      };
+
+      // Captura de erros assíncronos fora do escopo do Flutter
+      PlatformDispatcher.instance.onError = (error, stack) {
+        Sentry.captureException(error, stackTrace: stack);
+        Logger.error('Platform Error:', error: error, stackTrace: stack);
+        return true; // Indica que o erro foi tratado
+      };
     },
     appRunner: () async {
       Logger.info("App Initialization Started.");

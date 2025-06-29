@@ -1280,11 +1280,7 @@
       <scrollable-region data-labelled-by="feedback-dialog-title">
         <div data-view-component="true" class="Overlay-body">        <!-- '"` --><!-- </textarea></xmp> --></option></form><form id="code-search-feedback-form" data-turbo="false" action="/search/feedback" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="QzYRUK7dbFOgEbPtIhyevn_1M4zKfqb-K1WH7hRODdDG2Ux20le-kk2gvQckZMAXTmZM1tPLJLQ0Xs-Q3VD_Wg" />
           <p>We read every piece of feedback, and take your input very seriously.</p>
-          <textarea name="feedback" class="form-control width-full mb-2" style="height: 120px" id="feedback"></textarea>
-          <input name="include_email" id="include_email" aria-label="Include my email address so I can be contacted" class="form-control mr-2" type="checkbox">
-          <label for="include_email" style="font-weight: normal">Include my email address so I can be contacted</label>
-</form></div>
-      </scrollable-region>
+          <textarea name="feedback" class="form-control width-full mb-2" style="height: 120px" id="feedback"></textarea>le-region>
       <div data-view-component="true" class="Overlay-footer Overlay-footer--alignEnd">          <button data-close-dialog-id="feedback-dialog" type="button" data-view-component="true" class="btn">    Cancel
 </button>
           <button form="code-search-feedback-form" data-action="click:qbsearch-input#submitFeedback" type="submit" data-view-component="true" class="btn-primary btn">    Submit feedback

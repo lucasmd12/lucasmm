@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lucasbeatsfederacao/utils/constants.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ApiService {
   final String _baseUrl = backendBaseUrl;
@@ -33,6 +34,20 @@ class ApiService {
   dynamic _handleResponse(http.Response response) {
     final statusCode = response.statusCode;
     Logger.info('API Response Status: $statusCode, Body: ${response.body}');
+
+    Sentry.addBreadcrumb(
+      Breadcrumb(
+        category: 'http',
+        type: 'http',
+        data: {
+          'url': response.request?.url.toString(),
+          'method': response.request?.method,
+          'status_code': statusCode,
+          'response_body_length': response.body.length,
+        },
+        level: statusCode >= 200 && statusCode < 300 ? SentryLevel.info : SentryLevel.error,
+      ),
+    );
 
     if (statusCode >= 200 && statusCode < 300) {
       if (response.body.isNotEmpty) {
@@ -85,66 +100,234 @@ class ApiService {
   }
 
   Future<dynamic> get(String endpoint, {bool requireAuth = true, Duration? timeout}) async {
-    final url = Uri.parse('$_baseUrl$endpoint');
-    Logger.info('API GET Request: $url');
-    
-    return await _makeRequestWithRetry(() async {
-      return await http.get(
-        url,
-        headers: await _getHeaders(includeAuth: requireAuth),
-      ).timeout(timeout ?? _defaultTimeout);
-    });
+    final url = Uri.parse("$_baseUrl$endpoint");
+    Logger.info("API GET Request: $url");
+
+    final transaction = Sentry.startTransaction(
+      "GET $endpoint",
+      "http.client",
+      description: "HTTP GET request to $endpoint",
+    );
+    final span = transaction.startChild(
+      "http.client",
+      description: "GET $url",
+    );
+
+    Sentry.addBreadcrumb(
+      Breadcrumb(
+        category: "http",
+        type: "http",
+        data: {
+          "url": url.toString(),
+          "method": "GET",
+        },
+        level: SentryLevel.info,
+      ),
+    );
+
+    try {
+      final response = await _makeRequestWithRetry(() async {
+        return await http.get(
+          url,
+          headers: await _getHeaders(includeAuth: requireAuth),
+        ).timeout(timeout ?? _defaultTimeout);
+      });
+      span.setHttpStatus(response.statusCode);
+      span.finish(status: SpanStatus.ok());
+      transaction.finish(status: SpanStatus.ok());
+      return response;
+    } catch (e, stackTrace) {
+      span.finish(status: SpanStatus.internalError());
+      transaction.finish(status: SpanStatus.internalError());
+      Sentry.captureException(e, stackTrace: stackTrace);
+      rethrow;
+    }
   }
 
   Future<dynamic> post(String endpoint, Map<String, dynamic> data, {bool requireAuth = true, Duration? timeout}) async {
-    final url = Uri.parse('$_baseUrl$endpoint');
-    Logger.info('API POST Request: $url, Data: ${jsonEncode(data)}');
+    final url = Uri.parse("$_baseUrl$endpoint");
+    Logger.info("API POST Request: $url, Data: ${jsonEncode(data)}");
+
+    final transaction = Sentry.startTransaction(
+      "POST $endpoint",
+      "http.client",
+      description: "HTTP POST request to $endpoint",
+    );
+    final span = transaction.startChild(
+      "http.client",
+      description: "POST $url",
+    );
+
+    Sentry.addBreadcrumb(
+      Breadcrumb(
+        category: "http",
+        type: "http",
+        data: {
+          "url": url.toString(),
+          "method": "POST",
+          "request_body": jsonEncode(data),
+        },
+        level: SentryLevel.info,
+      ),
+    );
     
-    return await _makeRequestWithRetry(() async {
-      return await http.post(
-        url,
-        headers: await _getHeaders(includeAuth: requireAuth),
-        body: jsonEncode(data),
-      ).timeout(timeout ?? _defaultTimeout);
-    });
+    try {
+      final response = await _makeRequestWithRetry(() async {
+        return await http.post(
+          url,
+          headers: await _getHeaders(includeAuth: requireAuth),
+          body: jsonEncode(data),
+        ).timeout(timeout ?? _defaultTimeout);
+      });
+      span.setHttpStatus(response.statusCode);
+      span.finish(status: SpanStatus.ok());
+      transaction.finish(status: SpanStatus.ok());
+      return response;
+    } catch (e, stackTrace) {
+      span.finish(status: SpanStatus.internalError());
+      transaction.finish(status: SpanStatus.internalError());
+      Sentry.captureException(e, stackTrace: stackTrace);
+      rethrow;
+    }
   }
 
   Future<dynamic> put(String endpoint, Map<String, dynamic> data, {bool requireAuth = true, Duration? timeout}) async {
-    final url = Uri.parse('$_baseUrl$endpoint');
-    Logger.info('API PUT Request: $url, Data: ${jsonEncode(data)}');
+    final url = Uri.parse("$_baseUrl$endpoint");
+    Logger.info("API PUT Request: $url, Data: ${jsonEncode(data)}");
+
+    final transaction = Sentry.startTransaction(
+      "PUT $endpoint",
+      "http.client",
+      description: "HTTP PUT request to $endpoint",
+    );
+    final span = transaction.startChild(
+      "http.client",
+      description: "PUT $url",
+    );
+
+    Sentry.addBreadcrumb(
+      Breadcrumb(
+        category: "http",
+        type: "http",
+        data: {
+          "url": url.toString(),
+          "method": "PUT",
+          "request_body": jsonEncode(data),
+        },
+        level: SentryLevel.info,
+      ),
+    );
     
-    return await _makeRequestWithRetry(() async {
-      return await http.put(
-        url,
-        headers: await _getHeaders(includeAuth: requireAuth),
-        body: jsonEncode(data),
-      ).timeout(timeout ?? _defaultTimeout);
-    });
+    try {
+      final response = await _makeRequestWithRetry(() async {
+        return await http.put(
+          url,
+          headers: await _getHeaders(includeAuth: requireAuth),
+          body: jsonEncode(data),
+        ).timeout(timeout ?? _defaultTimeout);
+      });
+      span.setHttpStatus(response.statusCode);
+      span.finish(status: SpanStatus.ok());
+      transaction.finish(status: SpanStatus.ok());
+      return response;
+    } catch (e, stackTrace) {
+      span.finish(status: SpanStatus.internalError());
+      transaction.finish(status: SpanStatus.internalError());
+      Sentry.captureException(e, stackTrace: stackTrace);
+      rethrow;
+    }
   }
 
   Future<dynamic> delete(String endpoint, {bool requireAuth = true, Duration? timeout}) async {
-    final url = Uri.parse('$_baseUrl$endpoint');
-    Logger.info('API DELETE Request: $url');
+    final url = Uri.parse("$_baseUrl$endpoint");
+    Logger.info("API DELETE Request: $url");
+
+    final transaction = Sentry.startTransaction(
+      "DELETE $endpoint",
+      "http.client",
+      description: "HTTP DELETE request to $endpoint",
+    );
+    final span = transaction.startChild(
+      "http.client",
+      description: "DELETE $url",
+    );
+
+    Sentry.addBreadcrumb(
+      Breadcrumb(
+        category: "http",
+        type: "http",
+        data: {
+          "url": url.toString(),
+          "method": "DELETE",
+        },
+        level: SentryLevel.info,
+      ),
+    );
     
-    return await _makeRequestWithRetry(() async {
-      return await http.delete(
-        url,
-        headers: await _getHeaders(includeAuth: requireAuth),
-      ).timeout(timeout ?? _defaultTimeout);
-    });
+    try {
+      final response = await _makeRequestWithRetry(() async {
+        return await http.delete(
+          url,
+          headers: await _getHeaders(includeAuth: requireAuth),
+        ).timeout(timeout ?? _defaultTimeout);
+      });
+      span.setHttpStatus(response.statusCode);
+      span.finish(status: SpanStatus.ok());
+      transaction.finish(status: SpanStatus.ok());
+      return response;
+    } catch (e, stackTrace) {
+      span.finish(status: SpanStatus.internalError());
+      transaction.finish(status: SpanStatus.internalError());
+      Sentry.captureException(e, stackTrace: stackTrace);
+      rethrow;
+    }
   }
 
   Future<dynamic> patch(String endpoint, Map<String, dynamic> data, {bool requireAuth = true, Duration? timeout}) async {
-    final url = Uri.parse('$_baseUrl$endpoint');
-    Logger.info('API PATCH Request: $url, Data: ${jsonEncode(data)}');
+    final url = Uri.parse("$_baseUrl$endpoint");
+    Logger.info("API PATCH Request: $url, Data: ${jsonEncode(data)}");
+
+    final transaction = Sentry.startTransaction(
+      "PATCH $endpoint",
+      "http.client",
+      description: "HTTP PATCH request to $endpoint",
+    );
+    final span = transaction.startChild(
+      "http.client",
+      description: "PATCH $url",
+    );
+
+    Sentry.addBreadcrumb(
+      Breadcrumb(
+        category: "http",
+        type: "http",
+        data: {
+          "url": url.toString(),
+          "method": "PATCH",
+          "request_body": jsonEncode(data),
+        },
+        level: SentryLevel.info,
+      ),
+    );
     
-    return await _makeRequestWithRetry(() async {
-      return await http.patch(
-        url,
-        headers: await _getHeaders(includeAuth: requireAuth),
-        body: jsonEncode(data),
-      ).timeout(timeout ?? _defaultTimeout);
-    });
+    try {
+      final response = await _makeRequestWithRetry(() async {
+        return await http.patch(
+          url,
+          headers: await _getHeaders(includeAuth: requireAuth),
+          body: jsonEncode(data),
+        ).timeout(timeout ?? _defaultTimeout);
+      });
+      span.setHttpStatus(response.statusCode);
+      span.finish(status: SpanStatus.ok());
+      transaction.finish(status: SpanStatus.ok());
+      return response;
+    } catch (e, stackTrace) {
+      span.finish(status: SpanStatus.internalError());
+      transaction.finish(status: SpanStatus.internalError());
+      Sentry.captureException(e, stackTrace: stackTrace);
+      rethrow;
+    }
   }
 
   // Método específico para manter o servidor ativo (ping)

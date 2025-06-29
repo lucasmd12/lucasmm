@@ -213,7 +213,7 @@ class _AdminNotificationDialogState extends State<AdminNotificationDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
-        maxWidth: 500,
+        constraints: const BoxConstraints(maxWidth: 500), // Corrigido aqui
         padding: const EdgeInsets.all(24),
         child: Form(
           key: _formKey,
@@ -227,7 +227,7 @@ class _AdminNotificationDialogState extends State<AdminNotificationDialog> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.red.withValues(alpha: 0.2),
+                      color: Colors.red.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(Icons.notifications_active, color: Colors.red, size: 24),
@@ -444,45 +444,40 @@ class _AdminNotificationDialogState extends State<AdminNotificationDialog> {
                 ],
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
 
               // Botões de ação
               Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.grey),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      child: const Text(
-                        'Cancelar',
-                        style: TextStyle(color: Colors.grey),
-                      ),
+                  TextButton(
+                    onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
+                    child: const Text(
+                      'Cancelar',
+                      style: TextStyle(color: Colors.grey),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _isLoading ? null : _sendNotification,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      child: _isLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            )
-                          : const Text(
-                              'Enviar',
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  const SizedBox(width: 12),
+                  ElevatedButton.icon(
+                    onPressed: _isLoading ? null : _sendNotification,
+                    icon: _isLoading
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
+                          )
+                        : const Icon(Icons.send, size: 18),
+                    label: Text(_isLoading ? 'Enviando...' : 'Enviar Notificação'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     ),
                   ),
                 ],
@@ -494,4 +489,5 @@ class _AdminNotificationDialogState extends State<AdminNotificationDialog> {
     );
   }
 }
+
 

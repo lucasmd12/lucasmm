@@ -121,9 +121,9 @@ class SyncService {
       Logger.info('Performing initial sync...');
       
       // Verificar dados essenciais em cache
-      final needsUserSync = !await CacheService().isCacheValid('user');
-      final needsStatsSync = !await CacheService().isCacheValid('stats');
-      final needsFederationsSync = !await CacheService().isCacheValid('federations');
+      final needsUserSync = !await CacheService.instance.isCacheValid("user");
+      final needsStatsSync = !await CacheService.instance.isCacheValid("stats");
+      final needsFederationsSync = !await CacheService.instance.isCacheValid("federations");
       
       // Sincronizar dados essenciais se necessário
       if (needsUserSync || needsStatsSync || needsFederationsSync) {

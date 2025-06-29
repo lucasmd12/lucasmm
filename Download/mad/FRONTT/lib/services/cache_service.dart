@@ -3,6 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';
 
 class CacheService {
+  static final CacheService instance = CacheService._internal();
+
+  CacheService._internal();
   static const String _keyPrefix = 'cache_';
   static const String _timestampSuffix = '_timestamp';
   static const String _metricsSuffix = '_metrics';
@@ -278,6 +281,10 @@ class CacheService {
     return await get<String>(key);
   }
 
+  // Adicionando os métodos getCachedImageUrl e cacheImageUrl
+
+
+
   /// Cache para dados de missões
   Future<bool> setMission(String missionId, Map<String, dynamic> missionData) async {
     return await set('mission_$missionId', missionData, ttlSeconds: _shortTTL);
@@ -480,12 +487,10 @@ class CacheService {
     } catch (e) {
       Logger.error('Erro ao obter informações de saúde: ${e.toString()}');
       return {
-        'expiredEntries': 0,
         'totalEntries': 0,
         'health': 'unknown',
       };
     }
   }
 }
-
 

@@ -43,11 +43,6 @@ workflows:
       - build/app/outputs/flutter-apk/app-debug.apk
 
     publishing:
-      # Adicione configurações de publicação se desejar (ex: email, Slack, Google Play)
-      email:
-        recipients:
-          - seu_email@exemplo.com # Substitua pelo seu email
-        notify:
-          success: true
-          failure: true
+      # As configurações de publicação de email foram removidas para alinhar com a diretriz de 'alergia a email'.
+      # Para notificações de build, considere usar integrações com Slack, Teams ou outras ferramentas de comunicação que não envolvam email direto para o usuário final do aplicativo.
 

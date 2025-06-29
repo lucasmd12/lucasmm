@@ -10,6 +10,7 @@ import 'package:lucasbeatsfederacao/screens/global_chat_screen.dart';
 import 'package:lucasbeatsfederacao/screens/voice_rooms_screen.dart';
 import 'package:lucasbeatsfederacao/screens/federation_list_screen.dart';
 import 'package:lucasbeatsfederacao/screens/invite_list_screen.dart'; // Importar a tela de convites
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -50,35 +51,65 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _requestPermissions() async {
+    final transaction = Sentry.startTransaction(
+      'requestPermissions',
+      'permission_request',
+      description: 'Requesting necessary permissions',
+    );
     Logger.info("Requesting necessary permissions...");
-    PermissionStatus notificationStatus = await Permission.notification.request();
-    if (notificationStatus.isGranted) {
-      Logger.info("Notification permission granted.");
-    } else if (notificationStatus.isDenied) {
-      Logger.warning("Notification permission denied.");
-    } else if (notificationStatus.isPermanentlyDenied) {
-      Logger.error("Notification permission permanently denied.");
-      _showSettingsDialog("Notificações");
-    }
+    try {
+      final notificationSpan = transaction.startChild(
+        'requestNotificationPermission',
+        description: 'Requesting notification permission',
+      );
+      PermissionStatus notificationStatus = await Permission.notification.request();
+      notificationSpan.finish(status: SentrySpanStatus.ok());
 
-    PermissionStatus storageStatus = await Permission.storage.request();
-     if (storageStatus.isGranted) {
-      Logger.info("Storage permission granted.");
-    } else if (storageStatus.isDenied) {
-      Logger.warning("Storage permission denied.");
-    } else if (storageStatus.isPermanentlyDenied) {
-      Logger.error("Storage permission permanently denied.");
-      _showSettingsDialog("Armazenamento");
-    }
+      if (notificationStatus.isGranted) {
+        Logger.info("Notification permission granted.");
+      } else if (notificationStatus.isDenied) {
+        Logger.warning("Notification permission denied.");
+      } else if (notificationStatus.isPermanentlyDenied) {
+        Logger.error("Notification permission permanently denied.");
+        _showSettingsDialog("Notificações");
+      }
 
-    PermissionStatus microphoneStatus = await Permission.microphone.request();
-     if (microphoneStatus.isGranted) {
-      Logger.info("Microphone permission granted.");
-    } else if (microphoneStatus.isDenied) {
-      Logger.warning("Microphone permission denied.");
-    } else if (microphoneStatus.isPermanentlyDenied) {
-      Logger.error("Microphone permission permanently denied.");
-       _showSettingsDialog("Microfone");
+      final storageSpan = transaction.startChild(
+        'requestStoragePermission',
+        description: 'Requesting storage permission',
+      );
+      PermissionStatus storageStatus = await Permission.storage.request();
+      storageSpan.finish(status: SpanStatus.ok());
+
+      if (storageStatus.isGranted) {
+        Logger.info("Storage permission granted.");
+      } else if (storageStatus.isDenied) {
+        Logger.warning("Storage permission denied.");
+      } else if (storageStatus.isPermanentlyDenied) {
+        Logger.error("Storage permission permanently denied.");
+        _showSettingsDialog("Armazenamento");
+      }
+
+      final microphoneSpan = transaction.startChild(
+        'requestMicrophonePermission',
+        description: 'Requesting microphone permission',
+      );
+      PermissionStatus microphoneStatus = await Permission.microphone.request();
+      microphoneSpan.finish(status: SpanStatus.ok());
+
+      if (microphoneStatus.isGranted) {
+        Logger.info("Microphone permission granted.");
+      } else if (microphoneStatus.isDenied) {
+        Logger.warning("Microphone permission denied.");
+      } else if (microphoneStatus.isPermanentlyDenied) {
+        Logger.error("Microphone permission permanently denied.");
+        _showSettingsDialog("Microfone");
+      }
+      transaction.finish(status: SentrySpanStatus.ok());
+    } catch (e, stackTrace) {
+      transaction.finish(status: SentrySpanStatus.internalError());
+      Sentry.captureException(e, stackTrace: stackTrace);
+      Logger.error("Error requesting permissions", error: e, stackTrace: stackTrace);
     }
   }
 

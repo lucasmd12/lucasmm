@@ -3,7 +3,7 @@ import 'package:lucasbeatsfederacao/models/role_model.dart'; // Importar Role
 class User {
   final String id;
   final String username;
-  final String? email; // Adicionado: Email pode ser nulo se não for usado
+
   final String avatar;
   final String bio;
   final String status;
@@ -23,7 +23,7 @@ class User {
   User({
     required this.id,
     required this.username,
-    this.email,
+
     this.avatar = 'default_avatar.png',
     this.bio = 'Sem biografia.',
     this.status = 'offline',
@@ -45,7 +45,7 @@ class User {
     return User(
       id: json['_id'] as String,
       username: json['username'] as String,
-      email: json['email'] as String?,
+
       avatar: json['avatar'] as String? ?? 'default_avatar.png',
       bio: json['bio'] as String? ?? 'Sem biografia.',
       status: json['status'] as String? ?? 'offline',
@@ -68,7 +68,7 @@ class User {
     return {
       '_id': id,
       'username': username,
-      'email': email,
+
       'avatar': avatar,
       'bio': bio,
       'status': status,

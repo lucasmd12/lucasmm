@@ -108,7 +108,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> with TickerProvider
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.email ?? "N/A",
+                  user.username ?? "N/A",
                   style: const TextStyle(color: Color(0xFFBDBDBD), fontSize: 12),
                 ),
                 Text(
@@ -480,7 +480,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> with TickerProvider
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("ID: ${user.id}", style: const TextStyle(color: Colors.white)),
-            Text("Email: ${user.email ?? 'N/A'}", style: const TextStyle(color: Colors.white)),
+            Text("Usuário: ${user.username ?? 'N/A'}", style: const TextStyle(color: Colors.white)),
             Text("Papel: ${user.role.displayName}", style: const TextStyle(color: Colors.white)),
             Text("Online: ${user.online ? "Sim" : "Não"}", style: const TextStyle(color: Colors.white)),
           ],

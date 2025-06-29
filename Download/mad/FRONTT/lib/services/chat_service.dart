@@ -44,7 +44,7 @@ class ChatService extends ChangeNotifier {
           fileUrl: fileUrl,
           messageType: messageType,
           senderId: currentUser.id, // Passar o ID do usuário
-          senderRole: currentUser.role.toString().split('.').last, // Adicionar role geral
+          senderRole: currentUser.role.name, // Adicionar role geral (agora como String)
           senderClanCustomRole: currentUser.clanRole, // Adicionar cargo customizado do clã
         );
         return;
@@ -60,7 +60,7 @@ class ChatService extends ChangeNotifier {
       chatType: chatType,
       fileUrl: fileUrl,
       messageType: messageType,
-      senderRole: currentUser.role.toString().split('.').last, // Adicionar role geral
+      senderRole: currentUser.role.name, // Adicionar role geral (agora como String)
       senderClanCustomRole: currentUser.clanRole, // Adicionar cargo customizado do clã
     );
   }
@@ -94,14 +94,12 @@ class ChatService extends ChangeNotifier {
       roomId,
       senderId, // Passar o ID do usuário
       message,
-      data: {
-        'type': messageType ?? 'text',
-        'fileUrl': fileUrl,
-        'chatType': chatType,
-        'entityId': entityId,
-        'senderRole': senderRole, // Enviar role geral
-        'senderClanCustomRole': senderClanCustomRole, // Enviar cargo customizado
-      },
+      type: messageType ?? 'text',
+      fileUrl: fileUrl,
+      chatType: chatType,
+      entityId: entityId,
+      senderRole: senderRole, // Enviar role geral
+      senderClanCustomRole: senderClanCustomRole, // Enviar cargo customizado
     );
 
     Logger.info("Message sent via Firebase to $roomId");

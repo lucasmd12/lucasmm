@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lucasbeatsfederacao/models/user_model.dart'; // Importa o modelo User
 import 'package:lucasbeatsfederacao/services/api_service.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class AuthService extends ChangeNotifier {
   final ApiService _apiService = ApiService();
@@ -38,6 +39,7 @@ class AuthService extends ChangeNotifier {
         if (_currentUser != null) {
           _isAuthenticated = true;
           Logger.info("User authenticated from stored token.");
+          _setSentryUser(); // Set Sentry user on initial auth
         } else {
           await logout(); // Clear invalid token/state
         }
@@ -66,6 +68,7 @@ class AuthService extends ChangeNotifier {
         _currentUser = User.fromJson(response); // Alterado de User para User
         Logger.info("User profile fetched successfully: ${_currentUser?.username}");
         _lastErrorMessage = null;
+        _setSentryUser(); // Set Sentry user after fetching profile
         notifyListeners();
       } else {
         Logger.warning("Failed to parse user profile from response.");
@@ -100,6 +103,7 @@ class AuthService extends ChangeNotifier {
           if (_currentUser != null) {
              setAuthenticated(true);
              Logger.info("Login successful for user: ${_currentUser?.username}");
+             _setSentryUser(); // Set Sentry user on successful login
              return true;
           } else {
             _lastErrorMessage = "Profile fetch failed after login";
@@ -159,6 +163,7 @@ class AuthService extends ChangeNotifier {
     setLoading(true);
     await _clearAuthData();
     setAuthenticated(false);
+    _clearSentryUser(); // Clear Sentry user on logout
     Logger.info("Logout successful");
     setLoading(false);
   }
@@ -167,6 +172,43 @@ class AuthService extends ChangeNotifier {
      _currentUser = null;
      _token = null;
      await _secureStorage.delete(key: "jwt_token");
+  }
+
+  void _setSentryUser() {
+    if (_currentUser != null) {
+      Sentry.setUser(
+        SentryUser(
+          id: _currentUser!.id,
+          username: _currentUser!.username,
+          email: _currentUser!.email,
+          data: {
+            'role': _currentUser!.role,
+            'clan': _currentUser!.clan,
+            'federation': _currentUser!.federation,
+          },
+        ),
+      );
+      Sentry.configureScope((scope) {
+        scope.setTag('user_role', _currentUser!.role ?? 'unknown');
+        if (_currentUser!.clan != null) {
+          scope.setTag('user_clan', _currentUser!.clan!);
+        }
+        if (_currentUser!.federation != null) {
+          scope.setTag('user_federation', _currentUser!.federation!);
+        }
+      });
+    } else {
+      _clearSentryUser();
+    }
+  }
+
+  void _clearSentryUser() {
+    Sentry.configureScope((scope) {
+      scope.setUser(null);
+      scope.removeTag('user_role');
+      scope.removeTag('user_clan');
+      scope.removeTag('user_federation');
+    });
   }
 
   void setLoading(bool loading) {

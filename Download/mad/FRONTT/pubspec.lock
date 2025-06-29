@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.56"
+  ansicolor:
+    dependency: transitive
+    description:
+      name: ansicolor
+      sha256: "50e982d500bc863e1d703448afdbf9e5a72eb48840a4f766fa361ffd6877055f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   archive:
     dependency: transitive
     description:
@@ -185,6 +193,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  convert:
+    dependency: transitive
+    description:
+      name: convert
+      sha256: b30acd5944035672bc15c6b7a8b47d773e41e2f17de064350988c5d02adb1c68
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
   cross_file:
     dependency: transitive
     description:
@@ -446,6 +462,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.6.15"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: b7c7be5cd9f6ef7a78429cabd2774d3c4af50e79cb2b7593e3d5d763ef95c61b
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.1"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -640,6 +664,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.14.1"
+  globbing:
+    dependency: transitive
+    description:
+      name: globbing
+      sha256: "4f89cfaf6fa74c9c1740a96259da06bd45411ede56744e28017cc534a12b6e2d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   html:
     dependency: transitive
     description:
@@ -744,6 +776,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  injector:
+    dependency: transitive
+    description:
+      name: injector
+      sha256: ed389bed5b48a699d5b9561c985023d0d5cc88dd5ff2237aadcce5a5ab433e4e
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   intl:
     dependency: "direct main"
     description:
@@ -929,7 +969,7 @@ packages:
     source: hosted
     version: "2.2.0"
   package_info_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: package_info_plus
       sha256: "7976bfe4c583170d6cdc7077e3237560b364149fcd268b5f53d95a991963b191"
@@ -1096,6 +1136,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  process:
+    dependency: transitive
+    description:
+      name: process
+      sha256: "44b4226c0afd4bc3b7c7e67d44c4801abd97103cf0c84609e2654b664ca2798c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.4"
+  properties:
+    dependency: transitive
+    description:
+      name: properties
+      sha256: "333f427dd4ed07bdbe8c75b9ff864a1e70b5d7a8426a2e8bdd457b65ae5ac598"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   provider:
     dependency: "direct main"
     description:
@@ -1132,18 +1188,26 @@ packages:
     dependency: transitive
     description:
       name: sentry
-      sha256: ed887adfe4fc1c2a4e512bb5cd5607d4c0192a4ec669df5a29b4f1037a346190
+      sha256: "4aee18ffcdb6d92db3a770764fd0034b93f27ae736cf9f39855575a36c04fe91"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "9.1.0"
+  sentry_dart_plugin:
+    dependency: "direct dev"
+    description:
+      name: sentry_dart_plugin
+      sha256: e49a1bb5cd44eb731f82a998d3dd4614ff1ccb2d147a23f3803f880befad6367
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
-      sha256: "964b8ccf6568dab01737ad8216f97deac777c8e6fe6006f7c2d6592ec2170a48"
+      sha256: e5c36f0715d181788be46bf56908322a1f8a8ca62830dc78ef3c523af3af5075
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "9.1.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1317,6 +1381,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
+  system_info2:
+    dependency: transitive
+    description:
+      name: system_info2
+      sha256: "65206bbef475217008b5827374767550a5420ce70a04d2d7e94d1d2253f3efc9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   term_glyph:
     dependency: transitive
     description:
