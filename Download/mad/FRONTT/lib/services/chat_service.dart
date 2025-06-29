@@ -4,6 +4,7 @@ import 'package:lucasbeatsfederacao/services/api_service.dart';
 import 'package:lucasbeatsfederacao/services/firebase_service.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';
 import 'package:lucasbeatsfederacao/services/auth_service.dart'; // Importar AuthService
+import 'package:lucasbeatsfederacao/models/role_model.dart'; // Importar o role_model.dart para usar roleToString
 
 class ChatService extends ChangeNotifier {
   final ApiService _apiService = ApiService();
@@ -37,15 +38,24 @@ class ChatService extends ChangeNotifier {
     // Tentar enviar via Firebase primeiro, se disponível
     if (_firebaseService != null) {
       try {
+        // Construir o mapa 'data' para sendMessageToRoom
+        final Map<String, dynamic> firebaseMessageData = { // Renomeado para evitar conflito
+          'type': messageType ?? 'text',
+          'fileUrl': fileUrl,
+          'chatType': chatType,
+          'entityId': entityId,
+          'senderRole': roleToString(currentUser.role),
+          'senderClanCustomRole': currentUser.clanRole != null ? roleToString(currentUser.clanRole) : null,
+        };
+
         await _sendMessageViaFirebase(
           entityId: entityId,
           message: message,
           chatType: chatType,
-          fileUrl: fileUrl,
-          messageType: messageType,
-          senderId: currentUser.id, // Passar o ID do usuário
-          senderRole: currentUser.role.name, // Adicionar role geral (agora como String)
-          senderClanCustomRole: currentUser.clanRole, // Adicionar cargo customizado do clã
+          // Os parâmetros abaixo não são mais passados diretamente para _sendMessageViaFirebase
+          // mas sim dentro do mapa firebaseMessageData
+          senderId: currentUser.id,
+          firebaseData: firebaseMessageData, // <--- CORREÇÃO AQUI: Passando o mapa de dados
         );
         return;
       } catch (e) {
@@ -60,8 +70,8 @@ class ChatService extends ChangeNotifier {
       chatType: chatType,
       fileUrl: fileUrl,
       messageType: messageType,
-      senderRole: currentUser.role.name, // Adicionar role geral (agora como String)
-      senderClanCustomRole: currentUser.clanRole, // Adicionar cargo customizado do clã
+      senderRole: roleToString(currentUser.role),
+      senderClanCustomRole: currentUser.clanRole != null ? roleToString(currentUser.clanRole) : null,
     );
   }
 
@@ -69,11 +79,13 @@ class ChatService extends ChangeNotifier {
     required String entityId,
     required String message,
     required String chatType,
-    String? fileUrl,
-    String? messageType,
-    required String senderId, // Adicionado senderId
-    String? senderRole,
-    String? senderClanCustomRole,
+    required String senderId,
+    required Map<String, dynamic> firebaseData, // <--- CORREÇÃO AQUI: Novo parâmetro
+    // Os parâmetros abaixo foram removidos pois agora estão dentro de firebaseData
+    // String? fileUrl,
+    // String? messageType,
+    // String? senderRole,
+    // String? senderClanCustomRole,
   }) async {
     String roomId;
     switch (chatType) {
@@ -92,14 +104,9 @@ class ChatService extends ChangeNotifier {
 
     await _firebaseService!.sendMessageToRoom(
       roomId,
-      senderId, // Passar o ID do usuário
+      senderId,
       message,
-      type: messageType ?? 'text',
-      fileUrl: fileUrl,
-      chatType: chatType,
-      entityId: entityId,
-      senderRole: senderRole, // Enviar role geral
-      senderClanCustomRole: senderClanCustomRole, // Enviar cargo customizado
+      data: firebaseData, // <--- CORREÇÃO AQUI: Passando o mapa 'data'
     );
 
     Logger.info("Message sent via Firebase to $roomId");
@@ -278,5 +285,3 @@ class ChatService extends ChangeNotifier {
     super.dispose();
   }
 }
-
-

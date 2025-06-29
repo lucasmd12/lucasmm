@@ -8,7 +8,7 @@ import 'package:lucasbeatsfederacao/services/cache_service.dart';
 class CustomCacheManager extends CacheManager {
   static const key = "customCacheKey";
 
-  static CustomCacheManager _instance = CustomCacheManager._();
+  static final CustomCacheManager _instance = CustomCacheManager._();
 
   factory CustomCacheManager() {
     return _instance;
@@ -25,13 +25,13 @@ class CachedImageWidget extends StatefulWidget {
   final BoxFit? fit;
 
   const CachedImageWidget({
-    Key? key,
+    super.key,
     required this.imageUrl,
     this.imageId,
     this.width,
     this.height,
     this.fit,
-  }) : super(key: key);
+  });
 
   @override
   _CachedImageWidgetState createState() => _CachedImageWidgetState();

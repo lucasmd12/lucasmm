@@ -176,20 +176,20 @@ class AuthService extends ChangeNotifier {
 
   void _setSentryUser() {
     if (_currentUser != null) {
-      Sentry.setUser(
-        SentryUser(
-          id: _currentUser!.id,
-          username: _currentUser!.username,
-          email: _currentUser!.email,
-          data: {
-            'role': _currentUser!.role,
-            'clan': _currentUser!.clan,
-            'federation': _currentUser!.federation,
-          },
-        ),
-      );
       Sentry.configureScope((scope) {
-        scope.setTag('user_role', _currentUser!.role ?? 'unknown');
+        scope.setUser(
+          SentryUser(
+            id: _currentUser!.id,
+            username: _currentUser!.username,
+            data: {
+              'role': _currentUser!.role,
+              'clan': _currentUser!.clan,
+              'federation': _currentUser!.federation,
+            },
+          ),
+        );
+        // CORREÇÃO AQUI: Adicionado .toString() para garantir que o valor seja String
+        scope.setTag('user_role', (_currentUser!.role ?? 'unknown').toString());
         if (_currentUser!.clan != null) {
           scope.setTag('user_clan', _currentUser!.clan!);
         }
@@ -231,5 +231,3 @@ class AuthService extends ChangeNotifier {
     super.dispose();
   }
 }
-
-

@@ -40,10 +40,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   double _loadingProgress = 0.0;
   Timer? _progressTimer;
 
+  // Simulação de autenticação - DEVE SER SUBSTITUÍDA PELA LÓGICA REAL
   Future<bool> _checkAuthentication() async {
     Logger.info("Verificando autenticação (simulação)...");
     await Future.delayed(const Duration(seconds: 2));
-    return false;
+    return false; // Sempre retorna false para fins de teste
   }
 
   @override
@@ -94,17 +95,19 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       vsync: this,
     )..repeat();
 
-    _generateParticles();
+    // _generateParticles() será chamada após a primeira renderização para garantir o context
 
     _startSplashSequence();
 
   }
 
-  void _generateParticles() {
-    particles = List.generate(numberOfParticles, (index) {
-      return Particle(position: Offset(random.nextDouble() * MediaQuery.of(context).size.width, random.nextDouble() * MediaQuery.of(context).size.height), size: random.nextDouble() * 1.5 + 0.5, speed: random.nextDouble() * 0.5 + 0.3, opacity: random.nextDouble() * 0.5 + 0.3);
-    });
-
+  // Movido para ser chamado após a primeira renderização
+  void _generateParticles(BuildContext context) {
+    if (particles.isEmpty) { // Gerar partículas apenas uma vez
+      particles = List.generate(numberOfParticles, (index) {
+        return Particle(position: Offset(random.nextDouble() * MediaQuery.of(context).size.width, random.nextDouble() * MediaQuery.of(context).size.height), size: random.nextDouble() * 1.5 + 0.5, speed: random.nextDouble() * 0.5 + 0.3, opacity: random.nextDouble() * 0.5 + 0.3);
+      });
+    }
   }
 
 
@@ -232,6 +235,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    // Chamar _generateParticles aqui para garantir que o context esteja pronto
+    _generateParticles(context);
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -423,5 +429,6 @@ class ParticlePainter extends CustomPainter {
     return true;
   }
 }
+
 
 

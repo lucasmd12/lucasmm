@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,19 +26,17 @@ class HttpFileServiceResponse implements FileServiceResponse {
   int? get contentLength => _response.contentLength;
 
   @override
-  DateTime? get validTill {
+  DateTime get validTill {
     final String? cacheControl = _response.headers["cache-control"];
-    if (cacheControl != null && cacheControl.contains("no-cache")) {
-      return DateTime.now();
-    }
-    return null; // Deixa o cache manager decidir
+ return DateTime.now().add(const Duration(days: 1)); // Define uma validade padrão de 1 dia
   }
+
 
   @override
   String? get eTag => _response.headers["etag"];
 
   @override
-  String? get fileExtension => null; // Deixa o cache manager decidir
+  String get fileExtension => ''; // Deixa o cache manager decidir
 }
 
 

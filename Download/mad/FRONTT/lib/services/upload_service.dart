@@ -477,7 +477,7 @@ class UploadService {
       final maxSizeInBytes = maxSizeInMB * 1024 * 1024;
       
       if (fileSizeInBytes > maxSizeInBytes) {
-        Logger.error('Arquivo muito grande: ${fileSizeInBytes} bytes (máximo: $maxSizeInBytes bytes)');
+        Logger.error('Arquivo muito grande: $fileSizeInBytes bytes (máximo: $maxSizeInBytes bytes)');
         return false;
       }
 

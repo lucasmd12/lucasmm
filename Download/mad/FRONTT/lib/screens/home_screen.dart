@@ -10,7 +10,7 @@ import 'package:lucasbeatsfederacao/screens/global_chat_screen.dart';
 import 'package:lucasbeatsfederacao/screens/voice_rooms_screen.dart';
 import 'package:lucasbeatsfederacao/screens/federation_list_screen.dart';
 import 'package:lucasbeatsfederacao/screens/invite_list_screen.dart'; // Importar a tela de convites
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sentry_flutter/sentry_flutter.dart'; // Certifique-se de que esta importação está correta
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -63,7 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
         description: 'Requesting notification permission',
       );
       PermissionStatus notificationStatus = await Permission.notification.request();
-      notificationSpan.finish(status: SentrySpanStatus.ok());
+      // CORREÇÃO AQUI: SentrySpanStatus.ok() -> SpanStatus.ok()
+      notificationSpan.finish(status: SpanStatus.ok());
 
       if (notificationStatus.isGranted) {
         Logger.info("Notification permission granted.");
@@ -105,9 +106,11 @@ class _HomeScreenState extends State<HomeScreen> {
         Logger.error("Microphone permission permanently denied.");
         _showSettingsDialog("Microfone");
       }
-      transaction.finish(status: SentrySpanStatus.ok());
+      // CORREÇÃO AQUI: SentrySpanStatus.ok() -> SpanStatus.ok()
+      transaction.finish(status: SpanStatus.ok());
     } catch (e, stackTrace) {
-      transaction.finish(status: SentrySpanStatus.internalError());
+      // CORREÇÃO AQUI: SentrySpanStatus.internalError() -> SpanStatus.internalError()
+      transaction.finish(status: SpanStatus.internalError());
       Sentry.captureException(e, stackTrace: stackTrace);
       Logger.error("Error requesting permissions", error: e, stackTrace: stackTrace);
     }
@@ -290,5 +293,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-

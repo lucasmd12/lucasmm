@@ -286,13 +286,13 @@ class SimpleUserIdentityWidget extends StatelessWidget {
   final double size;
 
   const SimpleUserIdentityWidget({
-    super.key,
+    super.key, // Esta linha permanece
     required this.username,
     this.avatar,
     this.clanFlag,
     this.federationTag,
     this.size = 32.0,
-  }) : super(key: key);
+  }); // A linha ": super(key: key);" foi removida daqui.
 
   @override
   Widget build(BuildContext context) {
@@ -401,4 +401,3 @@ class SimpleUserIdentityWidget extends StatelessWidget {
     );
   }
 }
-

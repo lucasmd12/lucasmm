@@ -7,12 +7,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';
 import 'package:lucasbeatsfederacao/services/api_service.dart';
 import 'package:lucasbeatsfederacao/services/cache_service.dart';
-import 'package:lucasbeatsfederacao/services/qrr_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart'; // Importar para navegação
 import 'package:lucasbeatsfederacao/main.dart'; // Importar para acesso ao navigatorKey
+import 'package:lucasbeatsfederacao/models/qrr_model.dart'; // Importar o modelo QRRModel
 import 'package:lucasbeatsfederacao/screens/qrr_detail_screen.dart'; // Importar tela de detalhes da QRR
 import 'package:firebase_database/firebase_database.dart';
+// import 'package:flutter_app_badger/flutter_app_badger.dart'; // <-- Adicione esta linha se for usar o pacote
 
 // Handler para mensagens em background
 @pragma('vm:entry-point')
@@ -51,7 +52,7 @@ class FirebaseService extends ChangeNotifier {
   
   // Configurações
   bool _notificationsEnabled = true;
-  final Map<String, bool> _notificationTypes = const {
+  final Map<String, bool> _notificationTypes = {
     'messages': true,
     'calls': true,
     'missions': true,
@@ -88,7 +89,7 @@ class FirebaseService extends ChangeNotifier {
       
       // Inicializar serviços auxiliares
       _apiService = ApiService(); // Atribuir aqui
-      _cacheService = CacheService();
+      _cacheService = CacheService.instance; // CORREÇÃO ANTERIOR
       
       // Carregar configurações
       await _loadSettings();
@@ -109,7 +110,7 @@ class FirebaseService extends ChangeNotifier {
     
     // Configurações Android
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-    
+
     // Configurações iOS
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
@@ -135,7 +136,7 @@ class FirebaseService extends ChangeNotifier {
 
   /// Cria canais de notificação para Android
   Future<void> _createNotificationChannels() async {
-    const channels = [
+    final channels = [
       AndroidNotificationChannel(
         'default',
         'Notificações Gerais',
@@ -189,7 +190,7 @@ class FirebaseService extends ChangeNotifier {
   /// Configura handlers de mensagem
   Future<void> _setupMessageHandlers() async {
     // Handler para mensagens em background
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler); // Já definido
     
     // Handler para mensagens quando app está em foreground
     FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
@@ -325,8 +326,8 @@ class FirebaseService extends ChangeNotifier {
     // Processar payload se disponível
     if (response.payload != null) {
       try {
-        final data = jsonDecode(response.payload!);
-        _handleNotificationActionFromData(data);
+        final Map<String, dynamic> data = jsonDecode(response.payload!);
+ _handleNotificationActionFromData(data);
       } catch (error) {
         Logger.error('Error parsing notification payload: ${error.toString()}');
       }
@@ -483,9 +484,9 @@ class FirebaseService extends ChangeNotifier {
   void _handleNewMessageData(Map<String, dynamic> data) {
     // Invalidar cache de mensagens
     _cacheService?.invalidatePattern('messages_*');
-    
+
     // Atualizar badge de mensagens não lidas
-    _updateUnreadMessagesBadge();
+    _updateUnreadMessagesBadge(); // <-- AQUI ESTÁ O ERRO
   }
 
   /// Processa dados de chamada recebida
@@ -502,26 +503,72 @@ class FirebaseService extends ChangeNotifier {
   /// Processa dados de nova missão (ou QRR)
   void _handleNewMissionData(Map<String, dynamic> data) {
     // Invalidar cache de missões
-    _cacheService?.invalidatePattern('mission_*');
-    _cacheService?.invalidatePattern('qrr_*'); // Invalidar cache de QRR
-    
-    final qrrId = data['qrrId'];
-    if (qrrId != null) {
-      // Navegar para a tela de detalhes da QRR
-      if (navigatorKey.currentState != null) {
-        navigatorKey.currentState!.push(
-          MaterialPageRoute(
-            builder: (context) => QRRDetailScreen(qrrId: qrrId),
-          ),
-        );
-      }
-    }
   }
 
   /// Processa dados de promoção
   void _handlePromotionData(Map<String, dynamic> data) {
-    // Invalidar cache de promoções
-    _cacheService?.invalidatePattern('promotion_*');
+    Logger.info('Handling promotion data: $data');
+  }
+
+  // Placeholder method for handling notification actions
+  // This method needs to be implemented with the actual navigation logic
+  void _handleNotificationAction(RemoteMessage message) {
+    Logger.info('Handling notification action for message: ${message.messageId}');
+    final data = message.data;
+ _handleNotificationActionFromData(data);
+  }
+
+  // Placeholder method for handling notification actions from data
+  // This method needs to be implemented with the actual navigation logic based on data
+  void _handleNotificationActionFromData(Map<String, dynamic> data) {
+    Logger.info('Handling notification action from data: $data');
+    final type = data['type'];
+
+    switch (type) {
+      case 'qrr':
+        final qrrId = data['qrrId'];
+        if (qrrId != null) {
+          // Buscar os detalhes da QRR antes de navegar
+          // Implemente a lógica para buscar os detalhes da QRR aqui.
+          // Por enquanto, vamos simular a criação de um objeto QRRModel básico.
+          // Em uma aplicação real, você faria uma chamada para o seu backend ou banco de dados.
+          Logger.info('Attempting to fetch QRR details for ID: $qrrId');
+          
+          // TODO: Substituir esta simulação pela lógica real de busca da QRR
+          QRRModel? qrr;
+          // Exemplo (remova esta linha e implemente a busca real):
+          qrr = QRRModel(
+            id: qrrId,
+            title: 'QRR Notificação',
+            description: 'Detalhes da QRR da notificação',
+            status: QRRStatus.pending, // Usando status pendente para simulação
+            createdBy: 'simulated_user_id', // Placeholder
+            participants: [], // Placeholder
+            priority: QRRPriority.medium, // Placeholder
+            type: QRRType.mission, // Placeholder
+
+            startDate: DateTime.now(),
+            endDate: DateTime.now().add(const Duration(hours: 1))); // Using const for Duration
+          
+          if (navigatorKey.currentState != null) {
+            navigatorKey.currentState!.push(
+              MaterialPageRoute(
+                builder: (context) => QRRDetailScreen(qrr: qrr!), // Passar o objeto QRRModel
+              ),
+            );
+          } else {
+            Logger.warning('QRR object is null, cannot navigate to details screen.');
+          }
+        }
+        break;
+ case 'promotion':
+        // Invalidar cache de promoções
+        _cacheService?.invalidatePattern('promotion_*');
+        // Implementar navegação ou outra ação para promoções se necessário
+        Logger.info('Promotion notification received, cache invalidated.');
+        break;
+      // Add other cases for different notification types (messages, calls, etc.)
+    }
   }
 
   /// Carrega configurações de notificação
@@ -529,15 +576,15 @@ class FirebaseService extends ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       _notificationsEnabled = prefs.getBool('notificationsEnabled') ?? true;
-      _notificationTypes['messages'] = prefs.getBool('notifyMessages') ?? true;
+ _notificationTypes['messages'] = prefs.getBool('notifyMessages') ?? true;
       _notificationTypes['calls'] = prefs.getBool('notifyCalls') ?? true;
       _notificationTypes['missions'] = prefs.getBool('notifyMissions') ?? true;
       _notificationTypes['promotions'] = prefs.getBool('notifyPromotions') ?? true;
       _notificationTypes['system'] = prefs.getBool('notifySystem') ?? true;
       _notificationTypes['qrr'] = prefs.getBool('notifyQrr') ?? true;
-      notifyListeners();
+ notifyListeners();
     } catch (e) {
-      Logger.error('Error loading notification settings: $e');
+      Logger.error('Error loading notification settings: ${e.toString()}');
     }
   }
 
@@ -554,7 +601,7 @@ class FirebaseService extends ChangeNotifier {
       await prefs.setBool('notifyQrr', _notificationTypes['qrr'] ?? true);
       Logger.info('Notification settings saved.');
     } catch (e) {
-      Logger.error('Error saving notification settings: $e');
+      Logger.error('Error saving notification settings: ${e.toString()}');
     }
   }
 
@@ -567,7 +614,7 @@ class FirebaseService extends ChangeNotifier {
   }
 
   bool getNotifyType(String type) => _notificationTypes[type] ?? true;
-  setNotifyType(String type, bool value) {
+  void setNotifyType(String type, bool value) {
     if (_notificationTypes.containsKey(type)) {
       _notificationTypes[type] = value;
       notifyListeners();
@@ -598,12 +645,12 @@ class FirebaseService extends ChangeNotifier {
       });
       Logger.info('Voice room $roomName created successfully.');
     } catch (e) {
-      Logger.error('Error creating voice room: $e');
+      Logger.error('Error creating voice room: ${e.toString()}');
       rethrow;
     }
   }
 
-  Future<void> joinVoiceRoom(String roomName, String userId, String displayName) async {
+    Future<void> joinVoiceRoom(String roomName, String userId, String displayName) async {
     try {
       final roomRef = _voiceRoomsRef.child(roomName);
       final participantRef = roomRef.child('participants').child(userId);
@@ -614,7 +661,7 @@ class FirebaseService extends ChangeNotifier {
       });
       Logger.info('User $displayName joined voice room $roomName.');
     } catch (e) {
-      Logger.error('Error joining voice room: $e');
+      Logger.error('Error joining voice room: ${e.toString()}');
       rethrow;
     }
   }
@@ -633,7 +680,7 @@ class FirebaseService extends ChangeNotifier {
         Logger.info('Voice room $roomName deactivated as it is empty.');
       }
     } catch (e) {
-      Logger.error('Error leaving voice room: $e');
+      Logger.error('Error leaving voice room: ${e.toString()}');
       rethrow;
     }
   }
@@ -671,9 +718,57 @@ class FirebaseService extends ChangeNotifier {
       });
       Logger.info('Message sent to room $roomId.');
     } catch (e) {
-      Logger.error('Error sending message to room: $e');
+      Logger.error('Error sending message to room: ${e.toString()}');
       rethrow;
     }
+  }
+
+  // CORREÇÃO AQUI: Adição do método _updateUnreadMessagesBadge()
+  // Você precisará implementar a lógica real aqui,
+  // possivelmente buscando o número de mensagens não lidas do seu backend
+  // ou de um serviço de chat.
+  Future<void> _updateUnreadMessagesBadge() async {
+    try {
+      // Exemplo: Buscar o número de mensagens não lidas do backend
+      // int unreadCount = await _apiService!.get('/api/messages/unread_count');
+
+      // Por enquanto, vamos usar um valor fixo ou 0
+      int unreadCount = 0; // Substitua pela lógica real
+
+      // Se você estiver usando flutter_app_badger:
+      // if (unreadCount > 0) {
+      //   FlutterAppBadger.updateBadgeCount(unreadCount);
+      // } else {
+      //   FlutterAppBadger.removeBadge();
+      // }
+
+      Logger.info('Updating unread messages badge to: $unreadCount');
+    } catch (e) {
+      Logger.error('Error updating unread messages badge: ${e.toString()}');
+    }
+  }
+
+  // Adicionar métodos para salas de voz faltantes
+  Stream<DatabaseEvent> listenToActiveVoiceRooms(String roomType, {String? clanId, String? federationId}) {
+    Query query = _voiceRoomsRef.orderByChild('isActive').equalTo(true);
+
+    if (roomType.isNotEmpty) { // Check if roomType is provided and not empty
+      // Atenção: No Firebase Realtime Database, só podemos ter um orderByChild.
+      // Para consultas mais complexas com clanId e federationId, pode ser necessário filtrar no cliente.
+      query = query.orderByChild('roomType').equalTo(roomType);
+    }
+    Logger.info('Listening to active voice rooms - Type: $roomType, Clan: $clanId, Federation: $federationId');
+    return query.onValue;
+  }
+
+  Stream<DatabaseEvent> listenToVoiceRoomParticipants(String roomId) {
+    return _voiceRoomsRef.child(roomId).child('participants').onValue;
+  }
+
+  Future<Map<String, dynamic>?> getVoiceRoomDetails(String roomId) async {
+    // Implementar lógica real para obter detalhes de uma sala de voz
+    Logger.info('Getting voice room details (placeholder)');
+    return null; // Retorna nulo por enquanto
   }
 
   @override
@@ -682,5 +777,4 @@ class FirebaseService extends ChangeNotifier {
     super.dispose();
   }
 }
-
 

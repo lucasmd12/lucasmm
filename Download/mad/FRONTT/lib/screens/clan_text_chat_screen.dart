@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -9,7 +8,6 @@ import 'package:uuid/uuid.dart';
 import 'package:lucasbeatsfederacao/providers/auth_provider.dart';
 import 'package:lucasbeatsfederacao/services/chat_service.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';
-import 'package:lucasbeatsfederacao/widgets/user_identity_widget.dart';
 
 
 class ClanTextChatScreen extends StatefulWidget {

@@ -1,5 +1,5 @@
 // lib/services/socket_service.dart
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lucasbeatsfederacao/utils/constants.dart'; // For backendBaseUrl
 import 'package:lucasbeatsfederacao/utils/logger.dart'; // For logging
@@ -7,8 +7,8 @@ import 'package:lucasbeatsfederacao/utils/logger.dart'; // For logging
 import 'dart:async';
 import 'package:flutter/foundation.dart'; // For kDebugMode
 
-class SocketService {
-  IO.Socket? _socket;
+class SocketService { 
+  io.Socket? _socket;
   final _secureStorage = const FlutterSecureStorage();
   final String _socketUrl = backendBaseUrl; // Use ws:// for local, wss:// for production usually handled by base URL
 
@@ -84,7 +84,7 @@ class SocketService {
       Logger.info('Attempting to connect to Socket.IO server at $_socketUrl');
     }
     try {
-      _socket = IO.io(_socketUrl, <String, dynamic>{
+      _socket = io.io(_socketUrl, <String, dynamic>{
         'transports': ['websocket'],
         'autoConnect': false,
         'auth': {

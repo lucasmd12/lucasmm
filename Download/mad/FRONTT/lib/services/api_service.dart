@@ -132,7 +132,8 @@ class ApiService {
           headers: await _getHeaders(includeAuth: requireAuth),
         ).timeout(timeout ?? _defaultTimeout);
       });
-      span.setHttpStatus(response.statusCode);
+      // CORREÇÃO AQUI
+      span.setTag('http.status_code', response.statusCode.toString());
       span.finish(status: SpanStatus.ok());
       transaction.finish(status: SpanStatus.ok());
       return response;
@@ -179,7 +180,8 @@ class ApiService {
           body: jsonEncode(data),
         ).timeout(timeout ?? _defaultTimeout);
       });
-      span.setHttpStatus(response.statusCode);
+      // CORREÇÃO AQUI
+      span.setTag('http.status_code', response.statusCode.toString());
       span.finish(status: SpanStatus.ok());
       transaction.finish(status: SpanStatus.ok());
       return response;
@@ -226,7 +228,8 @@ class ApiService {
           body: jsonEncode(data),
         ).timeout(timeout ?? _defaultTimeout);
       });
-      span.setHttpStatus(response.statusCode);
+      // CORREÇÃO AQUI
+      span.setTag('http.status_code', response.statusCode.toString());
       span.finish(status: SpanStatus.ok());
       transaction.finish(status: SpanStatus.ok());
       return response;
@@ -271,7 +274,8 @@ class ApiService {
           headers: await _getHeaders(includeAuth: requireAuth),
         ).timeout(timeout ?? _defaultTimeout);
       });
-      span.setHttpStatus(response.statusCode);
+      // CORREÇÃO AQUI
+      span.setTag('http.status_code', response.statusCode.toString());
       span.finish(status: SpanStatus.ok());
       transaction.finish(status: SpanStatus.ok());
       return response;
@@ -318,7 +322,8 @@ class ApiService {
           body: jsonEncode(data),
         ).timeout(timeout ?? _defaultTimeout);
       });
-      span.setHttpStatus(response.statusCode);
+      // CORREÇÃO AQUI
+      span.setTag('http.status_code', response.statusCode.toString());
       span.finish(status: SpanStatus.ok());
       transaction.finish(status: SpanStatus.ok());
       return response;
@@ -341,4 +346,3 @@ class ApiService {
     }
   }
 }
-

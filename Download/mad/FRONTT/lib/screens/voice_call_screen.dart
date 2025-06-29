@@ -125,7 +125,7 @@ class _VoiceCallScreenState extends State<VoiceCallScreen> {
 
   Future<void> _switchCamera() async {
     try {
-      await _voipService.switchCamera();
+      _voipService.switchCamera();
     } catch (e) {
       _showError('Erro ao trocar câmera: $e');
     }

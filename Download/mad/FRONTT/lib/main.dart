@@ -59,7 +59,7 @@ Future<void> main() async {
       options.tracesSampleRate = kReleaseMode ? 0.1 : 1.0; // 10% em produção, 100% em dev
       options.debug = !kReleaseMode; // Desativar debug em produção
       options.environment = kReleaseMode ? 'production' : 'development';
-      options.release = 'lucasbeatsfederacao@' + packageInfo.version + '+' + packageInfo.buildNumber;
+      options.release = 'lucasbeatsfederacao@${packageInfo.version}+${packageInfo.buildNumber}';
 
       // Captura de erros de UI e do framework Flutter
       FlutterError.onError = (details) {

@@ -125,7 +125,7 @@ class SyncService {
       final needsStatsSync = !await CacheService.instance.isCacheValid("stats");
       final needsFederationsSync = !await CacheService.instance.isCacheValid("federations");
       
-      // Sincronizar dados essenciais se necessário
+      // Sincronizar dados essenciais, se necessário
       if (needsUserSync || needsStatsSync || needsFederationsSync) {
         await _syncEssentialData();
       }
@@ -153,7 +153,7 @@ class SyncService {
       Logger.info('Performing periodic sync...');
       
       // Limpar cache expirado
-      await CacheService().clearExpiredCache();
+      await CacheService.instance.clearExpiredCache();
       
       // Sincronizar dados que podem ter mudado
       await _syncVolatileData();
@@ -174,14 +174,14 @@ class SyncService {
   Future<void> _performHealthCheck() async {
     try {
       // Verificar conectividade com backend
- await _apiService.get('/health', requireAuth: false, timeout: _syncTimeout);
+      await _apiService.get('/health', requireAuth: false, timeout: _syncTimeout);
       
       // Verificar saúde do cache local
-      final cacheHealth = await CacheService().getHealthInfo();
+      final cacheHealth = await CacheService.instance.getHealthInfo();
       
       if (cacheHealth['expiredEntries'] > 10) {
         Logger.info('Found ${cacheHealth['expiredEntries']} expired cache entries, cleaning up...');
-        await CacheService().clearExpiredCache();
+        await CacheService.instance.clearExpiredCache();
       }
       
     } catch (e) {
@@ -212,8 +212,8 @@ class SyncService {
   Future<void> _syncVolatileData() async {
     try {
       // Sincronizar apenas se cache estiver próximo do vencimento
-      final statsValid = await CacheService().isCacheValid('stats');
-      if (!statsValid) {
+      final statsValid = await CacheService.instance.isCacheValid('stats');
+      if (!statsValid) { // Adiciona verificação explícita para null
         await _syncGlobalStats();
       }
       
@@ -227,7 +227,7 @@ class SyncService {
     try {
       final response = await _apiService.get('/cache/global', timeout: _syncTimeout);
       if (response['success'] == true) {
-        await CacheService().cacheStats(response['data']);
+        await CacheService.instance.cacheStats(response['data']);
         Logger.info('Global stats synced successfully');
       }
     } catch (e) {
@@ -240,7 +240,7 @@ class SyncService {
     try {
       final response = await _apiService.get('/federations', timeout: _syncTimeout);
       if (response['success'] == true) {
-        await CacheService().cacheFederations(
+        await CacheService.instance.cacheFederations(
           List<Map<String, dynamic>>.from(response['data'])
         );
         Logger.info('Federations synced successfully');
@@ -259,7 +259,7 @@ class SyncService {
       
       final response = await _apiService.get(endpoint, timeout: _syncTimeout);
       if (response['success'] == true) {
-        await CacheService().cacheClans(
+        await CacheService.instance.cacheClans(
           List<Map<String, dynamic>>.from(response['data']),
           federationId: federationId
         );
@@ -271,14 +271,14 @@ class SyncService {
   }
 
   /// Manipula invalidação de cache
-  void _handleCacheInvalidation(dynamic data) {
+  Future<void> _handleCacheInvalidation(dynamic data) async {
     try {
       final invalidationData = data as Map<String, dynamic>;
       final type = invalidationData['type'] as String?;
       final id = invalidationData['id'] as String?;
       
       if (type != null) {
-        CacheService().invalidateCache(type, id: id);
+        await CacheService.instance.invalidateCache(type, id: id);
         Logger.info('Cache invalidated for type: $type${id != null ? ' (id: $id)' : ''}');
       }
     } catch (e) {
@@ -287,7 +287,7 @@ class SyncService {
   }
 
   /// Manipula atualização de dados
-  void _handleDataUpdate(dynamic data) {
+  Future<void> _handleDataUpdate(dynamic data) async {
     try {
       final updateData = data as Map<String, dynamic>;
       final type = updateData['type'] as String?;
@@ -296,12 +296,12 @@ class SyncService {
       switch (type) {
         case 'stats':
           if (payload != null) {
-            CacheService().cacheStats(payload);
+            await CacheService.instance.cacheStats(payload);
           }
           break;
         case 'user':
-          // Invalidar cache do usuário para forçar reload
-          CacheService().invalidateCache('user');
+          // Invalidar cache do usuário para forçar recarregamento
+ await CacheService.instance.invalidateCache('user');
           break;
         default:
           Logger.info('Unhandled data update type: $type');
@@ -312,10 +312,10 @@ class SyncService {
   }
 
   /// Manipula mudança de status de usuário
-  void _handleUserStatusChange(String userId, bool isOnline) {
+  Future<void> _handleUserStatusChange(String userId, bool isOnline) async {
     try {
       // Invalidar estatísticas para refletir mudança
-      CacheService().invalidateCache('stats');
+      CacheService.instance.invalidateCache('stats');
       Logger.info('User $userId status changed to ${isOnline ? 'online' : 'offline'}');
     } catch (e) {
       Logger.error('Error handling user status change: $e');
@@ -323,13 +323,13 @@ class SyncService {
   }
 
   /// Manipula atualização de clã
-  void _handleClanUpdate(dynamic data) {
+  Future<void> _handleClanUpdate(dynamic data) async {
     try {
       final clanData = data as Map<String, dynamic>;
       final clanId = clanData['clanId'] as String?;
       
       if (clanId != null) {
-        CacheService().invalidateClanRelated(clanId);
+        await CacheService.instance.invalidateClanRelated(clanId);
         Logger.info('Clan cache invalidated for clan: $clanId');
       }
     } catch (e) {
@@ -338,13 +338,13 @@ class SyncService {
   }
 
   /// Manipula atualização de federação
-  void _handleFederationUpdate(dynamic data) {
+  Future<void> _handleFederationUpdate(dynamic data) async {
     try {
       final federationData = data as Map<String, dynamic>;
       final federationId = federationData['federationId'] as String?;
       
       if (federationId != null) {
-        CacheService().invalidateFederationRelated(federationId);
+        await CacheService.instance.invalidateFederationRelated(federationId);
         Logger.info('Federation cache invalidated for federation: $federationId');
       }
     } catch (e) {
@@ -353,14 +353,14 @@ class SyncService {
   }
 
   /// Manipula atualização de missão
-  void _handleMissionUpdate(dynamic data) {
+  Future<void> _handleMissionUpdate(dynamic data) async {
     try {
       final missionData = data as Map<String, dynamic>;
       final clanId = missionData['clanId'] as String?;
       
       if (clanId != null) {
-        CacheService().invalidateCache('missions', id: clanId);
-        CacheService().invalidateCache('stats'); // Missões podem afetar estatísticas
+        await CacheService.instance.invalidateCache('missions', id: clanId);
+        await CacheService.instance.invalidateCache('stats'); // Missões podem afetar estatísticas
         Logger.info('Mission cache invalidated for clan: $clanId');
       }
     } catch (e) {
@@ -380,7 +380,7 @@ class SyncService {
       _syncStatus = 'manual_sync';
       
       // Limpar todo o cache e recarregar
-      await CacheService().clearAllCache();
+      await CacheService.instance.clearAllCache();
       await _syncEssentialData();
       
       _lastSyncTime = DateTime.now();

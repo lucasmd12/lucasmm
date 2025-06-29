@@ -126,7 +126,6 @@ class VoIPService extends ChangeNotifier {
         },
         userInfo: JitsiMeetUserInfo(
           displayName: displayName,
-          username: displayName,
         ),
       );
 
@@ -204,6 +203,7 @@ class VoIPService extends ChangeNotifier {
     _onCallEnded = null;
     _onCallStarted = null;
     Logger.info('VoIP service disposed');
+    super.dispose();
   }
 
   // Adicionar métodos para aceitar/rejeitar/iniciar chamada
@@ -282,6 +282,36 @@ class VoIPService extends ChangeNotifier {
   void toggleMute() {
     // Implementar lógica real de mute
     Logger.info('Toggle mute');
+  }
+
+  // Método para alternar o áudio
+  Future<void> toggleAudio() async {
+    try {
+      // Lógica para alternar o áudio via Jitsi Meet SDK
+      // Exemplo: await _jitsiMeet.setAudioMuted(!_isMuted);
+      Logger.info('Toggle audio');
+    } catch (e) {
+      Logger.error('Failed to toggle audio: $e');
+      rethrow;
+    }
+  }
+
+  // Método para alternar o vídeo
+  Future<void> toggleVideo() async {
+    try {
+      // Lógica para alternar o vídeo via Jitsi Meet SDK
+      // Exemplo: await _jitsiMeet.setVideoMuted(!_isVideoEnabled);
+      Logger.info('Toggle video');
+    } catch (e) {
+      Logger.error('Failed to toggle video: $e');
+      rethrow;
+    }
+  }
+
+  // Método para alternar a câmera
+  Future<void> switchCamera() async {
+    // Implementar lógica real de troca de câmera
+    Logger.info('Switching camera');
   }
 }
 

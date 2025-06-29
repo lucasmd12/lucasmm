@@ -8,7 +8,7 @@ import 'package:lucasbeatsfederacao/models/role_model.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class VoiceRoomsScreen extends StatefulWidget {
+class VoiceRoomsScreen extends StatefulWidget { 
   const VoiceRoomsScreen({super.key});
 
   @override
@@ -74,9 +74,9 @@ class _VoiceRoomsScreenState extends State<VoiceRoomsScreen> with SingleTickerPr
             children: [
               // Salas do clã (até 5 salas)
               ...List.generate(5, (index) {
+                // VoiceRoomWidget requires roomType and roomNumber
                 return VoiceRoomWidget(
                   roomType: 'clan',
-                  clanId: user?.clanId,
                   roomNumber: index + 1,
                 );
               }),
@@ -87,8 +87,7 @@ class _VoiceRoomsScreenState extends State<VoiceRoomsScreen> with SingleTickerPr
         );
       },
     );
-  }
-
+ }
   Widget _buildFederationTab() {
     return Consumer<AuthService>(
       builder: (context, authService, child) {
@@ -105,9 +104,9 @@ class _VoiceRoomsScreenState extends State<VoiceRoomsScreen> with SingleTickerPr
             children: [
               // Salas da federação (até 3 salas)
               ...List.generate(3, (index) {
+                // VoiceRoomWidget requires roomType and roomNumber
                 return VoiceRoomWidget(
                   roomType: 'federation',
-                  federationId: user?.federationId,
                   roomNumber: index + 1,
                 );
               }),
@@ -116,15 +115,20 @@ class _VoiceRoomsScreenState extends State<VoiceRoomsScreen> with SingleTickerPr
             ],
           ),
         );
-      },\n    );
+      },
+    );
   }
-
   Widget _buildGlobalTab() {
+    // Global rooms do not depend on user clan or federation
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          const VoiceRoomWidget(roomType: 'global'),
+          // VoiceRoomWidget requires roomType and roomNumber
+          const VoiceRoomWidget(
+            roomType: 'global',
+            roomNumber: 0, // Global rooms might have a different numbering scheme or a default
+          ),
           const SizedBox(height: 16),
           _buildActiveRoomsList('global'),
         ],
@@ -142,25 +146,21 @@ class _VoiceRoomsScreenState extends State<VoiceRoomsScreen> with SingleTickerPr
           );
         }
 
-        return SingleChildScrollView(
+ return SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              // VoiceRoomWidget requires roomType and roomNumber
               const VoiceRoomWidget(
                 roomType: 'admin',
-                context: 'general',
+                roomNumber: 1, // Assuming admin rooms are numbered
               ),
-              const VoiceRoomWidget(
+               const VoiceRoomWidget( // Second admin room example
                 roomType: 'admin',
-                context: 'clan_management',
               ),
-              const VoiceRoomWidget(
-                roomType: 'admin',
-                context: 'federation_management',
-              ),
-              const SizedBox(height: 16),
-              _buildActiveRoomsList('admin'),
-            ],
+             const SizedBox(height: 16),
+             _buildActiveRoomsList('admin'),
+           ],
           ),
         );
       },
@@ -168,35 +168,42 @@ class _VoiceRoomsScreenState extends State<VoiceRoomsScreen> with SingleTickerPr
   }
 
   Widget _buildActiveRoomsList(String roomType, {String? clanId, String? federationId}) {
-    return Consumer<FirebaseService>(
+    return Consumer<FirebaseService>( 
       builder: (context, firebaseService, child) {
-        return StreamBuilder<DatabaseEvent>(
-          stream: firebaseService.listenToActiveVoiceRooms(roomType: roomType, clanId: clanId, federationId: federationId),
+        return StreamBuilder<DatabaseEvent>( // StreamBuilder expects DatabaseEvent
+          stream: firebaseService.listenToActiveVoiceRooms(roomType, clanId: clanId, federationId: federationId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
-
             if (snapshot.hasError) {
-              Logger.error('Erro ao carregar salas ativas', error: snapshot.error);
+              Logger.error('Erro ao carregar salas ativas: ${snapshot.error}');
               return Center(child: Text('Erro ao carregar salas ativas: ${snapshot.error}'));
             }
 
-            if (!snapshot.hasData || snapshot.data!.snapshot.value == null) {
+            // Process the snapshot.data directly
+            final rooms = snapshot.data?.snapshot.value;
+
+            // Safely check if rooms is a non-null Map before accessing isEmpty
+            if (rooms == null) {
               return const Center(child: Text('Nenhuma sala ativa encontrada'));
             }
 
-            final data = snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
-            final rooms = data.entries
-                .where((entry) {
-                  final room = entry.value as Map<dynamic, dynamic>;
-                  return room['roomType'] == roomType && room['isActive'] == true;
-                })
-                .toList();
-
-            if (rooms.isEmpty) {
-              return const Center(child: Text('Nenhuma sala ativa deste tipo'));
+            final Map<dynamic, dynamic> roomsData = rooms as Map<dynamic, dynamic>;
+            if (roomsData.isEmpty) {
+              return const Center(child: Text('Nenhuma sala ativa encontrada'));
             }
+
+            final List<Map<String, dynamic>> activeRooms = [];
+            roomsData.forEach((key, value) {
+              final room = value as Map<dynamic, dynamic>;
+              // Client-side filtering for clanId and federationId
+              if ((clanId == null || room['clanId'] == clanId) &&
+                  (federationId == null || room['federationId'] == federationId) &&
+                  room['roomType'] == roomType && room['isActive'] == true) {
+                activeRooms.add(Map<String, dynamic>.from(room)..['roomId'] = key); // Add room ID
+              }
+            });
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,10 +216,10 @@ class _VoiceRoomsScreenState extends State<VoiceRoomsScreen> with SingleTickerPr
                   ),
                 ),
                 const SizedBox(height: 8),
-                ...rooms.map((entry) {
-                  final roomId = entry.key as String;
-                  final room = entry.value as Map<dynamic, dynamic>;
-                  return _buildActiveRoomCard(roomId, room);
+                if (activeRooms.isEmpty)
+                  const Center(child: Text('Nenhuma sala ativa encontrada')),
+                ...activeRooms.map((entry) {
+                  return _buildActiveRoomCard(entry['roomId'] as String? ?? 'Desconhecido', entry); // Pass room ID and map
                 }),
               ],
             );
@@ -261,14 +268,10 @@ class _VoiceRoomsScreenState extends State<VoiceRoomsScreen> with SingleTickerPr
 
       // Check if room is private and requires password
       final roomDetails = await firebaseService.getVoiceRoomDetails(roomId);
-      String? password;
+      String? password; 
 
       if (roomDetails != null && roomDetails['isPrivate'] == true) {
         password = await _showPasswordDialog(context);
-        if (password == null) {
-          // User cancelled password entry
-          return;
-        }
       }
 
       // Entrar na sala Jitsi
@@ -354,5 +357,3 @@ class _VoiceRoomsScreenState extends State<VoiceRoomsScreen> with SingleTickerPr
     );
   }
 }
-
-
