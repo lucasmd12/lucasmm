@@ -90,6 +90,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env 
     - assets/images_png/
     - assets/images_png/backgrounds/
     - assets/images_png/clan_images/
