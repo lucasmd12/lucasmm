@@ -3,6 +3,7 @@ import 'package:jitsi_meet_flutter_sdk/jitsi_meet_flutter_sdk.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../utils/logger.dart';
 import '../models/call_model.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class VoIPService extends ChangeNotifier {
   static final VoIPService _instance = VoIPService._internal();
@@ -30,12 +31,8 @@ class VoIPService extends ChangeNotifier {
   // Inicializar o serviço
   Future<void> initialize() async {
     try {
-      // Solicitar permissões necessárias
       await _requestPermissions();
-      
-      // Configurar listeners do Jitsi
       _setupJitsiListeners();
-      
       Logger.info("VoIP Service initialized successfully");
     } catch (e, stackTrace) {
       Logger.error("Failed to initialize VoIP Service", error: e, stackTrace: stackTrace);
@@ -44,13 +41,9 @@ class VoIPService extends ChangeNotifier {
     }
   }
 
-  // Solicitar permissões necessárias
+  // Solicitar permissões
   Future<void> _requestPermissions() async {
-    final permissions = [
-      Permission.camera,
-      Permission.microphone,
-    ];
-
+    final permissions = [Permission.camera, Permission.microphone];
     for (final permission in permissions) {
       final status = await permission.request();
       if (status != PermissionStatus.granted) {
@@ -59,10 +52,7 @@ class VoIPService extends ChangeNotifier {
     }
   }
 
-  // Configurar listeners do Jitsi
   void _setupJitsiListeners() {
-    // Nota: JitsiMeet v10.2.0 não usa addListener da mesma forma
-    // Os eventos são tratados através de callbacks nos métodos join
     Logger.info('Jitsi listeners configured');
   }
 
@@ -75,16 +65,14 @@ class VoIPService extends ChangeNotifier {
     bool isAudioOnly = true,
   }) async {
     try {
-      if (_isInCall) {
-        throw Exception('Já existe uma chamada em andamento');
-      }
+      if (_isInCall) throw Exception('Já existe uma chamada em andamento');
 
       _currentRoomId = roomId;
 
       final options = JitsiMeetConferenceOptions(
         serverURL: serverUrl ?? 'https://meet.jit.si',
         room: roomId,
-        token: token, // Passando o token diretamente aqui
+        token: token,
         configOverrides: {
           'startWithAudioMuted': false,
           'startWithVideoMuted': isAudioOnly,
@@ -125,15 +113,14 @@ class VoIPService extends ChangeNotifier {
           'close-captions.enabled': false,
           'reactions.enabled': true,
         },
-        userInfo: JitsiMeetUserInfo(
-          displayName: displayName,
-        ),
+        userInfo: JitsiMeetUserInfo(displayName: displayName),
       );
 
       await _jitsiMeet.join(options);
-      
-      Logger.info("Voice call started for room: $roomId");
+      _isInCall = true;
+      _onCallStarted?.call(roomId);
       notifyListeners();
+      Logger.info("Voice call started for room: $roomId");
     } catch (e) {
       _currentRoomId = null;
       Logger.error('Failed to start voice call: $e');
@@ -157,88 +144,7 @@ class VoIPService extends ChangeNotifier {
     );
   }
 
-  // Encerrar chamada
-  Future<void> endCall() async {
-    try {
-      if (_isInCall) {
-        await _jitsiMeet.hangUp();
-        Logger.info('Call ended');
-      }
-    } catch (e) {
-      Logger.error('Failed to end call: $e');
-    } finally {
-      _isInCall = false;
-      _currentRoomId = null;
-    }
-  }
-
-  // Gerar ID único para sala
-  static String generateRoomId({
-    required String prefix,
-    String? entityId,
-  }) {
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final random = (timestamp % 10000).toString().padLeft(4, '0');
-    
-    if (entityId != null) {
-      return '${prefix}_${entityId}_$random';
-    } else {
-      return '${prefix}_$random';
-    }
-  }
-
-  // Validar nome da sala
-  static bool isValidRoomName(String roomName) {
-    // Jitsi Meet room names should be alphanumeric with hyphens and underscores
-    final regex = RegExp(r'^[a-zA-Z0-9_-]+$');
-    return regex.hasMatch(roomName) && roomName.length >= 3 && roomName.length <= 50;
-  }
-
-  // Limpar recursos
-  @override
-  void dispose() {
-    // Nota: removeAllListeners não existe na v10.2.0
-    // Os listeners são gerenciados automaticamente
-    _isInCall = false;
-    _currentRoomId = null;
-    _onCallEnded = null;
-    _onCallStarted = null;
-    Logger.info('VoIP service disposed');
-    super.dispose();
-  }
-
-  // Adicionar métodos para aceitar/rejeitar/iniciar chamada
-  Future<bool> initiateCall(String contactId, String contactName) async {
-    // Lógica para iniciar a chamada (ex: notificar o backend, etc.)
-    // Por enquanto, apenas simula o sucesso
-    return true;
-  }
-
-  Future<void> acceptCall(String callId, String roomName) async {
-    // Lógica para aceitar a chamada
-    // Por enquanto, apenas simula
-    Logger.info('Chamada $callId aceita. Entrando na sala $roomName');
-  }
-
-  Future<void> rejectCall(String callId) async {
-    // Lógica para rejeitar a chamada
-    // Por enquanto, apenas simula
-    Logger.info('Chamada $callId rejeitada.');
-  }
-
-  Future<List<dynamic>> getCallHistory() async {
-    // Lógica para obter histórico de chamadas
-    // Por enquanto, retorna uma lista vazia
-    return [];
-  }
-
-  // Método para formatar a duração da chamada (exemplo)
-  String formatCallDuration() {
-    // Implementar lógica real de duração da chamada
-    return '00:00';
-  }
-
-  // Método para juntar a reunião Jitsi
+  // Entrar manualmente numa reunião Jitsi
   Future<void> joinJitsiMeeting({
     required String roomName,
     required String userDisplayName,
@@ -249,14 +155,14 @@ class VoIPService extends ChangeNotifier {
       final options = JitsiMeetConferenceOptions(
         serverURL: 'https://meet.jit.si',
         room: roomName,
-        token: password, // Passando o password (token) diretamente aqui
+        token: password,
         configOverrides: {
           'startWithVideoMuted': false,
           'startWithAudioMuted': false,
         },
         userInfo: JitsiMeetUserInfo(
           displayName: userDisplayName,
-          avatar: userAvatarUrl, // Adicionado userAvatarUrl
+          avatar: userAvatarUrl,
         ),
       );
 
@@ -264,32 +170,56 @@ class VoIPService extends ChangeNotifier {
       _isInCall = true;
       _currentRoomId = roomName;
       notifyListeners();
-    } catch (error) {
+      Logger.info("Joined Jitsi meeting: $roomName");
+    } catch (error, stackTrace) {
       Logger.error('Erro ao entrar na reunião Jitsi: $error');
+      FirebaseCrashlytics.instance.recordError(error, stackTrace);
       rethrow;
     }
   }
 
-  // Propriedade para simular o estado da chamada
+  // Encerrar chamada
+  Future<void> endCall() async {
+    try {
+      if (_isInCall) {
+        await _jitsiMeet.hangUp();
+        Logger.info('Call ended');
+        _onCallEnded?.call(_currentRoomId ?? '');
+      }
+    } catch (e) {
+      Logger.error('Failed to end call: $e');
+    } finally {
+      _isInCall = false;
+      _currentRoomId = null;
+      notifyListeners();
+    }
+  }
+
+  // Gerar ID único
+  static String generateRoomId({required String prefix, String? entityId}) {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final random = (timestamp % 10000).toString().padLeft(4, '0');
+    return entityId != null ? '${prefix}_${entityId}_$random' : '${prefix}_$random';
+  }
+
+  // Validar nome de sala
+  static bool isValidRoomName(String roomName) {
+    final regex = RegExp(r'^[a-zA-Z0-9_-]+$');
+    return regex.hasMatch(roomName) && roomName.length >= 3 && roomName.length <= 50;
+  }
+
+  // Simular dados
   Call? currentCall;
-
-  // Propriedade para simular se está chamando
   bool isCalling = false;
-
-  // Callback para mudança de estado da chamada
   Function(String)? onCallStateChanged;
 
-  // Método para alternar o mudo
+  // Toggle mute
   void toggleMute() {
-    // Implementar lógica real de mute
     Logger.info('Toggle mute');
   }
 
-  // Método para alternar o áudio
   Future<void> toggleAudio() async {
     try {
-      // Lógica para alternar o áudio via Jitsi Meet SDK
-      // Exemplo: await _jitsiMeet.setAudioMuted(!_isMuted);
       Logger.info('Toggle audio');
     } catch (e) {
       Logger.error('Failed to toggle audio: $e');
@@ -297,11 +227,8 @@ class VoIPService extends ChangeNotifier {
     }
   }
 
-  // Método para alternar o vídeo
   Future<void> toggleVideo() async {
     try {
-      // Lógica para alternar o vídeo via Jitsi Meet SDK
-      // Exemplo: await _jitsiMeet.setVideoMuted(!_isVideoEnabled);
       Logger.info('Toggle video');
     } catch (e) {
       Logger.error('Failed to toggle video: $e');
@@ -309,9 +236,38 @@ class VoIPService extends ChangeNotifier {
     }
   }
 
-  // Método para alternar a câmera
   Future<void> switchCamera() async {
-    // Implementar lógica real de troca de câmera
     Logger.info('Switching camera');
+  }
+
+  // Simular chamadas
+  Future<bool> initiateCall(String contactId, String contactName) async {
+    return true;
+  }
+
+  Future<void> acceptCall(String callId, String roomName) async {
+    Logger.info('Chamada $callId aceita. Entrando na sala $roomName');
+  }
+
+  Future<void> rejectCall(String callId) async {
+    Logger.info('Chamada $callId rejeitada.');
+  }
+
+  Future<List<dynamic>> getCallHistory() async {
+    return [];
+  }
+
+  String formatCallDuration() {
+    return '00:00';
+  }
+
+  @override
+  void dispose() {
+    _isInCall = false;
+    _currentRoomId = null;
+    _onCallEnded = null;
+    _onCallStarted = null;
+    Logger.info('VoIP service disposed');
+    super.dispose();
   }
 }
