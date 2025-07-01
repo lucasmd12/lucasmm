@@ -1,0 +1,279 @@
+Resolving dependencies...
+Downloading packages...
+  characters 1.4.0 (1.4.1 available)
+  file_picker 8.3.7 (10.2.0 available)
+  flutter_chat_ui 1.6.15 (2.6.0 available)
+  flutter_local_notifications 19.2.1 (19.3.0 available)
+  flutter_local_notifications_platform_interface 9.0.0 (9.1.0 available)
+  flutter_secure_storage_linux 1.2.3 (2.0.1 available)
+  flutter_secure_storage_macos 3.1.3 (4.0.0 available)
+  flutter_secure_storage_platform_interface 1.1.2 (2.0.1 available)
+  flutter_secure_storage_web 1.2.1 (2.0.0 available)
+  flutter_secure_storage_windows 3.1.2 (4.0.0 available)
+  flutter_slidable 3.1.2 (4.0.0 available)
+  flutter_sound_platform_interface 9.28.0 (10.3.2 available)
+  flutter_sound_web 9.28.0 (10.3.2 available)
+  infinite_scroll_pagination 4.1.0 (5.1.0 available)
+  jitsi_meet_flutter_sdk 10.3.0 (11.2.0 available)
+  jni 0.14.1 (0.14.2 available)
+  js 0.6.7 (0.7.2 available)
+> leak_tracker 11.0.1 (was 10.0.9)
+> leak_tracker_flutter_testing 3.0.10 (was 3.0.9)
+> leak_tracker_testing 3.0.2 (was 3.0.1)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.16.0 (1.17.0 available)
+  petitparser 6.1.0 (7.0.0 available)
+  posix 6.0.2 (6.0.3 available)
+  sentry 9.0.0 (9.1.0 available)
+  sentry_flutter 9.0.0 (9.1.0 available)
+  synchronized 3.3.1 (3.4.0 available)
+> test_api 0.7.6 (was 0.7.4)
+> vector_math 2.2.0 (was 2.1.4)
+  vm_service 15.0.0 (15.0.2 available)
+  xml 6.5.0 (6.6.0 available)
+Changed 5 dependencies!
+26 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing lucasetop...                                          
+
+warning • Unused import: 'package:flutter/material.dart' • lib/models/invite_model.dart:1:8 • unused_import
+   info • Unnecessary 'this.' qualifier • lib/models/message_model.dart:82:30 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/message_model.dart:85:22 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/message_model.dart:86:26 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/message_model.dart:87:28 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/message_model.dart:90:23 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/message_model.dart:90:47 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/message_model.dart:94:9 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/message_model.dart:95:12 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/message_model.dart:109:9 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/message_model.dart:110:23 • unnecessary_this
+warning • Unused import: 'package:flutter/foundation.dart' • lib/models/user_model.dart:1:8 • unused_import
+warning • The value of the field '_authService' isn't used • lib/providers/call_provider.dart:8:21 • unused_field
+   info • 'groupValue' is deprecated and shouldn't be used. Use a RadioGroup ancestor to manage group value instead. This feature was deprecated after v3.32.0-0.0.pre • lib/screens/admin_panel_screen.dart:436:15 • deprecated_member_use
+   info • 'onChanged' is deprecated and shouldn't be used. Use RadioGroup to handle value change instead. This feature was deprecated after v3.32.0-0.0.pre • lib/screens/admin_panel_screen.dart:437:15 • deprecated_member_use
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/admin_panel_screen.dart:450:37 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/admin_panel_screen.dart:451:44 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/admin_panel_screen.dart:458:44 • use_build_context_synchronously
+warning • The operand can't be 'null', so the condition is always 'true' • lib/screens/call_contacts_screen.dart:73:56 • unnecessary_null_comparison
+warning • The '!' will have no effect because the receiver can't be null • lib/screens/call_contacts_screen.dart:74:57 • unnecessary_non_null_assertion
+warning • The operand can't be 'null', so the condition is always 'false' • lib/screens/call_contacts_screen.dart:76:46 • unnecessary_null_comparison
+warning • The name Call is shown, but isn't used • lib/screens/call_page.dart:6:66 • unused_shown_name
+warning • The name CallType is shown, but isn't used • lib/screens/call_page.dart:6:84 • unused_shown_name
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/call_page.dart:239:28 • use_build_context_synchronously
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/call_page.dart:265:35 • deprecated_member_use
+warning • The name CallType is shown, but isn't used • lib/screens/call_screen.dart:5:84 • unused_shown_name
+warning • The receiver can't be null, so the null-aware operator '?.' is unnecessary • lib/screens/call_screen.dart:68:17 • invalid_null_aware_operator
+warning • The receiver can't be null, so the null-aware operator '?.' is unnecessary • lib/screens/call_screen.dart:100:48 • invalid_null_aware_operator
+warning • The receiver can't be null, so the null-aware operator '?.' is unnecessary • lib/screens/call_screen.dart:100:96 • invalid_null_aware_operator
+warning • The receiver can't be null, so the null-aware operator '?.' is unnecessary • lib/screens/call_screen.dart:168:14 • invalid_null_aware_operator
+warning • The receiver can't be null, so the null-aware operator '?.' is unnecessary • lib/screens/call_screen.dart:180:50 • invalid_null_aware_operator
+warning • The receiver can't be null, so the null-aware operator '?.' is unnecessary • lib/screens/call_screen.dart:192:50 • invalid_null_aware_operator
+warning • The receiver can't be null, so the null-aware operator '?.' is unnecessary • lib/screens/call_screen.dart:192:66 • invalid_null_aware_operator
+warning • Unused import: 'package:lucasbeatsfederacao/utils/logger.dart' • lib/screens/clan_detail_screen.dart:3:8 • unused_import
+   info • Parameter 'key' could be a super parameter • lib/screens/clan_flag_upload_screen.dart:16:9 • use_super_parameters
+   info • Invalid use of a private type in a public API • lib/screens/clan_flag_upload_screen.dart:25:3 • library_private_types_in_public_api
+   info • Don't use 'BuildContext's across async gaps • lib/screens/clan_flag_upload_screen.dart:48:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/clan_flag_upload_screen.dart:93:30 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/clan_flag_upload_screen.dart:100:23 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/clan_flag_upload_screen.dart:105:28 • use_build_context_synchronously
+warning • Unused import: 'package:lucasbeatsfederacao/models/clan_model.dart' • lib/screens/clan_list_screen.dart:4:8 • unused_import
+   info • The imported package 'flutter_chat_types' isn't a dependency of the importing package • lib/screens/clan_text_chat_screen.dart:5:8 • depend_on_referenced_packages
+warning • The left operand can't be null, so the right operand is never executed • lib/screens/clan_text_chat_screen.dart:42:33 • dead_null_aware_expression
+warning • The left operand can't be null, so the right operand is never executed • lib/screens/clan_text_chat_screen.dart:69:50 • dead_null_aware_expression
+warning • The receiver can't be null, so the null-aware operator '?.' is unnecessary • lib/screens/clan_text_chat_screen.dart:70:35 • invalid_null_aware_operator
+warning • The left operand can't be null, so the right operand is never executed • lib/screens/clan_text_chat_screen.dart:71:25 • dead_null_aware_expression
+warning • The left operand can't be null, so the right operand is never executed • lib/screens/clan_text_chat_screen.dart:72:32 • dead_null_aware_expression
+warning • The value of the local variable 'message' isn't used • lib/screens/clan_text_chat_screen.dart:100:13 • unused_local_variable
+warning • The value of the local variable 'message' isn't used • lib/screens/clan_text_chat_screen.dart:128:13 • unused_local_variable
+   info • Unnecessary empty statement • lib/screens/clan_text_chat_screen.dart:143:9 • empty_statements
+  error • Invalid constant value • lib/screens/clan_text_chat_screen.dart:173:36 • invalid_constant
+  error • Undefined name 'Directional' • lib/screens/clan_text_chat_screen.dart:173:36 • undefined_identifier
+  error • Invalid constant value • lib/screens/clan_text_chat_screen.dart:183:36 • invalid_constant
+  error • Undefined name 'Directional' • lib/screens/clan_text_chat_screen.dart:183:36 • undefined_identifier
+  error • Invalid constant value • lib/screens/clan_text_chat_screen.dart:190:36 • invalid_constant
+  error • Undefined name 'Directional' • lib/screens/clan_text_chat_screen.dart:190:36 • undefined_identifier
+warning • Unused import: 'package:lucasbeatsfederacao/models/federation_model.dart' • lib/screens/federation_list_screen.dart:4:8 • unused_import
+   info • Parameter 'key' could be a super parameter • lib/screens/federation_tag_management_screen.dart:14:9 • use_super_parameters
+   info • Invalid use of a private type in a public API • lib/screens/federation_tag_management_screen.dart:23:3 • library_private_types_in_public_api
+   info • Don't use 'BuildContext's across async gaps • lib/screens/federation_tag_management_screen.dart:102:30 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/federation_tag_management_screen.dart:109:23 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/federation_tag_management_screen.dart:114:28 • use_build_context_synchronously
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/screens/federation_tag_management_screen.dart:268:15 • sized_box_for_whitespace
+   info • The imported package 'flutter_chat_types' isn't a dependency of the importing package • lib/screens/federation_text_chat_screen.dart:4:8 • depend_on_referenced_packages
+warning • The value of the local variable 'message' isn't used • lib/screens/federation_text_chat_screen.dart:87:13 • unused_local_variable
+warning • The value of the local variable 'message' isn't used • lib/screens/federation_text_chat_screen.dart:114:13 • unused_local_variable
+   info • The imported package 'flutter_chat_types' isn't a dependency of the importing package • lib/screens/global_chat_screen.dart:4:8 • depend_on_referenced_packages
+warning • Unused import: 'package:lucasbeatsfederacao/models/role_model.dart' • lib/screens/global_chat_screen.dart:15:8 • unused_import
+warning • The member 'notifyListeners' can only be used within 'package:flutter/src/foundation/change_notifier.dart' or a test • lib/screens/global_chat_screen.dart:55:27 • invalid_use_of_visible_for_testing_member
+warning • The member 'notifyListeners' can only be used within instance members of subclasses of 'ChangeNotifier' • lib/screens/global_chat_screen.dart:55:27 • invalid_use_of_protected_member
+warning • Unused import: 'package:provider/provider.dart' • lib/screens/invite_list_screen.dart:2:8 • unused_import
+warning • Unused import: 'package:lucasbeatsfederacao/providers/auth_provider.dart' • lib/screens/invite_list_screen.dart:3:8 • unused_import
+   info • Don't use 'BuildContext's across async gaps • lib/screens/invite_list_screen.dart:57:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/invite_list_screen.dart:63:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/invite_list_screen.dart:73:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/invite_list_screen.dart:79:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/login_screen.dart:75:52 • use_build_context_synchronously
+   info • Parameter 'key' could be a super parameter • lib/screens/profile_picture_upload_screen.dart:14:9 • use_super_parameters
+   info • Invalid use of a private type in a public API • lib/screens/profile_picture_upload_screen.dart:21:3 • library_private_types_in_public_api
+   info • Don't use 'BuildContext's across async gaps • lib/screens/profile_picture_upload_screen.dart:44:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/profile_picture_upload_screen.dart:89:30 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/profile_picture_upload_screen.dart:96:23 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/profile_picture_upload_screen.dart:101:28 • use_build_context_synchronously
+warning • The operand can't be 'null', so the condition is always 'true' • lib/screens/profile_screen.dart:83:54 • unnecessary_null_comparison
+warning • The '!' will have no effect because the receiver can't be null • lib/screens/profile_screen.dart:84:55 • unnecessary_non_null_assertion
+warning • The operand can't be 'null', so the condition is always 'false' • lib/screens/profile_screen.dart:86:44 • unnecessary_null_comparison
+warning • The operand can't be 'null', so the condition is always 'true' • lib/screens/profile_screen.dart:115:37 • unnecessary_null_comparison
+warning • The operand can't be 'null', so the condition is always 'true' • lib/screens/profile_screen.dart:118:33 • unnecessary_null_comparison
+   info • Don't use 'BuildContext's across async gaps • lib/screens/qrr_create_screen.dart:49:9 • use_build_context_synchronously
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/qrr_create_screen.dart:189:23 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/qrr_create_screen.dart:208:23 • deprecated_member_use
+warning • Unused import: 'package:lucasbeatsfederacao/models/user_model.dart' • lib/screens/qrr_detail_screen.dart:9:8 • unused_import
+  error • The argument type 'User' can't be assigned to the parameter type 'String'.  • lib/screens/qrr_detail_screen.dart:186:61 • argument_type_not_assignable
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/qrr_detail_screen.dart:291:56 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/qrr_detail_screen.dart:308:58 • deprecated_member_use
+warning • The operand can't be 'null', so the condition is always 'true' • lib/screens/qrr_detail_screen.dart:404:32 • unnecessary_null_comparison
+warning • The '!' will have no effect because the receiver can't be null • lib/screens/qrr_detail_screen.dart:405:71 • unnecessary_non_null_assertion
+warning • The operand can't be 'null', so the condition is always 'true' • lib/screens/qrr_detail_screen.dart:406:30 • unnecessary_null_comparison
+warning • The '!' will have no effect because the receiver can't be null • lib/screens/qrr_detail_screen.dart:407:66 • unnecessary_non_null_assertion
+  error • The getter 'displayName' isn't defined for the type 'String' • lib/screens/qrr_detail_screen.dart:411:91 • undefined_getter
+warning • Unused import: 'package:lucasbeatsfederacao/providers/auth_provider.dart' • lib/screens/qrr_edit_screen.dart:3:8 • unused_import
+   info • The type of the right operand ('QRRType') isn't a subtype or a supertype of the left operand ('String') • lib/screens/qrr_edit_screen.dart:36:83 • unrelated_type_equality_checks
+   info • The type of the right operand ('QRRPriority') isn't a subtype or a supertype of the left operand ('String') • lib/screens/qrr_edit_screen.dart:37:91 • unrelated_type_equality_checks
+   info • Don't use 'BuildContext's across async gaps • lib/screens/qrr_edit_screen.dart:58:9 • use_build_context_synchronously
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/qrr_edit_screen.dart:169:23 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/qrr_edit_screen.dart:188:23 • deprecated_member_use
+  error • The argument type 'User' can't be assigned to the parameter type 'String'.  • lib/screens/qrr_list_screen.dart:258:72 • argument_type_not_assignable
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/qrr_list_screen.dart:297:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/qrr_list_screen.dart:384:41 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/qrr_list_screen.dart:442:17 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/qrr_list_screen.dart:460:17 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/qrr_list_screen.dart:478:17 • deprecated_member_use
+warning • Unused import: 'package:lucasbeatsfederacao/models/user_model.dart' • lib/screens/qrr_participants_screen.dart:7:8 • unused_import
+warning • The operand can't be 'null', so the condition is always 'true' • lib/screens/qrr_participants_screen.dart:133:71 • unnecessary_null_comparison
+warning • The '!' will have no effect because the receiver can't be null • lib/screens/qrr_participants_screen.dart:134:72 • unnecessary_non_null_assertion
+warning • The operand can't be 'null', so the condition is always 'false' • lib/screens/qrr_participants_screen.dart:136:61 • unnecessary_null_comparison
+warning • The operand can't be 'null', so the condition is always 'true' • lib/screens/qrr_participants_screen.dart:153:60 • unnecessary_null_comparison
+warning • The operand can't be 'null', so the condition is always 'true' • lib/screens/qrr_participants_screen.dart:158:64 • unnecessary_null_comparison
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/screens/qrr_participants_screen.dart:172:37 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/splash_screen.dart:251:34 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/splash_screen.dart:260:40 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/splash_screen.dart:291:54 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/splash_screen.dart:339:48 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/splash_screen.dart:354:43 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/splash_screen.dart:376:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/splash_screen.dart:416:33 • deprecated_member_use
+warning • Unused import: '../../services/voip_service.dart' • lib/screens/tabs/chat_list_tab.dart:9:8 • unused_import
+warning • Unused import: '../../screens/voice_call_screen.dart' • lib/screens/tabs/chat_list_tab.dart:12:8 • unused_import
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/tabs/chat_list_tab.dart:445:47 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/tabs/chat_list_tab.dart:453:41 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/tabs/home_tab.dart:78:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/tabs/home_tab.dart:174:35 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/tabs/home_tab.dart:212:22 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/screens/tabs/home_tab.dart:214:41 • deprecated_member_use
+   info • Don't use 'BuildContext's across async gaps • lib/screens/tabs/members_tab.dart:122:30 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/tabs/members_tab.dart:130:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/tabs/members_tab.dart:136:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/tabs/members_tab.dart:163:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/tabs/members_tab.dart:169:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/tabs/members_tab.dart:179:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/tabs/members_tab.dart:185:28 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/tabs/members_tab.dart:208:38 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/tabs/members_tab.dart:214:38 • use_build_context_synchronously
+   info • Parameter 'key' could be a super parameter • lib/screens/voice_call_screen.dart:14:9 • use_super_parameters
+   info • Invalid use of a private type in a public API • lib/screens/voice_call_screen.dart:24:3 • library_private_types_in_public_api
+warning • The value of the field '_isConnected' isn't used • lib/screens/voice_call_screen.dart:30:8 • unused_field
+   info • Don't use 'BuildContext's across async gaps • lib/screens/voice_call_screen.dart:137:21 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/voice_call_screen.dart:139:21 • use_build_context_synchronously
+  error • A value of type 'IconData' can't be assigned to a parameter of type 'Widget?' in a const constructor • lib/screens/voice_rooms_screen.dart:41:30 • const_constructor_param_type_mismatch
+  error • The argument type 'IconData' can't be assigned to the parameter type 'Widget?'.  • lib/screens/voice_rooms_screen.dart:41:36 • argument_type_not_assignable
+  error • A value of type 'IconData' can't be assigned to a parameter of type 'Widget?' in a const constructor • lib/screens/voice_rooms_screen.dart:42:36 • const_constructor_param_type_mismatch
+  error • The argument type 'IconData' can't be assigned to the parameter type 'Widget?'.  • lib/screens/voice_rooms_screen.dart:42:42 • argument_type_not_assignable
+  error • A value of type 'IconData' can't be assigned to a parameter of type 'Widget?' in a const constructor • lib/screens/voice_rooms_screen.dart:43:33 • const_constructor_param_type_mismatch
+  error • The argument type 'IconData' can't be assigned to the parameter type 'Widget?'.  • lib/screens/voice_rooms_screen.dart:43:39 • argument_type_not_assignable
+  error • A value of type 'IconData' can't be assigned to a parameter of type 'Widget?' in a const constructor • lib/screens/voice_rooms_screen.dart:44:32 • const_constructor_param_type_mismatch
+  error • The argument type 'IconData' can't be assigned to the parameter type 'Widget?'.  • lib/screens/voice_rooms_screen.dart:44:38 • argument_type_not_assignable
+  error • The property 'clanId' can't be unconditionally accessed because the receiver can be 'null' • lib/screens/voice_rooms_screen.dart:84:58 • unchecked_use_of_nullable_value
+  error • The property 'federationId' can't be unconditionally accessed because the receiver can be 'null' • lib/screens/voice_rooms_screen.dart:115:70 • unchecked_use_of_nullable_value
+warning • The left operand can't be null, so the right operand is never executed • lib/screens/voice_rooms_screen.dart:261:44 • dead_null_aware_expression
+   info • Don't use 'BuildContext's across async gaps • lib/screens/voice_rooms_screen.dart:268:46 • use_build_context_synchronously
+  error • The method 'joinVoiceRoom' isn't defined for the type 'FirebaseService' • lib/screens/voice_rooms_screen.dart:284:29 • undefined_method
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/voice_rooms_screen.dart:346:36 • use_build_context_synchronously
+warning • The value of the field '_metricsSuffix' isn't used • lib/services/cache_service.dart:8:23 • unused_field
+   info • Use interpolation to compose strings and values • lib/services/cache_service.dart:144:28 • prefer_interpolation_to_compose_strings
+   info • Unnecessary braces in a string interpolation • lib/services/cache_service.dart:225:19 • unnecessary_brace_in_string_interps
+  error • The argument type 'Role' can't be assigned to the parameter type 'String?'.  • lib/services/chat_service.dart:48:33 • argument_type_not_assignable
+  error • The argument type 'Role' can't be assigned to the parameter type 'String?'.  • lib/services/chat_service.dart:64:29 • argument_type_not_assignable
+  error • The named parameter 'data' isn't defined • lib/services/chat_service.dart:97:7 • undefined_named_parameter
+warning • The '!' will have no effect because the receiver can't be null • lib/services/chat_service.dart:224:28 • unnecessary_non_null_assertion
+warning • Unused import: 'package:lucasbeatsfederacao/services/qrr_service.dart' • lib/services/firebase_service.dart:10:8 • unused_import
+   info • The private field _notificationTypes could be 'final' • lib/services/firebase_service.dart:54:21 • prefer_final_fields
+  error • Const variables must be initialized with a constant value • lib/services/firebase_service.dart:160:27 • const_initialized_with_non_constant_value
+  error • The constructor being called isn't a const constructor • lib/services/firebase_service.dart:160:27 • const_with_non_const
+  error • The values in a const list literal must be constants • lib/services/firebase_service.dart:160:27 • non_constant_list_element
+  error • The named parameter 'qrr' is required, but there's no corresponding argument • lib/services/firebase_service.dart:515:33 • missing_required_argument
+  error • The named parameter 'qrrId' isn't defined • lib/services/firebase_service.dart:515:49 • undefined_named_parameter
+  error • The named parameter 'qrr' is required, but there's no corresponding argument • lib/services/firebase_service.dart:544:33 • missing_required_argument
+  error • The named parameter 'qrrId' isn't defined • lib/services/firebase_service.dart:544:49 • undefined_named_parameter
+warning • Unused import: 'dart:convert' • lib/services/segmented_notification_service.dart:1:8 • unused_import
+   info • Unnecessary braces in a string interpolation • lib/services/segmented_notification_service.dart:334:80 • unnecessary_brace_in_string_interps
+   info • The prefix 'IO' isn't a lower_case_with_underscores identifier • lib/services/socket_service.dart:2:60 • library_prefixes
+warning • Unused import: 'dart:convert' • lib/services/sync_service.dart:3:8 • unused_import
+warning • The value of the field '_syncTimeout' isn't used • lib/services/sync_service.dart:22:25 • unused_field
+  error • The getter 'cacheInvalidatedStream' isn't defined for the type 'SocketService' • lib/services/sync_service.dart:63:22 • undefined_getter
+  error • The getter 'dataUpdatedStream' isn't defined for the type 'SocketService' • lib/services/sync_service.dart:67:22 • undefined_getter
+  error • The getter 'userOnlineStream' isn't defined for the type 'SocketService' • lib/services/sync_service.dart:71:22 • undefined_getter
+  error • The getter 'userOfflineStream' isn't defined for the type 'SocketService' • lib/services/sync_service.dart:75:22 • undefined_getter
+  error • The getter 'clanUpdatedStream' isn't defined for the type 'SocketService' • lib/services/sync_service.dart:79:22 • undefined_getter
+  error • The getter 'federationUpdatedStream' isn't defined for the type 'SocketService' • lib/services/sync_service.dart:83:22 • undefined_getter
+  error • The getter 'missionUpdatedStream' isn't defined for the type 'SocketService' • lib/services/sync_service.dart:87:22 • undefined_getter
+warning • The declaration '_syncClans' isn't referenced • lib/services/sync_service.dart:249:16 • unused_element
+warning • The value of the field '_baseUrl' isn't used • lib/services/upload_service.dart:10:16 • unused_field
+warning • The value of the local variable 'presetsParam' isn't used • lib/services/upload_service.dart:429:13 • unused_local_variable
+  error • Too many positional arguments: 1 expected, but 2 found • lib/services/upload_service.dart:489:95 • extra_positional_arguments_could_be_named
+warning • The value of the field '_onCallEnded' isn't used • lib/services/voip_service.dart:15:21 • unused_field
+warning • The value of the field '_onCallStarted' isn't used • lib/services/voip_service.dart:16:21 • unused_field
+  error • 'token' can't be used as a setter because it's final • lib/services/voip_service.dart:136:17 • assignment_to_final
+   info • The member 'dispose' overrides an inherited member but isn't annotated with '@override' • lib/services/voip_service.dart:270:8 • annotate_overrides
+warning • This method overrides a method annotated as '@mustCallSuper' in 'ChangeNotifier', but doesn't invoke the overridden method • lib/services/voip_service.dart:270:8 • must_call_super
+   info • Don't invoke 'print' in production code • lib/services/voip_service.dart:290:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/services/voip_service.dart:296:5 • avoid_print
+  error • Unterminated string literal • lib/services/voip_service.dart:328:20 • unterminated_string_literal
+  error • Expected to find ',' • lib/services/voip_service.dart:329:11 • expected_token
+  error • 'token' can't be used as a setter because it's final • lib/services/voip_service.dart:334:17 • assignment_to_final
+   info • Don't invoke 'print' in production code • lib/services/voip_service.dart:359:5 • avoid_print
+  error • The named parameter 'maxWidth' isn't defined • lib/widgets/admin_notification_dialog.dart:216:9 • undefined_named_parameter
+   info • Parameter 'key' could be a super parameter • lib/widgets/cached_image_widget.dart:20:9 • use_super_parameters
+   info • The private field _isLoading could be 'final' • lib/widgets/cached_image_widget.dart:41:8 • prefer_final_fields
+warning • The value of the field '_isLoading' isn't used • lib/widgets/cached_image_widget.dart:41:8 • unused_field
+  error • The method 'getCachedImageUrl' isn't defined for the type 'CacheService' • lib/widgets/cached_image_widget.dart:60:44 • undefined_method
+  error • The method 'cacheImageUrl' isn't defined for the type 'CacheService' • lib/widgets/cached_image_widget.dart:75:26 • undefined_method
+  error • The argument type 'CustomCacheManager' can't be assigned to the parameter type 'BaseCacheManager?'.  • lib/widgets/cached_image_widget.dart:147:21 • argument_type_not_assignable
+   info • Parameter 'key' could be a super parameter • lib/widgets/cached_image_widget.dart:161:9 • use_super_parameters
+warning • The value of the field '_maxAge' isn't used • lib/widgets/cached_image_widget.dart:229:25 • unused_field
+warning • The value of the field '_maxNrOfCacheObjects' isn't used • lib/widgets/cached_image_widget.dart:230:20 • unused_field
+   info • Parameter 'key' could be a super parameter • lib/widgets/cached_image_widget.dart:269:9 • use_super_parameters
+   info • Don't use 'BuildContext's across async gaps • lib/widgets/federation_management.dart:146:48 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/widgets/federation_management.dart:149:46 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/widgets/federation_management.dart:154:46 • use_build_context_synchronously
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/incoming_call_overlay.dart:97:30 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/incoming_call_overlay.dart:98:30 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/incoming_call_overlay.dart:102:45 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/member_list_item.dart:28:35 • deprecated_member_use
+   info • Don't use 'BuildContext's across async gaps • lib/widgets/member_list_item.dart:166:22 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/widgets/member_list_item.dart:182:30 • use_build_context_synchronously
+warning • The operand can't be 'null', so the condition is always 'true' • lib/widgets/user_dashboard_widget.dart:29:48 • unnecessary_null_comparison
+warning • The '!' will have no effect because the receiver can't be null • lib/widgets/user_dashboard_widget.dart:30:47 • unnecessary_non_null_assertion
+warning • The operand can't be 'null', so the condition is always 'false' • lib/widgets/user_dashboard_widget.dart:32:38 • unnecessary_null_comparison
+warning • The declaration '_getAuthToken' isn't referenced • lib/widgets/user_dashboard_widget.dart:170:11 • unused_element
+warning • The '!' will have no effect because the receiver can't be null • lib/widgets/user_dashboard_widget.dart:204:38 • unnecessary_non_null_assertion
+   info • Parameter 'key' could be a super parameter • lib/widgets/user_identity_widget.dart:288:9 • use_super_parameters
+  error • The argument for the named parameter 'key' was already specified • lib/widgets/user_identity_widget.dart:295:14 • duplicate_named_argument
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/widgets/user_promotion_dialog.dart:43:13 • deprecated_member_use
+warning • The declaration '_canCreateRoom' isn't referenced • lib/widgets/voice_room_widget.dart:151:8 • unused_element
+warning • The declaration '_canJoinRoom' isn't referenced • lib/widgets/voice_room_widget.dart:166:8 • unused_element
+warning • The left operand can't be null, so the right operand is never executed • lib/widgets/voice_room_widget.dart:190:44 • dead_null_aware_expression
+  error • The method 'createVoiceRoom' isn't defined for the type 'FirebaseService' • lib/widgets/voice_room_widget.dart:194:29 • undefined_method
+  error • The method 'joinVoiceRoom' isn't defined for the type 'FirebaseService' • lib/widgets/voice_room_widget.dart:210:29 • undefined_method
+warning • The left operand can't be null, so the right operand is never executed • lib/widgets/voice_room_widget.dart:282:44 • dead_null_aware_expression
+  error • The method 'joinVoiceRoom' isn't defined for the type 'FirebaseService' • lib/widgets/voice_room_widget.dart:292:29 • undefined_method
+
