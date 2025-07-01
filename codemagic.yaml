@@ -11,11 +11,10 @@ workflows:
       events:
         - push
       branch_patterns:
-  - pattern: 'main'
-    include: true
-
-environment:
+        - pattern: 'main'
+          include: trueenvironment:
   flutter: stable # Ou a versão específica do Flutter que você usa
+
   JVM_ARGS: "-Xmx8192M"
 
 
