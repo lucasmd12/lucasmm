@@ -11,7 +11,7 @@ workflows:
 
     environment:
       flutter: stable
-      env:
+      vars:
         JVM_ARGS: "-Xmx8192M"
 
     scripts:
