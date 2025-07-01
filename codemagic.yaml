@@ -1,6 +1,3 @@
-# codemagic.yaml SIMPLIFICADO para o projeto federacaomad
-# AVISO: Contém google-services.json no repositório — não é recomendado por segurança
-
 workflows:
   android-debug-build-insecure:
     name: Federacaomad Android Debug Build (google-services.json no repo)
@@ -13,8 +10,9 @@ workflows:
           include: true
 
     environment:
-      flutter: stable  # ou "3.22.1" por exemplo
-      JVM_ARGS: "-Xmx8192M"
+      flutter: stable
+      env:
+        JVM_ARGS: "-Xmx8192M"
 
     scripts:
       - name: Configurar Flutter
