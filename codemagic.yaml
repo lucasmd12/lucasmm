@@ -13,6 +13,8 @@ workflows:
       flutter: stable
       vars:
         JVM_ARGS: "-Xmx8192M"
+      groups:
+        - firebase_app_check_ci
 
     scripts:
       - name: Configurar Flutter
@@ -35,3 +37,5 @@ workflows:
 
     artifacts:
       - build/app/outputs/flutter-apk/app-debug.apk
+
+      
