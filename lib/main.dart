@@ -100,7 +100,16 @@ Future<void> main() async {
       }
 
       Logger.info("Running FEDERACAOMAD App.");
-      runApp(const FEDERACAOMADApp());
+      try {
+        final voipService = VoIPService();
+        await voipService.initialize(); // Certifique-se de que o initialize é chamado aqui
+        Logger.info("VoIPService initialized in main.dart");
+        runApp(const FEDERACAOMADApp());
+      } catch (e, stackTrace) {
+        Logger.error("Error during app initialization or running FEDERACAOMAD App", error: e, stackTrace: stackTrace);
+        FirebaseCrashlytics.instance.recordError(e, stackTrace, fatal: true);
+        // Optionally, show an error screen or attempt recovery
+      }
     },
   );
 }
@@ -227,3 +236,15 @@ class FEDERACAOMADApp extends StatelessWidget {
 }
 
 
+
+
+      // Inicialização do VoIPService com captura de erros
+      try {
+        final voipService = VoIPService();
+        await voipService.initialize(); // Certifique-se de que o initialize é chamado aqui
+        Logger.info("VoIPService initialized in main.dart");
+      } catch (e, stackTrace) {
+        Logger.error("Error initializing VoIPService in main.dart", error: e, stackTrace: stackTrace);
+        FirebaseCrashlytics.instance.recordError(e, stackTrace, fatal: true);
+        // Opcional: mostrar um erro na tela ou tentar uma recuperação
+      }
