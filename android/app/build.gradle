@@ -4,7 +4,6 @@ plugins {
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
     id 'com.google.gms.google-services' // Adicionado plugin Google Services
-
 }
 
 def localProperties = new Properties()
@@ -25,15 +24,12 @@ def getPubspecVersionInfo() {
     if (versionLine == null) {
         throw new GradleException("Missing 'version:' line in pubspec.yaml")
     }
-    // Regex to match 'X.Y.Z+B' format
     def matcher = versionLine =~ /version:\s*(\d+\.\d+\.\d+)\+(\d+)/
     if (!matcher.find()) {
-        // Fallback regex for 'X.Y.Z' format if no build number is present
         matcher = versionLine =~ /version:\s*(\d+\.\d+\.\d+)/
         if (!matcher.find()) {
              throw new GradleException("Invalid 'version:' format in pubspec.yaml. Expected 'X.Y.Z+B' or 'X.Y.Z'. Found: ${versionLine}")
         }
-        // If only X.Y.Z is found, use 1 as default build number
         return [name: matcher.group(1), code: 1]
     }
     return [name: matcher.group(1), code: matcher.group(2).toInteger()]
@@ -67,12 +63,16 @@ android {
         versionCode versionInfo.code
         versionName versionInfo.name
         multiDexEnabled true
+
+        // 👇 CORTA x86 e x86_64 pra evitar erro no Sentry e no Jetifier
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
     }
 
     buildTypes {
         release {
-            // Configuração simplificada para release sem keystore
-            signingConfig signingConfigs.debug // Usa a configuração de debug para release
+            signingConfig signingConfigs.debug // Usa debug como release
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -80,9 +80,6 @@ android {
         debug {
             minifyEnabled false
             shrinkResources false
-            ndk {
-                abiFilters 'armeabi-v7a', 'arm64-v8a'
-            }
         }
     }
 
@@ -92,7 +89,6 @@ android {
         abortOnError false
     }
 
-    // Adicionado para resolver o conflito de classes duplicadas do WebRTC
     configurations {
         all {
             exclude group: 'io.github.webrtc-sdk', module: 'android'
@@ -105,7 +101,6 @@ flutter {
 }
 
 dependencies {
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0"
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     implementation 'androidx.multidex:multidex:2.0.1'
