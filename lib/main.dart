@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_app_check/firebase_app_check.dart'; // 👈 ADICIONADO
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter/foundation.dart'; // Import for kReleaseMode
-import 'package:package_info_plus/package_info_plus.dart'; // For app version
-import 'package:firebase_crashlytics/firebase_crashlytics.dart'; // Import Crashlytics
+import 'package:flutter/foundation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 // Import Screens
 import 'screens/splash_screen.dart';
@@ -17,9 +18,9 @@ import 'screens/call_page.dart';
 import 'screens/clan_management_screen.dart';
 import 'screens/call_history_page.dart';
 import 'screens/call_contacts_screen.dart';
-import 'screens/qrr_create_screen.dart'; // Nova importação
-import 'screens/qrr_edit_screen.dart';   // Nova importação
-import 'screens/qrr_participants_screen.dart'; // Nova importação
+import 'screens/qrr_create_screen.dart';
+import 'screens/qrr_edit_screen.dart';
+import 'screens/qrr_participants_screen.dart';
 
 // Import Services, Providers and Models
 import 'services/api_service.dart';
@@ -32,8 +33,8 @@ import 'services/signaling_service.dart';
 import 'services/notification_service.dart';
 import 'services/mission_service.dart';
 import 'services/firebase_service.dart';
-import 'services/qrr_service.dart'; // Importação adicionada
-import 'services/voip_service.dart'; // Importação adicionada
+import 'services/qrr_service.dart';
+import 'services/voip_service.dart';
 import 'models/qrr_model.dart';
 import 'providers/auth_provider.dart';
 import 'providers/connectivity_provider.dart';
@@ -43,18 +44,23 @@ import 'utils/logger.dart';
 import 'utils/theme_constants.dart';
 import 'widgets/app_lifecycle_reactor.dart';
 import 'widgets/incoming_call_overlay.dart';
-// Global navigator key
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await dotenv.load(fileName: ".env"); // Carrega o arquivo .env
 
-  // Obter informações do pacote para a versão do release
+  // 👇 ATIVA O APP CHECK COM TOKEN DE DEPURAÇÃO
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.debug,
+    appleProvider: AppleProvider.debug,
+  );
+
+  await dotenv.load(fileName: ".env");
+
   final packageInfo = await PackageInfo.fromPlatform();
 
-  // Inicializar Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
@@ -64,24 +70,22 @@ Future<void> main() async {
   await SentryFlutter.init(
     (options) {
       options.dsn = dotenv.env["SENTRY_DSN"];
-      options.tracesSampleRate = kReleaseMode ? 0.1 : 1.0; // 10% em produção, 100% em dev
-      options.debug = !kReleaseMode; // Desativar debug em produção
+      options.tracesSampleRate = kReleaseMode ? 0.1 : 1.0;
+      options.debug = !kReleaseMode;
       options.environment = kReleaseMode ? 'production' : 'development';
       options.release = 'lucasbeatsfederacao@${packageInfo.version}+${packageInfo.buildNumber}';
 
-      // Captura de erros de UI e do framework Flutter
       FlutterError.onError = (details) {
         Sentry.captureException(details.exception, stackTrace: details.stack);
         Logger.error('Flutter Error:', error: details.exception, stackTrace: details.stack);
         FirebaseCrashlytics.instance.recordFlutterError(details);
       };
 
-      // Captura de erros assíncronos fora do escopo do Flutter
       PlatformDispatcher.instance.onError = (error, stack) {
         Sentry.captureException(error, stackTrace: stack);
         Logger.error('Platform Error:', error: error, stackTrace: stack);
         FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-        return true; // Indica que o erro foi tratado
+        return true;
       };
     },
     appRunner: () async {
@@ -102,13 +106,12 @@ Future<void> main() async {
       Logger.info("Running FEDERACAOMAD App.");
       try {
         final voipService = VoIPService();
-        await voipService.initialize(); // Certifique-se de que o initialize é chamado aqui
+        await voipService.initialize();
         Logger.info("VoIPService initialized in main.dart");
         runApp(const FEDERACAOMADApp());
       } catch (e, stackTrace) {
         Logger.error("Error during app initialization or running FEDERACAOMAD App", error: e, stackTrace: stackTrace);
         FirebaseCrashlytics.instance.recordError(e, stackTrace, fatal: true);
-        // Optionally, show an error screen or attempt recovery
       }
     },
   );
@@ -139,7 +142,9 @@ class FEDERACAOMADApp extends StatelessWidget {
         ChangeNotifierProvider<NotificationService>(create: (context) => NotificationService()),
         ChangeNotifierProvider<VoIPService>(create: (context) => VoIPService()),
         ChangeNotifierProvider<FirebaseService>(create: (context) => FirebaseService(context.read<ApiService>())),
-        ChangeNotifierProvider<ChatService>(create: (context) => ChatService(firebaseService: context.read<FirebaseService>(), authService: context.read<AuthService>())),
+        ChangeNotifierProvider<ChatService>(create: (context) => ChatService(
+          firebaseService: context.read<FirebaseService>(),
+          authService: context.read<AuthService>())),
         ChangeNotifierProvider<AuthProvider>(
           create: (context) => AuthProvider(
             context.read<SocketService>(),
@@ -147,9 +152,7 @@ class FEDERACAOMADApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProvider<CallProvider>(
-          create: (context) => CallProvider(
-            authService: context.read<AuthService>(),
-          ),
+          create: (context) => CallProvider(authService: context.read<AuthService>()),
         ),
         ChangeNotifierProvider(create: (context) => ConnectivityProvider()),
         ChangeNotifierProvider<MissionProvider>(
@@ -187,7 +190,7 @@ class FEDERACAOMADApp extends StatelessWidget {
               final contactName = args?['contactName'];
               final contactId = args?['contactId'];
               final isIncomingCall = args?['isIncomingCall'] ?? false;
-              
+
               return CallPage(
                 roomName: roomName,
                 contactName: contactName,
@@ -204,7 +207,8 @@ class FEDERACAOMADApp extends StatelessWidget {
               } else {
                 return Scaffold(
                   appBar: AppBar(title: const Text('Erro')),
-                  body: const Center(child: Text('ID do Clã não fornecido.')));
+                  body: const Center(child: Text('ID do Clã não fornecido.')),
+                );
               }
             },
             '/qrr-create': (context) => const QRRCreateScreen(),
@@ -215,7 +219,8 @@ class FEDERACAOMADApp extends StatelessWidget {
               } else {
                 return Scaffold(
                   appBar: AppBar(title: const Text('Erro')),
-                  body: const Center(child: Text('QRR não fornecida para edição.')));
+                  body: const Center(child: Text('QRR não fornecida para edição.')),
+                );
               }
             },
             '/qrr-participants': (context) {
@@ -225,7 +230,8 @@ class FEDERACAOMADApp extends StatelessWidget {
               } else {
                 return Scaffold(
                   appBar: AppBar(title: const Text('Erro')),
-                  body: const Center(child: Text('QRR não fornecida para participantes.')));
+                  body: const Center(child: Text('QRR não fornecida para participantes.')),
+                );
               }
             },
           },
@@ -234,17 +240,3 @@ class FEDERACAOMADApp extends StatelessWidget {
     );
   }
 }
-
-
-
-
-      // Inicialização do VoIPService com captura de erros
-      try {
-        final voipService = VoIPService();
-        await voipService.initialize(); // Certifique-se de que o initialize é chamado aqui
-        Logger.info("VoIPService initialized in main.dart");
-      } catch (e, stackTrace) {
-        Logger.error("Error initializing VoIPService in main.dart", error: e, stackTrace: stackTrace);
-        FirebaseCrashlytics.instance.recordError(e, stackTrace, fatal: true);
-        // Opcional: mostrar um erro na tela ou tentar uma recuperação
-      }
