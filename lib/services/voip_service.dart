@@ -36,10 +36,11 @@ class VoIPService extends ChangeNotifier {
       // Configurar listeners do Jitsi
       _setupJitsiListeners();
       
-      Logger.info('VoIP Service initialized successfully');
-    } catch (e) {
-      Logger.error('Failed to initialize VoIP Service: $e');
-      throw Exception('Falha ao inicializar serviço de VoIP: $e');
+      Logger.info("VoIP Service initialized successfully");
+    } catch (e, stackTrace) {
+      Logger.error("Failed to initialize VoIP Service", error: e, stackTrace: stackTrace);
+      FirebaseCrashlytics.instance.recordError(e, stackTrace, fatal: true);
+      throw Exception("Falha ao inicializar serviço de VoIP: $e");
     }
   }
 
@@ -314,5 +315,3 @@ class VoIPService extends ChangeNotifier {
     Logger.info('Switching camera');
   }
 }
-
-
