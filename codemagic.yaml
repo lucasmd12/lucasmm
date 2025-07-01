@@ -12,7 +12,7 @@ workflows:
     environment:
       flutter: stable
       vars:
-        JVM_ARGS: "-Xmx8192M"
+        JVM_ARGS: "-Xmx12g"
       groups:
         - firebase_app_check_ci
 
