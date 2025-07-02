@@ -50,16 +50,7 @@ class ApiService {
     );
 
     if (statusCode >= 200 && statusCode < 300) {
-      if (response.body.isNotEmpty) {
-        try {
-          return jsonDecode(response.body);
-        } catch (e) {
-          Logger.error('Error decoding JSON response: ${e.toString()}');
-          throw Exception('Failed to decode JSON response');
-        }
-      } else {
-        return null;
-      }
+      return response; // Retorna a resposta HTTP completa
     } else {
       String errorMessage = 'API Error ($statusCode)';
       try {
