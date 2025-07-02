@@ -130,107 +130,114 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.asset(
-                    'assets/images_png/app_icon_login_splash.jpg',
-                    height: 100,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.shield_moon,
-                      size: 80,
-                      color: Color(0xFF9147FF),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'FEDERACAOMAD',
-                    textAlign: TextAlign.center,
-                    style: textTheme.displayLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Faça login para continuar',
-                    textAlign: TextAlign.center,
-                    style: textTheme.displayMedium,
-                  ),
-                  const SizedBox(height: 48),
-
-                  TextFormField(
-                    controller: _usernameController,
-                    keyboardType: TextInputType.text,
-                    style: const TextStyle(color: Colors.white, fontFamily: 'Gothic'),
-                    decoration: const InputDecoration(
-                      labelText: 'Usuário',
-                      prefixIcon: Icon(Icons.person_outline),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira seu nome de usuário';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    style: const TextStyle(color: Colors.white, fontFamily: 'Gothic'),
-                    decoration: const InputDecoration(
-                      labelText: 'Senha',
-                      prefixIcon: Icon(Icons.lock_outline),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira sua senha';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 24),
-
-                  ElevatedButton(
-                    onPressed: (_isLoading || _isWakingServer) ? null : _handleLogin,
-                    child: (_isLoading || _isWakingServer)
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Text(_isWakingServer ? 'INICIANDO SERVIDOR...' : 'ENTRANDO...'),
-                            ],
-                          )
-                        : const Text('ENTRAR'),
-                  ),
-                  const SizedBox(height: 16),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom,
+              ),
+              child: IntrinsicHeight(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      TextButton(
-                        onPressed: (_isLoading || _isWakingServer) ? null : _handlePasswordReset,
-                        child: const Text('Esqueceu a senha?'),
+                      Image.asset(
+                        'assets/images_png/app_icon_login_splash.jpg',
+                        height: 100,
+                        errorBuilder: (context, error, stackTrace) => const Icon(
+                          Icons.shield_moon,
+                          size: 80,
+                          color: Color(0xFF9147FF),
+                        ),
                       ),
-                      TextButton(
-                        onPressed: (_isLoading || _isWakingServer) ? null : () {
-                          Navigator.pushNamed(context, '/register');
+                      const SizedBox(height: 24),
+                      Text(
+                        'FEDERACAOMAD',
+                        textAlign: TextAlign.center,
+                        style: textTheme.displayLarge,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Faça login para continuar',
+                        textAlign: TextAlign.center,
+                        style: textTheme.displayMedium,
+                      ),
+                      const SizedBox(height: 48),
+
+                      TextFormField(
+                        controller: _usernameController,
+                        keyboardType: TextInputType.text,
+                        style: const TextStyle(color: Colors.white, fontFamily: 'Gothic'),
+                        decoration: const InputDecoration(
+                          labelText: 'Usuário',
+                          prefixIcon: Icon(Icons.person_outline),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, insira seu nome de usuário';
+                          }
+                          return null;
                         },
-                        child: const Text('Criar conta'),
+                      ),
+                      const SizedBox(height: 16),
+
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        style: const TextStyle(color: Colors.white, fontFamily: 'Gothic'),
+                        decoration: const InputDecoration(
+                          labelText: 'Senha',
+                          prefixIcon: Icon(Icons.lock_outline),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, insira sua senha';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 24),
+
+                      ElevatedButton(
+                        onPressed: (_isLoading || _isWakingServer) ? null : _handleLogin,
+                        child: (_isLoading || _isWakingServer)
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(_isWakingServer ? 'INICIANDO SERVIDOR...' : 'ENTRANDO...'),
+                                ],
+                              )
+                            : const Text('ENTRAR'),
+                      ),
+                      const SizedBox(height: 16),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: (_isLoading || _isWakingServer) ? null : _handlePasswordReset,
+                            child: const Text('Esqueceu a senha?'),
+                          ),
+                          TextButton(
+                            onPressed: (_isLoading || _isWakingServer) ? null : () {
+                              Navigator.pushNamed(context, '/register');
+                            },
+                            child: const Text('Criar conta'),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -239,5 +246,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-
