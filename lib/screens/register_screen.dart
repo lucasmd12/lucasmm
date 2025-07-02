@@ -100,115 +100,122 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Registre-se',
-                    textAlign: TextAlign.center,
-                    style: textTheme.displayMedium,
-                  ),
-                  const SizedBox(height: 32),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height - AppBar().preferredSize.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom,
+              ),
+              child: IntrinsicHeight(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Registre-se',
+                        textAlign: TextAlign.center,
+                        style: textTheme.displayMedium,
+                      ),
+                      const SizedBox(height: 32),
 
-                  TextFormField(
-                    controller: _usernameController,
-                    keyboardType: TextInputType.text,
-                    style: const TextStyle(color: Colors.white, fontFamily: 'Gothic'),
-                    decoration: InputDecoration(
-                      labelText: 'Usuário',
-                      prefixIcon: const Icon(Icons.person_outline),
-                      labelStyle: inputDecorationTheme.labelStyle,
-                      prefixIconColor: inputDecorationTheme.prefixIconColor,
-                      enabledBorder: inputDecorationTheme.enabledBorder,
-                      focusedBorder: inputDecorationTheme.focusedBorder,
-                      errorBorder: inputDecorationTheme.errorBorder,
-                      focusedErrorBorder: inputDecorationTheme.focusedErrorBorder,
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira um nome de usuário';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _usernameController,
+                        keyboardType: TextInputType.text,
+                        style: const TextStyle(color: Colors.white, fontFamily: 'Gothic'),
+                        decoration: InputDecoration(
+                          labelText: 'Usuário',
+                          prefixIcon: const Icon(Icons.person_outline),
+                          labelStyle: inputDecorationTheme.labelStyle,
+                          prefixIconColor: inputDecorationTheme.prefixIconColor,
+                          enabledBorder: inputDecorationTheme.enabledBorder,
+                          focusedBorder: inputDecorationTheme.focusedBorder,
+                          errorBorder: inputDecorationTheme.errorBorder,
+                          focusedErrorBorder: inputDecorationTheme.focusedErrorBorder,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, insira um nome de usuário';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
 
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    style: const TextStyle(color: Colors.white, fontFamily: 'Gothic'),
-                    decoration: InputDecoration(
-                      labelText: 'Senha',
-                      prefixIcon: const Icon(Icons.lock_outline),
-                      labelStyle: inputDecorationTheme.labelStyle,
-                      prefixIconColor: inputDecorationTheme.prefixIconColor,
-                      enabledBorder: inputDecorationTheme.enabledBorder,
-                      focusedBorder: inputDecorationTheme.focusedBorder,
-                      errorBorder: inputDecorationTheme.errorBorder,
-                      focusedErrorBorder: inputDecorationTheme.focusedErrorBorder,
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira uma senha';
-                      }
-                      if (value.length < 6) {
-                        return 'A senha deve ter pelo menos 6 caracteres';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        style: const TextStyle(color: Colors.white, fontFamily: 'Gothic'),
+                        decoration: InputDecoration(
+                          labelText: 'Senha',
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          labelStyle: inputDecorationTheme.labelStyle,
+                          prefixIconColor: inputDecorationTheme.prefixIconColor,
+                          enabledBorder: inputDecorationTheme.enabledBorder,
+                          focusedBorder: inputDecorationTheme.focusedBorder,
+                          errorBorder: inputDecorationTheme.errorBorder,
+                          focusedErrorBorder: inputDecorationTheme.focusedErrorBorder,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, insira uma senha';
+                          }
+                          if (value.length < 6) {
+                            return 'A senha deve ter pelo menos 6 caracteres';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
 
-                  TextFormField(
-                    controller: _confirmPasswordController,
-                    obscureText: true,
-                    style: const TextStyle(color: Colors.white, fontFamily: 'Gothic'),
-                    decoration: InputDecoration(
-                      labelText: 'Confirmar Senha',
-                      prefixIcon: const Icon(Icons.lock_outline),
-                      labelStyle: inputDecorationTheme.labelStyle,
-                      prefixIconColor: inputDecorationTheme.prefixIconColor,
-                      enabledBorder: inputDecorationTheme.enabledBorder,
-                      focusedBorder: inputDecorationTheme.focusedBorder,
-                      errorBorder: inputDecorationTheme.errorBorder,
-                      focusedErrorBorder: inputDecorationTheme.focusedErrorBorder,
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, confirme sua senha';
-                      }
-                      if (value != _passwordController.text) {
-                        return 'As senhas não coincidem';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 24),
+                      TextFormField(
+                        controller: _confirmPasswordController,
+                        obscureText: true,
+                        style: const TextStyle(color: Colors.white, fontFamily: 'Gothic'),
+                        decoration: InputDecoration(
+                          labelText: 'Confirmar Senha',
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          labelStyle: inputDecorationTheme.labelStyle,
+                          prefixIconColor: inputDecorationTheme.prefixIconColor,
+                          enabledBorder: inputDecorationTheme.enabledBorder,
+                          focusedBorder: inputDecorationTheme.focusedBorder,
+                          errorBorder: inputDecorationTheme.errorBorder,
+                          focusedErrorBorder: inputDecorationTheme.focusedErrorBorder,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, confirme sua senha';
+                          }
+                          if (value != _passwordController.text) {
+                            return 'As senhas não coincidem';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 24),
 
-                  ElevatedButton(
-                    onPressed: _isLoading ? null : _handleRegister,
-                    style: ElevatedButton.styleFrom(
-                       backgroundColor: Theme.of(context).colorScheme.primary,
-                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                       padding: const EdgeInsets.symmetric(vertical: 16),
-                       textStyle: textTheme.labelLarge?.copyWith(fontFamily: 'Gothic'),
-                    ),
-                    child: _isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const Text('REGISTRAR E ENTRAR'),
+                      ElevatedButton(
+                        onPressed: _isLoading ? null : _handleRegister,
+                        style: ElevatedButton.styleFrom(
+                           backgroundColor: Theme.of(context).colorScheme.primary,
+                           foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                           padding: const EdgeInsets.symmetric(vertical: 16),
+                           textStyle: textTheme.labelLarge?.copyWith(fontFamily: 'Gothic'),
+                        ),
+                        child: _isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : const Text('REGISTRAR E ENTRAR'),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                ],
+                ),
               ),
             ),
           ),
@@ -217,5 +224,3 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
-
-
