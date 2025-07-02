@@ -27,7 +27,7 @@ class UserDashboardWidget extends StatelessWidget {
                   radius: 30,
                   backgroundColor: _getRoleColor(user.role),
                   backgroundImage: user.avatar != null
-                    ? NetworkImage(user.avatar)
+                    ? NetworkImage(user.avatar!) // Use null-aware access here
                     : null,
                   child: user.avatar == null
                     ? Text(

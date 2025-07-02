@@ -81,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         radius: 60,
                         backgroundColor: Colors.grey.shade700,
                         backgroundImage: user.avatar != null 
-                            ? NetworkImage(user.avatar) 
+                            ? NetworkImage(user.avatar!) 
                             : null,
                         child: user.avatar == null 
                             ? Icon(
@@ -90,6 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Colors.grey.shade400,
                               )
                             : null,
+
                       ),
                       const SizedBox(height: 16),
                       Text(

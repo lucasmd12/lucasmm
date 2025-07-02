@@ -4,8 +4,8 @@ class User {
   final String id;
   final String username;
 
-  final String avatar;
-  final String bio;
+  final String? avatar;
+  final String? bio;
   final String status;
   final String? clanId; // Pode ser nulo se não tiver clã
   final String? clanName; // Adicionado: Nome do clã
@@ -23,8 +23,7 @@ class User {
   User({
     required this.id,
     required this.username,
-
-    this.avatar = 'default_avatar.png',
+    this.avatar, // Default value is null
     this.bio = 'Sem biografia.',
     this.status = 'offline',
     this.clanId,
@@ -46,8 +45,8 @@ class User {
       id: json['_id'] as String,
       username: json['username'] as String,
 
-      avatar: json['avatar'] as String? ?? 'default_avatar.png',
-      bio: json['bio'] as String? ?? 'Sem biografia.',
+      avatar: json['avatar'] as String?, // Default is null if json['avatar'] is null
+      bio: json['bio'] as String?,
       status: json['status'] as String? ?? 'offline',
       clanId: json['clanId'] as String? ?? json['clan'] as String?, // Adicionado clanId e compatibilidade com 'clan'
       clanName: json['clanName'] as String?,

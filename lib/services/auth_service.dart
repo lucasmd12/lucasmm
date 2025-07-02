@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart'; // Para ChangeNotifier
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lucasbeatsfederacao/models/user_model.dart'; // Importa o modelo User
@@ -119,7 +118,7 @@ class AuthService extends ChangeNotifier {
              throw Exception(_lastErrorMessage);
           }
         } else {
-           _lastErrorMessage = decodedResponse?["msg"] ?? "Invalid login response format";
+           _lastErrorMessage = decodedResponse["msg"] ?? "Invalid login response format";
            throw Exception(_lastErrorMessage);
         }
       } else {

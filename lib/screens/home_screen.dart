@@ -11,7 +11,7 @@ import 'package:lucasbeatsfederacao/screens/voice_rooms_screen.dart';
 import 'package:lucasbeatsfederacao/screens/federation_list_screen.dart';
 import 'package:lucasbeatsfederacao/screens/invite_list_screen.dart'; // Importar a tela de convites
 import 'package:sentry_flutter/sentry_flutter.dart'; // Certifique-se de que esta importação está correta
-import 'package:firebase_crashlytics/firebase_crashlytics.dart'; // Import Crashlytics
+// Import Crashlytics
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

@@ -130,9 +130,10 @@ class _QRRParticipantsScreenState extends State<QRRParticipantsScreen> {
                               children: [
                                 CircleAvatar(
                                   radius: 24,
-                                  backgroundImage: participant.avatar != null
-                                      ? NetworkImage(participant.avatar)
-                                      : null,
+                                  backgroundImage: participant.avatar != null // Check if avatar is not null
+                                      ? NetworkImage(participant.avatar!) as ImageProvider<Object>? // Use NetworkImage and cast to ImageProvider<Object>?
+ : const AssetImage('assets/images_png/default_avatar.png'), // Otherwise use AssetImage
+
                                   child: participant.avatar == null
                                       ? Text(participant.username.isNotEmpty ? participant.username[0].toUpperCase() : '?')
                                       : null,

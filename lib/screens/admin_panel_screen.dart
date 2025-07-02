@@ -31,7 +31,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> with TickerProvider
       final apiService = ApiService();
       
       // Carregar usuários
-      final usersResponse = await apiService.get("/api/admin/users/all");
+      final usersResponse = await apiService.get("/api/admin/users");
       _allUsers = (usersResponse["users"] as List)
           .map((user) => User.fromJson(user))
           .toList();

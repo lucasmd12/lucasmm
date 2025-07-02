@@ -244,6 +244,55 @@ class ApiService {
     }
   }
 
+  Future<dynamic> patch(String endpoint, Map<String, dynamic> data, {bool requireAuth = true, Duration? timeout}) async {
+    final url = Uri.parse('$_baseUrl$endpoint');
+    Logger.info('API PATCH Request: $url, Data: ${jsonEncode(data)}');
+
+    final transaction = Sentry.startTransaction(
+      'PATCH $endpoint',
+      'http.client',
+      description: 'HTTP PATCH request to $endpoint',
+    );
+    final span = transaction.startChild(
+      'http.client',
+      description: 'PATCH $url',
+    );
+
+    Sentry.addBreadcrumb(
+      Breadcrumb(
+        category: 'http',
+        type: 'http',
+        data: {
+          'url': url.toString(),
+          'method': 'PATCH',
+          'request_body': jsonEncode(data),
+        },
+        level: SentryLevel.info,
+      ),
+    );
+
+    try {
+      final httpResponse = await _makeRequestWithRetry(() async {
+        return await http.patch(
+          url,
+          headers: await _getHeaders(includeAuth: requireAuth),
+          body: jsonEncode(data),
+        ).timeout(timeout ?? _defaultTimeout);
+      });
+
+      span.setTag('http.status_code', httpResponse.statusCode.toString());
+      span.finish(status: SpanStatus.ok());
+      transaction.finish(status: SpanStatus.ok());
+
+      return _handleResponse(httpResponse);
+    } catch (e, stackTrace) {
+      span.finish(status: SpanStatus.internalError());
+      transaction.finish(status: SpanStatus.internalError());
+      Sentry.captureException(e, stackTrace: stackTrace);
+      rethrow;
+    }
+  }
+
   Future<dynamic> delete(String endpoint, {bool requireAuth = true, Duration? timeout}) async {
     final url = Uri.parse('$_baseUrl$endpoint');
     Logger.info('API DELETE Request: $url');

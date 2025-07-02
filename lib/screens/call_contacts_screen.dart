@@ -71,7 +71,7 @@ class _CallContactsScreenState extends State<CallContactsScreen> {
                         leading: CircleAvatar(
                           backgroundColor: Colors.green,
                           backgroundImage: user.avatar != null
-                              ? NetworkImage(user.avatar)
+ ? NetworkImage(user.avatar!) // Use user.avatar! as we already checked for null
                               : null,
                           child: user.avatar == null
                               ? Text(
