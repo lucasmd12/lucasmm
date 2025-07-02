@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Image.asset(
-                        'assets/images_png/app_icon_login_splash.jpg',
+                        'assets/images_png/app_icon_login_splash.png',
                         height: 100,
                         errorBuilder: (context, error, stackTrace) => const Icon(
                           Icons.shield_moon,
