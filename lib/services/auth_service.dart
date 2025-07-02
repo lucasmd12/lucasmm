@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart'; // Para ChangeNotifier
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lucasbeatsfederacao/models/user_model.dart'; // Importa o modelo User
@@ -94,29 +95,35 @@ class AuthService extends ChangeNotifier {
         requireAuth: false,
       );
 
-      if (response != null && response is Map<String, dynamic> && response.containsKey("token")) {
-        final newToken = response["token"] as String?;
-        if (newToken != null) {
-          await _secureStorage.write(key: "jwt_token", value: newToken);
-          _token = newToken;
-          await fetchUserProfile();
-          if (_currentUser != null) {
-             setAuthenticated(true);
-             Logger.info("Login successful for user: ${_currentUser?.username}");
-             _setSentryUser(); // Set Sentry user on successful login
-             return true;
+      if (response != null && response.body.isNotEmpty) {
+        final decodedResponse = jsonDecode(response.body);
+        if (decodedResponse is Map<String, dynamic> && decodedResponse.containsKey("token")) {
+          final newToken = decodedResponse["token"] as String?;
+          if (newToken != null) {
+            await _secureStorage.write(key: "jwt_token", value: newToken);
+            _token = newToken;
+            await fetchUserProfile();
+            if (_currentUser != null) {
+               setAuthenticated(true);
+               Logger.info("Login successful for user: ${_currentUser?.username}");
+               _setSentryUser(); // Set Sentry user on successful login
+               return true;
+            } else {
+              _lastErrorMessage = "Profile fetch failed after login";
+              await _clearAuthData();
+              setAuthenticated(false);
+              return false;
+            }
           } else {
-            _lastErrorMessage = "Profile fetch failed after login";
-            await _clearAuthData();
-            setAuthenticated(false);
-            return false;
+             _lastErrorMessage = "Token not found in login response";
+             throw Exception(_lastErrorMessage);
           }
         } else {
-           _lastErrorMessage = "Token not found in login response";
+           _lastErrorMessage = decodedResponse?["msg"] ?? "Invalid login response format";
            throw Exception(_lastErrorMessage);
         }
       } else {
-         _lastErrorMessage = response?["msg"] ?? "Invalid login response format";
+         _lastErrorMessage = "Empty or invalid login response";
          throw Exception(_lastErrorMessage);
       }
     } catch (e) {
