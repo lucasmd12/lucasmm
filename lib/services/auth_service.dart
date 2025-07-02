@@ -95,9 +95,9 @@ class AuthService extends ChangeNotifier {
         requireAuth: false,
       );
 
-      if (response != null && response.body.isNotEmpty) {
-        final decodedResponse = jsonDecode(response.body);
-        if (decodedResponse is Map<String, dynamic> && decodedResponse.containsKey("token")) {
+      if (response != null && response is Map<String, dynamic>) {
+        final decodedResponse = response;
+        if (decodedResponse.containsKey("token")) {
           final newToken = decodedResponse["token"] as String?;
           if (newToken != null) {
             await _secureStorage.write(key: "jwt_token", value: newToken);
