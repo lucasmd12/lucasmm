@@ -20,6 +20,8 @@ class Call {
   final CallType type;
   final CallStatus status;
   final DateTime startTime;
+ final String? roomName;
+ final String? callerName;
   final DateTime? endTime;
 
   Call({
@@ -28,6 +30,8 @@ class Call {
     required this.receiverId,
     required this.type,
     required this.status,
+ this.roomName,
+ this.callerName,
     required this.startTime,
     this.endTime,
   });
@@ -38,13 +42,15 @@ class Call {
       callerId: map['callerId'] ?? '',
       receiverId: map['receiverId'] ?? '',
       type: CallType.values.firstWhere(
-        (e) => e.toString().split('.').last == map['type'],
+ (e) => e.toString().split('.').last == map['type'],
         orElse: () => CallType.audio,
       ),
       status: CallStatus.values.firstWhere(
         (e) => e.toString().split('.').last == map['status'],
         orElse: () => CallStatus.ended, // Using 'ended' as a safe default for unknown statuses
       ),
+ roomName: map['roomName'],
+ callerName: map['callerName'],
       startTime: DateTime.parse(map['startTime']),
       endTime: map['endTime'] != null ? DateTime.parse(map['endTime']) : null,
     );
@@ -58,6 +64,8 @@ class Call {
       'type': type.toString().split('.').last,
       'status': status.toString().split('.').last,
       'startTime': startTime.toIso8601String(),
+ if (roomName != null) 'roomName': roomName,
+ if (callerName != null) 'callerName': callerName,
       'endTime': endTime?.toIso8601String(),
     };
   }
@@ -73,6 +81,8 @@ class Call {
     CallStatus? status,
     DateTime? startTime,
     DateTime? endTime,
+ String? roomName,
+ String? callerName,
   }) {
     return Call(
       id: id ?? this.id,
@@ -81,6 +91,8 @@ class Call {
       type: type ?? this.type,
       status: status ?? this.status,
       startTime: startTime ?? this.startTime,
+ roomName: roomName ?? this.roomName,
+ callerName: callerName ?? this.callerName,
       endTime: endTime ?? this.endTime,
     );
   }
