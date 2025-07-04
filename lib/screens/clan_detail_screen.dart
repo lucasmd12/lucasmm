@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucasbeatsfederacao/models/clan_model.dart';
 import 'package:lucasbeatsfederacao/screens/clan_text_chat_screen.dart';
-import 'package:lucasbeatsfederacao/screens/instaclan_feed_widget.dart'; // Importar o novo widget
+import 'package:lucasbeatsfederacao/widgets/instaclan_feed_widget.dart'; // Importar o novo widget
 
 class ClanDetailScreen extends StatefulWidget {
   final Clan clan;
