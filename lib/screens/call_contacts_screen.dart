@@ -4,7 +4,7 @@ import 'package:lucasbeatsfederacao/models/user_model.dart';
 import 'package:lucasbeatsfederacao/services/voip_service.dart';
 import 'package:lucasbeatsfederacao/services/api_service.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';
-import 'package:lucasbeatsfederacao/screens/call_page.dart'; // Importar CallPage
+// Importar CallPage
 
 class CallContactsScreen extends StatefulWidget {
   const CallContactsScreen({super.key});

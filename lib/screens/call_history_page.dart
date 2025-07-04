@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lucasbeatsfederacao/services/voip_service.dart';
-import 'package:lucasbeatsfederacao/screens/call_page.dart';
 import 'package:lucasbeatsfederacao/utils/logger.dart';
 import 'package:lucasbeatsfederacao/providers/auth_provider.dart'; // Importar AuthProvider
 

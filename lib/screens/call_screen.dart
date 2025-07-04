@@ -176,7 +176,8 @@ class _CallScreenState extends State<CallScreen> {
             _buildControlButton(
               icon: Icons.call_end,
               color: Colors.red,
-              onPressed: () async {
+               onPressed: () async {
+                
                 await voipService.rejectCall(roomId: widget.call.roomName ?? call.id ?? '');
                 if (mounted) {
                   Navigator.of(context).pop();
@@ -188,9 +189,11 @@ class _CallScreenState extends State<CallScreen> {
             _buildControlButton(
               icon: Icons.call,
               color: Colors.green,
-              onPressed: () async {
-                await voipService.acceptCall(call.id ?? '', call.id ?? ''); // Usando call.id como roomName
- await voipService.acceptCall(roomId: widget.call.roomName ?? call.id ?? '', displayName: widget.call.callerName ?? 'Usuário Desconhecido');
+              onPressed: () async {  final currentCall = voipService.currentCall ?? widget.call;
+await voipService.acceptCall(roomId: call.roomName ?? call.id ?? '', displayName: call.callerName ?? 'Usuário Desconhecido');
+
+                await voipService.acceptCall(roomId: currentCall.roomName ?? currentCall.id ?? '', displayName: currentCall.callerName ?? 'Usuário Desconhecido');
+                await voipService.acceptCall(roomId: widget.call.roomName ?? call.id ?? '', displayName: widget.call.callerName ?? 'Usuário Desconhecido');
               },
             ),
           ],
