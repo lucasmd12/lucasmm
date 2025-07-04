@@ -149,11 +149,12 @@ class _InstaClanFeedWidgetState extends State<InstaClanFeedWidget> {
                 fontSize: 12,
               ),
             ),
-            Text(
-              _formatTimestamp(timestamp),
-              style: TextStyle(
-                color: Colors.grey.shade500,
-                fontSize: 11,
+            if (timestamp != null) // Wrap with null check
+ Text(
+ _formatTimestamp(timestamp),
+ style: TextStyle(
+ color: Colors.grey.shade500,
+ fontSize: 11,
               ),
             ),
           ],
@@ -253,28 +254,26 @@ class _InstaClanFeedWidgetState extends State<InstaClanFeedWidget> {
     final contactName = call.callerId == _currentUserId ? call.receiverUsername : call.callerUsername;
     final roomName = call.roomId;
 
-    if (contactId != null && roomName != null) {
-      final voipService = Provider.of<VoIPService>(context, listen: false);
-      // A função initiateCall no VoIPService precisa ser adaptada para aceitar callType, clanId, federationId
-      // Por enquanto, vamos simular uma chamada de voz
-      voipService.startVoiceCall(
-        roomId: roomName,
-        displayName: contactName ?? 'Usuário',
-      );
+    final voipService = Provider.of<VoIPService>(context, listen: false);
+    // A função initiateCall no VoIPService precisa ser adaptada para aceitar callType, clanId, federationId
+    // Por enquanto, vamos simular uma chamada de voz
+    voipService.startVoiceCall(
+      roomId: roomName,
+      displayName: contactName ?? 'Usuário',
+    );
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CallPage(
-            contactId: contactId,
-            contactName: contactName ?? 'Usuário',
-            isIncomingCall: false,
-            roomName: roomName,
-          ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CallPage(
+          contactId: contactId,
+          contactName: contactName ?? 'Usuário',
+          isIncomingCall: false,
+          roomName: roomName,
         ),
-      );
+      ),
+    );
     }
-  }
 }
 
 

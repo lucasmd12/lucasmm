@@ -5,7 +5,8 @@ enum QRRType {
   mission("Missão"),
   event("Evento"),
   training("Treinamento"),
-  operation("Operação");
+ operation("Operação"),
+ rule("Regra");
 
   final String displayName;
   const QRRType(this.displayName);
@@ -20,6 +21,8 @@ enum QRRType {
         return Icons.fitness_center;
       case QRRType.operation:
         return Icons.precision_manufacturing;
+ case QRRType.rule:
+ return Icons.gavel;
     }
   }
 }

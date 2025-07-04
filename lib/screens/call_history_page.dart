@@ -257,21 +257,14 @@ class _CallHistoryPageState extends State<CallHistoryPage> {
     final roomName = call['roomName']; // Obter o roomName da chamada
 
     if (contactId != null && roomName != null) {
-      // Iniciar a chamada
+      // Iniciar a chamada (re-chamada)
       final voipService = Provider.of<VoIPService>(context, listen: false); // Corrigido para VoIPService
-      voipService.initiateCall(contactId, contactName ?? 'Usuário');
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CallPage(
-            contactId: contactId,
-            contactName: contactName,
-            isIncomingCall: false,
-            roomName: roomName, // Passar o roomName para CallPage
-          ),
-        ),
-      );
+      // Usar argumentos nomeados conforme a assinatura em VoIPService
+      voipService.initiateCall(targetId: contactId, displayName: contactName ?? 'Usuário');
+
+      // A navegação para CallPage deve ser tratada pela VoIPService
+      // ou por um listener que reaja ao início da chamada.
     }
   }
 }

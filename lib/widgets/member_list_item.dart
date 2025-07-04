@@ -160,9 +160,8 @@ class MemberListItem extends StatelessWidget {
     );
 
     if (shouldCall == true) {
-      final success = await voipService.initiateCall(member.id, member.username);
       
-      if (success) {
+ await voipService.initiateCall(targetId: member.id, displayName: member.username);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => CallScreen(
@@ -178,14 +177,6 @@ class MemberListItem extends StatelessWidget {
             ),
           ),
         );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Falha ao iniciar a chamada. Tente novamente.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
     }
   }
 

@@ -161,31 +161,13 @@ class _CallContactsScreenState extends State<CallContactsScreen> {
       // Gerar um roomName único para a chamada
       final roomName = 'call_${DateTime.now().millisecondsSinceEpoch}_${user.id}';
 
-      final success = await voipService.initiateCall(user.id, user.username);
+      // Chamar initiateCall com argumentos nomeados.
+      // A navegação para CallPage acontecerá dentro de initiateCall ou através de listeners se implementado.
+ await voipService.initiateCall(targetId: user.id, displayName: user.username);
       
       // Usar mounted para verificar se o widget ainda está na árvore antes de interagir com o contexto
       if (mounted) {
-        Navigator.pop(context); // Fechar diálogo de loading
-      }
-      
-      if (success) {
-        if (mounted) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CallPage(
-                contactId: user.id,
-                contactName: user.username,
-                isIncomingCall: false,
-                roomName: roomName, // Passar o roomName para CallPage
-              ),
-            ),
-          );
-        }
-      } else {
-        if (mounted) {
-          _showErrorDialog('Falha ao iniciar chamada. Tente novamente.');
-        }
+ Navigator.pop(context); // Fechar diálogo de loading (assumindo que initiateCall não lança exceção em caso de falha branda)
       }
     } catch (e) {
       if (mounted) {

@@ -13,6 +13,7 @@ class CallHistoryModel {
   final DateTime timestamp;
   final String callerUsername;
   final String receiverUsername;
+  final DateTime? startTime; // Added startTime field
 
   CallHistoryModel({
     required this.id,
@@ -27,6 +28,7 @@ class CallHistoryModel {
     required this.timestamp,
     required this.callerUsername,
     required this.receiverUsername,
+    this.startTime, // Added startTime to constructor
   });
 
   factory CallHistoryModel.fromMap(Map<String, dynamic> map) {
@@ -43,6 +45,7 @@ class CallHistoryModel {
       timestamp: DateTime.parse(map["timestamp"] as String),
       callerUsername: map["callerId"]["username"] as String,
       receiverUsername: map["receiverId"]["username"] as String,
+      startTime: map["startTime"] != null ? DateTime.parse(map["startTime"] as String) : null, // Parse startTime from map
     );
   }
 
@@ -58,6 +61,7 @@ class CallHistoryModel {
       "clanId": clanId,
       "federationId": federationId,
       "timestamp": timestamp.toIso8601String(),
+      if (startTime != null) "startTime": startTime!.toIso8601String(), // Include startTime in map if not null
     };
   }
 

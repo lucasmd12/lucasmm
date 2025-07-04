@@ -280,7 +280,7 @@ class _IncomingCallOverlayState extends State<IncomingCallOverlay>
       }
 
       // Accept the call - Corrected to pass only callId
-      await voipService.acceptCall(widget.callId, widget.roomName);
+ await voipService.acceptCall(roomId: widget.roomName, displayName: widget.callerName);
 
     } catch (e) {
       Logger.error('Error accepting call: $e');
@@ -294,7 +294,7 @@ class _IncomingCallOverlayState extends State<IncomingCallOverlay>
   void _rejectCall() async {
     try {
       final voipService = Provider.of<VoIPService>(context, listen: false);
-      await voipService.rejectCall(widget.callId);
+      await voipService.rejectCall(roomId: widget.roomName);
     } catch (e) {
       Logger.error('Error rejecting call: $e');
     } finally {

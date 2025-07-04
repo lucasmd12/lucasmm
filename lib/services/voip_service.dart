@@ -248,7 +248,7 @@ class VoIPService extends ChangeNotifier {
   // Implementação real do histórico de chamadas
   Future<List<CallHistoryModel>> getCallHistory({String? clanId, String? federationId}) async {
     try {
-      final token = await AuthService().getToken();
+      final token = await AuthService().token;
       if (token == null) {
         throw Exception('Token de autenticação não encontrado.');
       }
@@ -301,6 +301,54 @@ class VoIPService extends ChangeNotifier {
     Logger.info('VoIP service disposed');
     super.dispose();
   }
+
+
+
+
+  // Métodos para iniciar, aceitar e rejeitar chamadas
+  Future<void> initiateCall({required String targetId, required String displayName, bool isVideoCall = false}) async {
+    Logger.info("Initiating call to $targetId");
+    // Implementação da lógica de iniciar chamada
+    // Pode envolver sinalização para o backend e então iniciar Jitsi
+    try {
+      // Exemplo: Iniciar uma chamada Jitsi
+      if (isVideoCall) {
+        await startVideoCall(roomId: targetId, displayName: displayName);
+      } else {
+        await startVoiceCall(roomId: targetId, displayName: displayName);
+      }
+      Logger.info("Call initiated successfully to $targetId");
+    } catch (e) {
+      Logger.error("Failed to initiate call: $e");
+      rethrow;
+    }
+  }
+
+  Future<void> acceptCall({required String roomId, required String displayName, bool isVideoCall = false}) async {
+    Logger.info("Accepting call for room $roomId");
+    // Implementação da lógica de aceitar chamada
+    try {
+      if (isVideoCall) {
+        await startVideoCall(roomId: roomId, displayName: displayName);
+      } else {
+        await startVoiceCall(roomId: roomId, displayName: displayName);
+      }
+      Logger.info("Call accepted successfully for room $roomId");
+    } catch (e) {
+      Logger.error("Failed to accept call: $e");
+      rethrow;
+    }
+  }
+
+  Future<void> rejectCall({required String roomId}) async {
+    Logger.info("Rejecting call for room $roomId");
+    // Implementação da lógica de rejeitar chamada
+    try {
+      await endCall(); // Assumindo que rejeitar uma chamada significa encerrá-la
+      Logger.info("Call rejected successfully for room $roomId");
+    } catch (e) {
+      Logger.error("Failed to reject call: $e");
+      rethrow;
+    }
+  }
 }
-
-

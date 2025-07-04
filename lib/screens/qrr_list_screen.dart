@@ -549,5 +549,3 @@ class _QRRListScreenState extends State<QRRListScreen> with TickerProviderStateM
     ).then((_) => _loadQRRs()); // Recarrega a lista após gerenciar participantes
   }
 }
-
-
