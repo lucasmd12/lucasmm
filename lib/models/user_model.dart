@@ -41,6 +41,36 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    // Helper function to safely get a string from a potentially nested object
+    String? _getStringOrIdFromMap(dynamic value) {
+      if (value is String) {
+        return value;
+      } else if (value is Map<String, dynamic>) {
+        return value['id'] as String?;
+      }
+      return null;
+    }
+
+    // Helper function to safely get a name from a potentially nested object
+    String? _getNameFromMap(dynamic value) {
+      if (value is Map<String, dynamic>) {
+        return value['name'] as String?;
+      }
+      return null;
+    }
+
+    // Helper function to safely get a tag from a potentially nested object
+    String? _getTagFromMap(dynamic value) {
+      if (value is Map<String, dynamic>) {
+        return value['tag'] as String?;
+      }
+      return null;
+    }
+
+    // Safely get clan and federation data
+    final dynamic clanData = json['clan'];
+    final dynamic federationData = json['federation'];
+
     return User(
       id: json['_id'] as String,
       username: json['username'] as String,
@@ -48,14 +78,19 @@ class User {
       avatar: json['avatar'] as String?, // Default is null if json['avatar'] is null
       bio: json['bio'] as String?,
       status: json['status'] as String? ?? 'offline',
-      clanId: json['clanId'] as String? ?? json['clan'] as String?, // Adicionado clanId e compatibilidade com 'clan'
-      clanName: json['clanName'] as String?,
-      clanTag: json['clanTag'] as String?,
-      clanRole: roleFromString(json['clanRole'] as String?), // Convertendo para enum
-      federationId: json['federationId'] as String? ?? json['federation'] as String?, // Adicionado federationId e compatibilidade com 'federation'
-      federationName: json['federationName'] as String?,
-      federationTag: json['federationTag'] as String?,
-      role: roleFromString(json['role'] as String?), // Convertendo para enum
+
+      // Handle clan data which might be a String ID or a Map object
+      clanId: _getStringOrIdFromMap(clanData),
+      clanName: _getNameFromMap(clanData),
+      clanTag: _getTagFromMap(clanData),
+      clanRole: roleFromString(json['clanRole'] as String?), // Assuming clanRole is always a string
+
+      // Handle federation data which might be a String ID or a Map object
+      federationId: _getStringOrIdFromMap(federationData),
+      federationName: _getNameFromMap(federationData),
+      federationTag: _getTagFromMap(federationData),
+      role: roleFromString(json['role'] as String?), // Assuming role is always a string
+
       online: json['online'] as bool? ?? false,
       ultimaAtividade: DateTime.parse(json['ultimaAtividade'] as String),
       lastSeen: DateTime.parse(json['lastSeen'] as String),
@@ -96,6 +131,3 @@ class User {
   String? get clan => clanId;
   String? get federation => federationId;
 }
-
-
-
