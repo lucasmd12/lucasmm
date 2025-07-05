@@ -1,4 +1,5 @@
 import 'package:lucasbeatsfederacao/models/role_model.dart'; // Importar Role
+import 'package:lucasbeatsfederacao/utils/logger.dart'; // Importar Logger para logs de debug
 
 class User {
   final String id;
@@ -16,8 +17,8 @@ class User {
   final String? federationTag; // Adicionado: Tag da federação
   final Role role; // Alterado para Role
   final bool online;
-  final DateTime ultimaAtividade;
-  final DateTime lastSeen;
+  final DateTime? ultimaAtividade; // Pode ser nulo
+  final DateTime? lastSeen; // Pode ser nulo
   final DateTime? createdAt; // Adicionado: Data de criação do usuário
 
   User({
@@ -35,8 +36,8 @@ class User {
     this.federationTag,
     this.role = Role.user, // Valor padrão como enum
     this.online = false,
-    required this.ultimaAtividade,
-    required this.lastSeen,
+    this.ultimaAtividade, // Permitir nulo
+    this.lastSeen, // Permitir nulo
     this.createdAt,
   });
 
@@ -44,36 +45,72 @@ class User {
     // Helper function to safely get a string from a potentially nested object
     String? _getStringOrIdFromMap(dynamic value) {
       if (value is String) {
-        return value;
+        return value; // Se já é String, retorna
       } else if (value is Map<String, dynamic>) {
+        // Se é um Map, tenta obter o 'id' como String?
         return value['id'] as String?;
       }
-      return null;
+      // Log para depuração se o tipo não for o esperado
+      if (value != null) {
+         Logger.warning('Expected String or Map for ID, but got ${value.runtimeType}');
+      }
+      return null; // Retorna nulo se não for String nem Map
     }
 
     // Helper function to safely get a name from a potentially nested object
     String? _getNameFromMap(dynamic value) {
       if (value is Map<String, dynamic>) {
+        // Se é um Map, tenta obter o 'name' como String?
         return value['name'] as String?;
       }
-      return null;
+      // Log para depuração se o tipo não for o esperado
+       if (value != null) {
+         Logger.warning('Expected Map for Name, but got ${value.runtimeType}');
+      }
+      return null; // Retorna nulo se não for Map
     }
 
     // Helper function to safely get a tag from a potentially nested object
     String? _getTagFromMap(dynamic value) {
       if (value is Map<String, dynamic>) {
+        // Se é um Map, tenta obter o 'tag' como String?
         return value['tag'] as String?;
       }
-      return null;
+       // Log para depuração se o tipo não for o esperado
+       if (value != null) {
+         Logger.warning('Expected Map for Tag, but got ${value.runtimeType}');
+      }
+      return null; // Retorna nulo se não for Map
     }
+
+     // Helper function to safely parse DateTime
+    DateTime? _parseDateTime(dynamic value) {
+      if (value is String) {
+        try {
+          return DateTime.parse(value);
+        } catch (e) {
+          Logger.error('Failed to parse DateTime string: $value', error: e);
+          return null;
+        }
+      }
+       if (value != null) {
+         Logger.warning('Expected String for DateTime, but got ${value.runtimeType}');
+      }
+      return null; // Retorna nulo se não for String
+    }
+
 
     // Safely get clan and federation data
     final dynamic clanData = json['clan'];
     final dynamic federationData = json['federation'];
 
+    // Safely get role and clanRole
+    final dynamic rawRole = json['role'];
+    final dynamic rawClanRole = json['clanRole'];
+
     return User(
-      id: json['_id'] as String,
-      username: json['username'] as String,
+      id: json['_id'] as String, // Assumindo que _id sempre é String e não nulo
+      username: json['username'] as String, // Assumindo que username sempre é String e não nulo
 
       avatar: json['avatar'] as String?, // Default is null if json['avatar'] is null
       bio: json['bio'] as String?,
@@ -83,18 +120,23 @@ class User {
       clanId: _getStringOrIdFromMap(clanData),
       clanName: _getNameFromMap(clanData),
       clanTag: _getTagFromMap(clanData),
-      clanRole: roleFromString(json['clanRole'] as String?), // Assuming clanRole is always a string
+      // Tratar rawClanRole que deveria ser String, mas pode vir diferente
+      clanRole: rawClanRole is String ? roleFromString(rawClanRole) : Role.member,
+
 
       // Handle federation data which might be a String ID or a Map object
       federationId: _getStringOrIdFromMap(federationData),
       federationName: _getNameFromMap(federationData),
       federationTag: _getTagFromMap(federationData),
-      role: roleFromString(json['role'] as String?), // Assuming role is always a string
+      // Tratar rawRole que deveria ser String, mas pode vir diferente
+      role: rawRole is String ? roleFromString(rawRole) : Role.user,
+
 
       online: json['online'] as bool? ?? false,
-      ultimaAtividade: DateTime.parse(json['ultimaAtividade'] as String),
-      lastSeen: DateTime.parse(json['lastSeen'] as String),
-      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt'] as String) : null,
+      // Usar helper function para parsear DateTime com segurança
+      ultimaAtividade: _parseDateTime(json['ultimaAtividade']),
+      lastSeen: _parseDateTime(json['lastSeen']),
+      createdAt: _parseDateTime(json['createdAt']),
     );
   }
 
@@ -115,9 +157,9 @@ class User {
       'federationTag': federationTag,
       'role': roleToString(role), // Convertendo de enum para string
       'online': online,
-      'ultimaAtividade': ultimaAtividade.toIso8601String(),
-      'lastSeen': lastSeen.toIso8601String(),
-      'createdAt': createdAt?.toIso8601String(),
+      'ultimaAtividade': ultimaAtividade?.toIso8601String(), // Usar ?. para evitar erro se nulo
+      'lastSeen': lastSeen?.toIso8601String(), // Usar ?. para evitar erro se nulo
+      'createdAt': createdAt?.toIso8601String(), // Usar ?. para evitar erro se nulo
     };
   }
 
